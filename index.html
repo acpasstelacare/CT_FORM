@@ -45,6 +45,33 @@
     }
     input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; }
     
+    /* Checkbox Styles for Google Form Style Selection */
+    .checkbox-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border: 1px solid #555;
+      padding: 10px;
+      border-radius: 4px;
+      max-height: 250px;
+      overflow-y: auto;
+      background: #fafafa;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
     .relative-block { border: 1px dashed #102C57; padding: 10px; border-radius: 4px; margin-bottom: 10px; background: #fdfdfd; }
     .relative-title { font-weight: bold; font-size: 12px; color: #35598E; margin-bottom: 8px; }
 
@@ -185,10 +212,6 @@
             <option value="2-5 YEAR">2-5 YEAR</option>
             <option value="> 5 YEARS">&gt; 5 YEARS</option>
           </select>
-        </div>
-        <div class="form-group">
-          <label>SKILL PREFERRED</label>
-          <input type="text" name="SKILL_PREFERRED" placeholder="SKILL PREFERRED">
         </div>
         <div class="form-group">
           <label>PREFERRED SHIFT</label>
@@ -345,15 +368,18 @@
             <option value="NO">NO</option>
           </select>
         </div>
+        
+        <!-- LANGUAGES KNOWN WITH CHECKBOXES -->
         <div class="form-group">
-          <label>LANGUAGES KNOWN (HOLD CTRL / CMD FOR MULTIPLE)</label>
-          <select name="LANGUAGES_KNOWN" multiple size="4">
-            <option value="ENGLISH">ENGLISH</option>
-            <option value="HINDI">HINDI</option>
-            <option value="GUJARATI">GUJARATI</option>
-            <option value="OTHER">OTHER</option>
-          </select>
+          <label>LANGUAGES KNOWN (SELECT ALL THAT APPLY)</label>
+          <div class="checkbox-list">
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="ENGLISH"> ENGLISH</label>
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="HINDI"> HINDI</label>
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="GUJARATI"> GUJARATI</label>
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="OTHER"> OTHER</label>
+          </div>
         </div>
+
         <div class="form-group">
           <label>READ ENGLISH MEDICINE NAME?</label>
           <select name="READ_ENGLISH_MEDICINE">
@@ -366,46 +392,53 @@
       <!-- 6. SKILL ASSESSMENT & PAST EXPERIENCE -->
       <div class="section-title">6. SKILL ASSESSMENT & PAST EXPERIENCE</div>
       <div class="form-grid">
+        
+        <!-- KNOWN SKILLS WITH CHECKBOXES -->
         <div class="form-group">
-          <label>KNOWN SKILLS (HOLD CTRL / CMD FOR MULTIPLE SELECTION)</label>
-          <select name="KNOWN_SKILLS" multiple size="8">
-            <option value="CHANGE DIAPER">CHANGE DIAPER</option>
-            <option value="URINE/STOOL WASH">URINE/STOOL WASH</option>
-            <option value="SPONGING">SPONGING</option>
-            <option value="CHANGE POSITION">CHANGE POSITION</option>
-            <option value="EXERCISE">EXERCISE</option>
-            <option value="CHANGE THE CLOTH">CHANGE THE CLOTH</option>
-            <option value="WASH THE CLOTH">WASH THE CLOTH</option>
-            <option value="CHANGE BED SHEET">CHANGE BED SHEET</option>
-            <option value="CLEAN THE ROOM OF PATIENT">CLEAN THE ROOM OF PATIENT</option>
-            <option value="GIVE MEDICINE">GIVE MEDICINE</option>
-            <option value="MINOR DRESSING">MINOR DRESSING</option>
-            <option value="EMPTY URINE BAG">EMPTY URINE BAG</option>
-            <option value="CLEAN THE ULCER/WOUND">CLEAN THE ULCER/WOUND</option>
-            <option value="ASSIST IN WHEELCHAIR">ASSIST IN WHEELCHAIR</option>
-            <option value="SEATING">SEATING</option>
-            <option value="FEEDING THROUGH NASAL TUBE">FEEDING THROUGH NASAL TUBE</option>
-            <option value="MASSAGE">MASSAGE</option>
-            <option value="URINARY CATHETER INSERTING">URINARY CATHETER INSERTING</option>
-            <option value="RYLES TUBE FEEDING">RYLES TUBE FEEDING</option>
-            <option value="IV INFUSION">IV INFUSION</option>
-            <option value="INTRAMUSCULAR INJECTION">INTRAMUSCULAR INJECTION</option>
-            <option value="INTRAVENOUS INJECTION">INTRAVENOUS INJECTION</option>
-            <option value="DIABETES INJECTION">DIABETES INJECTION</option>
-            <option value="CHECK BLOOD SUGAR">CHECK BLOOD SUGAR</option>
-            <option value="CHECK VITAL (PULSE, BP, TEMPERATURE)">CHECK VITAL (PULSE, BP, TEMPERATURE)</option>
-            <option value="TRACHEOSTOMY CARE">TRACHEOSTOMY CARE</option>
-            <option value="VENTILATOR USE AND PROVIDE OXYGEN">VENTILATOR USE AND PROVIDE OXYGEN</option>
-            <option value="COLOSTOMY CARE">COLOSTOMY CARE</option>
-            <option value="NEBULISER USE">NEBULISER USE</option>
-            <option value="COLOSTOMY BAG CHANGE">COLOSTOMY BAG CHANGE</option>
-            <option value="PEG TUBE FEEDING">PEG TUBE FEEDING</option>
-            <option value="OTHER">OTHER</option>
-          </select>
+          <label>KNOWN SKILLS (SELECT ALL THAT APPLY)</label>
+          <div class="checkbox-list">
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHANGE DIAPER"> CHANGE DIAPER</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="URINE/STOOL WASH"> URINE/STOOL WASH</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="SPONGING"> SPONGING</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHANGE POSITION"> CHANGE POSITION</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="EXERCISE"> EXERCISE</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHANGE THE CLOTH"> CHANGE THE CLOTH</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="WASH THE CLOTH"> WASH THE CLOTH</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHANGE BED SHEET"> CHANGE BED SHEET</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CLEAN THE ROOM OF PATIENT"> CLEAN THE ROOM OF PATIENT</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="GIVE MEDICINE"> GIVE MEDICINE</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="MINOR DRESSING"> MINOR DRESSING</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="EMPTY URINE BAG"> EMPTY URINE BAG</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CLEAN THE ULCER/WOUND"> CLEAN THE ULCER/WOUND</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="ASSIST IN WHEELCHAIR"> ASSIST IN WHEELCHAIR</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="SEATING"> SEATING</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="FEEDING THROUGH NASAL TUBE"> FEEDING THROUGH NASAL TUBE</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="MASSAGE"> MASSAGE</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="URINARY CATHETER INSERTING"> URINARY CATHETER INSERTING</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="RYLES TUBE FEEDING"> RYLES TUBE FEEDING</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="IV INFUSION"> IV INFUSION</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="INTRAMUSCULAR INJECTION"> INTRAMUSCULAR INJECTION</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="INTRAVENOUS INJECTION"> INTRAVENOUS INJECTION</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="DIABETES INJECTION"> DIABETES INJECTION</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHECK BLOOD SUGAR"> CHECK BLOOD SUGAR</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHECK VITAL (PULSE, BP, TEMPERATURE)"> CHECK VITAL (PULSE, BP, TEMPERATURE)</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="TRACHEOSTOMY CARE"> TRACHEOSTOMY CARE</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="VENTILATOR USE AND PROVIDE OXYGEN"> VENTILATOR USE AND PROVIDE OXYGEN</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="COLOSTOMY CARE"> COLOSTOMY CARE</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="NEBULISER USE"> NEBULISER USE</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="COLOSTOMY BAG CHANGE"> COLOSTOMY BAG CHANGE</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="PEG TUBE FEEDING"> PEG TUBE FEEDING</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="OTHER"> OTHER</label>
+          </div>
         </div>
+
         <div class="form-group">
           <label>PAST EXPERIENCE DETAILS</label>
           <textarea name="PAST_EXPERIENCE" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>BENEFICIARY NAME (ACCOUNT HOLDER NAME)</label>
+          <input type="text" name="BENEFICIARY_NAME" placeholder="ENTER BENEFICIARY NAME">
         </div>
         <div class="form-group">
           <label>BANK NAME</label>
