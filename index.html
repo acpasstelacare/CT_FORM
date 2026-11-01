@@ -45,7 +45,6 @@
     }
     input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; }
     
-    /* Checkbox Styles for Google Form Style Selection */
     .checkbox-list {
       display: flex;
       flex-direction: column;
@@ -369,15 +368,16 @@
           </select>
         </div>
         
-        <!-- LANGUAGES KNOWN WITH CHECKBOXES -->
+        <!-- LANGUAGES KNOWN WITH CHECKBOXES & OTHER INPUT -->
         <div class="form-group">
           <label>LANGUAGES KNOWN (SELECT ALL THAT APPLY)</label>
           <div class="checkbox-list">
             <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="ENGLISH"> ENGLISH</label>
             <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="HINDI"> HINDI</label>
             <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="GUJARATI"> GUJARATI</label>
-            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="OTHER"> OTHER</label>
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="OTHER" id="lang_other_chk" onclick="toggleOtherInput('lang_other_chk', 'lang_other_input')"> OTHER</label>
           </div>
+          <input type="text" name="LANGUAGES_KNOWN_OTHER" id="lang_other_input" placeholder="SPECIFY OTHER LANGUAGE" style="display:none; margin-top:5px;">
         </div>
 
         <div class="form-group">
@@ -393,7 +393,7 @@
       <div class="section-title">6. SKILL ASSESSMENT & PAST EXPERIENCE</div>
       <div class="form-grid">
         
-        <!-- KNOWN SKILLS WITH CHECKBOXES -->
+        <!-- KNOWN SKILLS WITH CHECKBOXES & OTHER INPUT -->
         <div class="form-group">
           <label>KNOWN SKILLS (SELECT ALL THAT APPLY)</label>
           <div class="checkbox-list">
@@ -428,8 +428,9 @@
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="NEBULISER USE"> NEBULISER USE</label>
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="COLOSTOMY BAG CHANGE"> COLOSTOMY BAG CHANGE</label>
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="PEG TUBE FEEDING"> PEG TUBE FEEDING</label>
-            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="OTHER"> OTHER</label>
+            <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="OTHER" id="skill_other_chk" onclick="toggleOtherInput('skill_other_chk', 'skill_other_input')"> OTHER</label>
           </div>
+          <input type="text" name="KNOWN_SKILLS_OTHER" id="skill_other_input" placeholder="SPECIFY OTHER SKILL" style="display:none; margin-top:5px;">
         </div>
 
         <div class="form-group">
@@ -506,6 +507,20 @@
       const birthYear = today.getFullYear() - parseInt(ageVal);
       const approxDOB = birthYear + '-01-01';
       document.getElementById('v_dob').value = approxDOB;
+    }
+  }
+
+  // 5. Toggle Other Input Field
+  function toggleOtherInput(chkId, inputId) {
+    const chk = document.getElementById(chkId);
+    const input = document.getElementById(inputId);
+    if (chk.checked) {
+      input.style.display = 'block';
+      input.required = true;
+    } else {
+      input.style.display = 'none';
+      input.required = false;
+      input.value = '';
     }
   }
 </script>
