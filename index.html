@@ -56,8 +56,37 @@
 
     <form id="employeeForm">
 
-      <!-- 1. STAFF GENERAL DETAILS -->
-      <div class="section-title">1. STAFF GENERAL DETAILS</div>
+      <!-- 1. UPLOADS & CAPTURES (MOVED TO TOP) -->
+      <div class="section-title">1. UPLOADS & CAPTURES (PHOTOS, THUMB & DOCUMENTS)</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Passport Size Live Photo ({{LIVE_PHOTO}})</label>
+          <input type="file" accept="image/*" name="LIVE_PHOTO_FILE">
+        </div>
+        <div class="form-group">
+          <label>Digital Sign ({{DIGITAL_SIGN}})</label>
+          <input type="file" accept="image/*" name="DIGITAL_SIGN_FILE">
+        </div>
+        <div class="form-group">
+          <label>Left Thumb Impression ({{THUMB_LEFT}})</label>
+          <input type="file" accept="image/*" name="THUMB_LEFT_FILE">
+        </div>
+        <div class="form-group">
+          <label>Right Thumb Impression ({{THUMB_RIGHT}})</label>
+          <input type="file" accept="image/*" name="THUMB_RIGHT_FILE">
+        </div>
+        <div class="form-group">
+          <label>Aadhar Card Photo ({{ADHAR_PIC}})</label>
+          <input type="file" accept="image/*" name="ADHAR_PIC_FILE">
+        </div>
+        <div class="form-group">
+          <label>PAN Card Photo ({{PAN_PIC}})</label>
+          <input type="file" accept="image/*" name="PAN_PIC_FILE">
+        </div>
+      </div>
+
+      <!-- 2. STAFF GENERAL DETAILS -->
+      <div class="section-title">2. STAFF GENERAL DETAILS</div>
       <div class="form-grid">
         <div class="form-group">
           <label>Full Name (પૂરું નામ)</label>
@@ -104,8 +133,8 @@
         </div>
       </div>
 
-      <!-- 2. EMPLOYMENT STATUS & PREFERENCES -->
-      <div class="section-title">2. EMPLOYMENT STATUS & PREFERENCES</div>
+      <!-- 3. EMPLOYMENT STATUS & PREFERENCES -->
+      <div class="section-title">3. EMPLOYMENT STATUS & PREFERENCES</div>
       <div class="form-grid">
         <div class="form-group">
           <label>Employment Type</label>
@@ -163,8 +192,8 @@
         </div>
       </div>
 
-      <!-- 3. FAMILY & RELATIVE DETAILS -->
-      <div class="section-title">3. FAMILY & RELATIVE DETAILS</div>
+      <!-- 4. FAMILY & RELATIVE DETAILS -->
+      <div class="section-title">4. FAMILY & RELATIVE DETAILS</div>
       <div class="form-grid">
         <div class="form-group">
           <label>Father's Name</label>
@@ -196,8 +225,8 @@
         </div>
       </div>
 
-      <!-- 4. MEDICAL & JOB PREFERENCES -->
-      <div class="section-title">4. MEDICAL & JOB PREFERENCES</div>
+      <!-- 5. MEDICAL & JOB PREFERENCES -->
+      <div class="section-title">5. MEDICAL & JOB PREFERENCES</div>
       <div class="form-grid">
         <div class="form-group">
           <label>Meal Preference</label>
@@ -240,8 +269,8 @@
         </div>
       </div>
 
-      <!-- 5. PAST EXPERIENCE & BANK DETAILS -->
-      <div class="section-title">5. PAST EXPERIENCE & BANK DETAILS</div>
+      <!-- 6. PAST EXPERIENCE & BANK DETAILS -->
+      <div class="section-title">6. PAST EXPERIENCE & BANK DETAILS</div>
       <div class="form-grid">
         <div class="form-group full-width">
           <label>Past Experience Details</label>
@@ -270,27 +299,6 @@
         <div class="form-group full-width">
           <label>PAN Number</label>
           <input type="text" name="PAN_NUMBER">
-        </div>
-      </div>
-
-      <!-- 6. UPLOADS & CAPTURES -->
-      <div class="section-title">6. UPLOADS & CAPTURES (PHOTOS & THUMB)</div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Passport Size Live Photo ({{LIVE_PHOTO}})</label>
-          <input type="file" accept="image/*" name="LIVE_PHOTO_FILE">
-        </div>
-        <div class="form-group">
-          <label>Digital Sign ({{DIGITAL_SIGN}})</label>
-          <input type="file" accept="image/*" name="DIGITAL_SIGN_FILE">
-        </div>
-        <div class="form-group">
-          <label>Left Thumb Impression ({{THUMB_LEFT}})</label>
-          <input type="file" accept="image/*" name="THUMB_LEFT_FILE">
-        </div>
-        <div class="form-group">
-          <label>Right Thumb Impression ({{THUMB_RIGHT}})</label>
-          <input type="file" accept="image/*" name="THUMB_RIGHT_FILE">
         </div>
       </div>
 
