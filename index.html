@@ -31,7 +31,6 @@
     
     .section-title { background: #102C57; color: #fff; padding: 8px 12px; font-weight: bold; border-radius: 4px; margin-top: 15px; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; }
     
-    /* Mobile-friendly Single Column Layout */
     .form-grid { display: flex; flex-direction: column; gap: 12px; }
     .form-group { display: flex; flex-direction: column; width: 100%; }
     
@@ -57,9 +56,17 @@
 
     <form id="employeeForm">
 
-      <!-- 1. UPLOADS & CAPTURES -->
+      <!-- 1. UPLOADS & CAPTURES (Aadhar & PAN Pic added at start) -->
       <div class="section-title">1. UPLOADS & CAPTURES (PHOTOS, THUMB & DOCUMENTS)</div>
       <div class="form-grid">
+        <div class="form-group">
+          <label>Aadhar Card Photo ({{ADHAR_PIC}})</label>
+          <input type="file" accept="image/*" name="ADHAR_PIC_FILE">
+        </div>
+        <div class="form-group">
+          <label>PAN Card Photo ({{PAN_PIC}})</label>
+          <input type="file" accept="image/*" name="PAN_PIC_FILE">
+        </div>
         <div class="form-group">
           <label>Passport Size Live Photo ({{LIVE_PHOTO}})</label>
           <input type="file" accept="image/*" name="LIVE_PHOTO_FILE">
@@ -76,17 +83,9 @@
           <label>Right Thumb Impression ({{THUMB_RIGHT}})</label>
           <input type="file" accept="image/*" name="THUMB_RIGHT_FILE">
         </div>
-        <div class="form-group">
-          <label>Aadhar Card Photo ({{ADHAR_PIC}})</label>
-          <input type="file" accept="image/*" name="ADHAR_PIC_FILE">
-        </div>
-        <div class="form-group">
-          <label>PAN Card Photo ({{PAN_PIC}})</label>
-          <input type="file" accept="image/*" name="PAN_PIC_FILE">
-        </div>
       </div>
 
-      <!-- 2. STAFF GENERAL DETAILS -->
+      <!-- 2. STAFF GENERAL DETAILS (Aadhar & PAN Number added here) -->
       <div class="section-title">2. STAFF GENERAL DETAILS</div>
       <div class="form-grid">
         <div class="form-group">
@@ -102,6 +101,14 @@
           <input type="tel" name="MOBILE" required placeholder="Enter Mobile Number">
         </div>
         <div class="form-group">
+          <label>Aadhar Number</label>
+          <input type="text" name="AADHAR_NUMBER" placeholder="Enter Aadhar Number">
+        </div>
+        <div class="form-group">
+          <label>PAN Number</label>
+          <input type="text" name="PAN_NUMBER" placeholder="Enter PAN Number">
+        </div>
+        <div class="form-group">
           <label>Address (સરનામું)</label>
           <input type="text" name="ADDRESS" placeholder="Full Address">
         </div>
@@ -110,7 +117,7 @@
           <input type="text" name="CITY" placeholder="City">
         </div>
         <div class="form-group">
-          <label>Area (વિસ્તાર)</label>
+          <label>Area (વિસ્તार)</label>
           <input type="text" name="AREA" placeholder="Area">
         </div>
         <div class="form-group">
@@ -129,8 +136,8 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Timestamp</label>
-          <input type="text" name="TIMESTAMP" id="v_timestamp" readonly placeholder="Auto Date & Time">
+          <label>Timestamp (Running Clock)</label>
+          <input type="text" name="TIMESTAMP" id="v_timestamp" readonly placeholder="Running Time">
         </div>
       </div>
 
@@ -293,14 +300,6 @@
           <label>IFSC Code</label>
           <input type="text" name="IFSC_CODE">
         </div>
-        <div class="form-group">
-          <label>Aadhar Number</label>
-          <input type="text" name="AADHAR_NUMBER">
-        </div>
-        <div class="form-group">
-          <label>PAN Number</label>
-          <input type="text" name="PAN_NUMBER">
-        </div>
       </div>
 
       <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
@@ -314,7 +313,11 @@
 </div>
 
 <script>
-  document.getElementById('v_timestamp').value = new Date().toLocaleString();
+  // Running Clock for Timestamp
+  setInterval(() => {
+    const now = new Date();
+    document.getElementById('v_timestamp').value = now.toLocaleString();
+  }, 1000);
 </script>
 
 </body>
