@@ -95,7 +95,7 @@
     .print-btn { background: #007bff; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
     .print-btn:hover { background: #0056b3; }
 
-    /* PRINT STYLES (Print karva par form clean ane A4 format ma aavse) */
+    /* PRINT STYLES */
     @media print {
       body { background: #fff; padding: 0; }
       .page { box-shadow: none; max-width: 100%; width: 100%; margin: 0; }
@@ -187,8 +187,8 @@
           <input type="text" name="AADHAR_NUMBER" pattern="[0-9]{12}" maxlength="12" placeholder="ENTER AADHAR NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
         </div>
         <div class="form-group">
-          <label>PAN NUMBER</label>
-          <input type="text" name="PAN_NUMBER" placeholder="ENTER PAN NUMBER">
+          <label>PAN NUMBER (10 CHARACTERS - E.G. ABCDE1234F)</label>
+          <input type="text" name="PAN_NUMBER" pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}" maxlength="10" placeholder="ENTER 10 DIGIT PAN NUMBER" title="Valid PAN format: 5 letters, 4 digits, 1 letter">
         </div>
         <div class="form-group">
           <label>ADDRESS (સરનામું)</label>
@@ -402,7 +402,7 @@
           </select>
         </div>
         
-        <!-- LANGUAGES KNOWN WITH CHECKBOXES & OTHER INPUT -->
+        <!-- LANGUAGES KNOWN -->
         <div class="form-group">
           <label>LANGUAGES KNOWN (SELECT ALL THAT APPLY)</label>
           <div class="checkbox-list">
@@ -427,7 +427,7 @@
       <div class="section-title">6. SKILL ASSESSMENT & PAST EXPERIENCE</div>
       <div class="form-grid">
         
-        <!-- KNOWN SKILLS WITH CHECKBOXES & OTHER INPUT -->
+        <!-- KNOWN SKILLS -->
         <div class="form-group">
           <label>KNOWN SKILLS (SELECT ALL THAT APPLY)</label>
           <div class="checkbox-list">
@@ -484,8 +484,8 @@
           <input type="text" name="ACCOUNT_NUMBER">
         </div>
         <div class="form-group">
-          <label>IFSC CODE</label>
-          <input type="text" name="IFSC_CODE">
+          <label>IFSC CODE (11 CHARACTERS)</label>
+          <input type="text" name="IFSC_CODE" pattern="^[A-Za-z]{4}0[A-Za-z0-9]{6}$" maxlength="11" title="11 Characters IFSC Code (e.g. SBIN0001234)" placeholder="ENTER 11 DIGIT IFSC CODE">
         </div>
       </div>
 
