@@ -17,8 +17,6 @@
     label { font-weight: 600; font-size: 13px; margin-bottom: 5px; color: #102C57; }
     input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { padding: 9px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; width: 100%; }
     input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; }
-    .checkbox-group { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 5px; }
-    .checkbox-item { display: flex; align-items: center; gap: 5px; font-size: 14px; }
     .submit-btn { background: #102C57; color: #fff; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 30px; width: 100%; transition: 0.3s; }
     .submit-btn:hover { background: #35598E; }
   </style>
@@ -26,9 +24,12 @@
 <body>
 
 <div class="container">
+  
+  <!-- HEADER IMAGE -->
   <div style="text-align: center; margin-bottom: 20px;">
-  <img src="NEWHEADER.png" alt="Header" style="max-width: 100%; height: auto;">
-</div>
+    <img src="NEWHEADER.png" alt="Header" style="max-width: 100%; height: auto;">
+  </div>
+
   <h2>PASTELA CARE PRIVATE LIMITED</h2>
   <h4>EMPLOYEE REGISTRATION FORM</h4>
 
@@ -274,13 +275,15 @@
 
     <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
   </form>
+
+  <!-- FOOTER IMAGE -->
   <div style="text-align: center; margin-top: 30px;">
-  <img src="FOOTER.png" alt="Footer" style="max-width: 100%; height: auto;">
-</div>
+    <img src="FOOTER.png" alt="Footer" style="max-width: 100%; height: auto;">
+  </div>
+
 </div>
 
 <script>
-  // Set current Timestamp automatically
   document.getElementsByName('TIMESTAMP')[0].value = new Date().toLocaleString();
 </script>
 
