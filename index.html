@@ -78,8 +78,8 @@
       gap: 10px;
     }
     .preview-img {
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
       border: 1px solid #555;
       border-radius: 4px;
@@ -89,8 +89,21 @@
     .relative-block { border: 1px dashed #102C57; padding: 10px; border-radius: 4px; margin-bottom: 10px; background: #fdfdfd; }
     .relative-title { font-weight: bold; font-size: 12px; color: #35598E; margin-bottom: 8px; }
 
-    .submit-btn { background: #28a745; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 25px; width: 100%; transition: 0.3s; }
+    .btn-container { display: flex; gap: 10px; margin-top: 25px; }
+    .submit-btn { background: #28a745; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
     .submit-btn:hover { background: #218838; }
+    .print-btn { background: #007bff; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .print-btn:hover { background: #0056b3; }
+
+    /* PRINT STYLES (Print karva par form clean ane A4 format ma aavse) */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page { box-shadow: none; max-width: 100%; width: 100%; margin: 0; }
+      .btn-container, input[type="file"] { display: none !important; }
+      .checkbox-list { max-height: none; overflow: visible; border: none; padding: 0; }
+      input, select, textarea { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; padding: 4px 0 !important; }
+      .preview-img { display: block !important; }
+    }
   </style>
 </head>
 <body>
@@ -123,40 +136,34 @@
         </div>
       </div>
 
-      <!-- 1. UPLOADS & CAPTURES WITH CAMERA & GALLERY OPTIONS -->
+      <!-- 1. UPLOADS & CAPTURES -->
       <div class="section-title">1. UPLOADS & CAPTURES (PHOTOS, THUMB & DOCUMENTS)</div>
       <div class="form-grid">
-        <!-- AADHAR PIC -->
         <div class="form-group">
           <label>AADHAR CARD PHOTO ({{ADHAR_PIC}})</label>
           <input type="file" accept="image/*" capture="environment" id="adhar_file" onchange="previewImage(event, 'adhar_preview')">
           <div class="preview-container"><img id="adhar_preview" class="preview-img" alt="Preview"></div>
         </div>
-        <!-- PAN PIC -->
         <div class="form-group">
           <label>PAN CARD PHOTO ({{PAN_PIC}})</label>
           <input type="file" accept="image/*" capture="environment" id="pan_file" onchange="previewImage(event, 'pan_preview')">
           <div class="preview-container"><img id="pan_preview" class="preview-img" alt="Preview"></div>
         </div>
-        <!-- LIVE PHOTO -->
         <div class="form-group">
           <label>PASSPORT SIZE LIVE PHOTO ({{LIVE_PHOTO}})</label>
           <input type="file" accept="image/*" capture="user" id="live_file" onchange="previewImage(event, 'live_preview')">
           <div class="preview-container"><img id="live_preview" class="preview-img" alt="Preview"></div>
         </div>
-        <!-- DIGITAL SIGN -->
         <div class="form-group">
           <label>DIGITAL SIGN ({{DIGITAL_SIGN}})</label>
           <input type="file" accept="image/*" capture="environment" id="sign_file" onchange="previewImage(event, 'sign_preview')">
           <div class="preview-container"><img id="sign_preview" class="preview-img" alt="Preview"></div>
         </div>
-        <!-- LEFT THUMB -->
         <div class="form-group">
           <label>LEFT THUMB IMPRESSION ({{THUMB_LEFT}})</label>
           <input type="file" accept="image/*" capture="environment" id="thumb_left_file" onchange="previewImage(event, 'thumb_left_preview')">
           <div class="preview-container"><img id="thumb_left_preview" class="preview-img" alt="Preview"></div>
         </div>
-        <!-- RIGHT THUMB -->
         <div class="form-group">
           <label>RIGHT THUMB IMPRESSION ({{THUMB_RIGHT}})</label>
           <input type="file" accept="image/*" capture="environment" id="thumb_right_file" onchange="previewImage(event, 'thumb_right_preview')">
@@ -491,7 +498,10 @@
         </div>
       </div>
 
-      <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
+      <div class="btn-container">
+        <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
+        <button type="button" class="print-btn" onclick="window.print()">PRINT / SAVE AS PDF</button>
+      </div>
     </form>
   </div>
 
@@ -503,7 +513,7 @@
 
 <script>
   // 1. Auto Generate Unique ID
-  document.getElementById('v_unique_id').value = 'PC-EMP-' + Math.floor(100000 + Math.random() * 900000);
+  document.getElementById('v_unique_id').value = 'EMP 00176';
 
   // 2. Running Clock for Timestamp
   setInterval(() => {
@@ -551,7 +561,7 @@
     }
   }
 
-  // 6. Image Preview Function (Instead of showing file name, shows actual thumbnail image preview)
+  // 6. Image Preview Function
   function previewImage(event, previewId) {
     const reader = new FileReader();
     const previewImg = document.getElementById(previewId);
