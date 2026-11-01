@@ -8,6 +8,8 @@
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: #f0f2f5; margin: 0; padding: 20px; color: #333; }
     .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .header-banner, .footer-banner { width: 100%; text-align: center; margin: 10px 0; }
+    .header-banner img, .footer-banner img { width: 100%; height: auto; max-height: 120px; object-fit: contain; }
     h2 { color: #102C57; text-align: center; margin-bottom: 5px; }
     h4 { color: #35598E; text-align: center; margin-top: 0; margin-bottom: 25px; }
     .section-title { background: #102C57; color: #fff; padding: 10px 15px; font-weight: bold; border-radius: 4px; margin-top: 25px; margin-bottom: 15px; font-size: 15px; }
@@ -26,8 +28,8 @@
 <div class="container">
   
   <!-- HEADER IMAGE -->
-  <div style="text-align: center; margin-bottom: 20px;">
-    <img src="NEWHEADER.png" alt="Header" style="max-width: 100%; height: auto;">
+  <div class="header-banner">
+    <img src="NEWHEADER.png" alt="Header Banner" onerror="this.onerror=null; this.src='https://via.placeholder.com/900x120/102C57/FFFFFF?text=PASTELA+CARE+HEADER';">
   </div>
 
   <h2>PASTELA CARE PRIVATE LIMITED</h2>
@@ -187,105 +189,4 @@
       </div>
       <div class="form-group">
         <label>Covid Vaccinated?</label>
-        <select name="COVID_VACCINATED">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Work if Patient Eats Non-Veg?</label>
-        <select name="WORK_NON_VEG">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Have Smartphone?</label>
-        <select name="HAVE_SMARTPHONE">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Languages Known</label>
-        <input type="text" name="LANGUAGES_KNOWN" placeholder="Gujarati, Hindi, English">
-      </div>
-      <div class="form-group">
-        <label>Read English Medicine Name?</label>
-        <select name="READ_ENGLISH_MEDICINE">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- 5. PAST EXPERIENCE & BANK DETAILS -->
-    <div class="section-title">5. PAST EXPERIENCE & BANK DETAILS</div>
-    <div class="form-grid">
-      <div class="form-group full-width">
-        <label>Past Experience Details</label>
-        <textarea name="PAST_EXPERIENCE" rows="2"></textarea>
-      </div>
-      <div class="form-group full-width">
-        <label>Known Skills</label>
-        <input type="text" name="KNOWN_SKILLS">
-      </div>
-      <div class="form-group">
-        <label>Bank Name</label>
-        <input type="text" name="BANK_NAME">
-      </div>
-      <div class="form-group">
-        <label>Account Number</label>
-        <input type="text" name="ACCOUNT_NUMBER">
-      </div>
-      <div class="form-group">
-        <label>IFSC Code</label>
-        <input type="text" name="IFSC_CODE">
-      </div>
-      <div class="form-group">
-        <label>Aadhar Number</label>
-        <input type="text" name="AADHAR_NUMBER">
-      </div>
-      <div class="form-group">
-        <label>PAN Number</label>
-        <input type="text" name="PAN_NUMBER">
-      </div>
-    </div>
-
-    <!-- 6. ATTACHMENTS & CAPTURES -->
-    <div class="section-title">6. UPLOADS & CAPTURES (PHOTOS & THUMB)</div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Passport Size Live Photo ({{LIVE_PHOTO}})</label>
-        <input type="file" accept="image/*" name="LIVE_PHOTO_FILE">
-      </div>
-      <div class="form-group">
-        <label>Digital Sign ({{DIGITAL_SIGN}})</label>
-        <input type="file" accept="image/*" name="DIGITAL_SIGN_FILE">
-      </div>
-      <div class="form-group">
-        <label>Left Thumb Impression ({{THUMB_LEFT}})</label>
-        <input type="file" accept="image/*" name="THUMB_LEFT_FILE">
-      </div>
-      <div class="form-group">
-        <label>Right Thumb Impression ({{THUMB_RIGHT}})</label>
-        <input type="file" accept="image/*" name="THUMB_RIGHT_FILE">
-      </div>
-    </div>
-
-    <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
-  </form>
-
-  <!-- FOOTER IMAGE -->
-  <div style="text-align: center; margin-top: 30px;">
-    <img src="FOOTER.png" alt="Footer" style="max-width: 100%; height: auto;">
-  </div>
-
-</div>
-
-<script>
-  document.getElementsByName('TIMESTAMP')[0].value = new Date().toLocaleString();
-</script>
-
-</body>
-</html>
+        <select
