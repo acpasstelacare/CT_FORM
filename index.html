@@ -7,11 +7,11 @@
   <style>
     @page { size: A4; margin: 0; }
     * { box-sizing: border-box; font-family: Arial, sans-serif; }
-    body { background: #555; margin: 0; padding: 20px 0; color: #000; }
+    body { background: #555; margin: 0; padding: 10px; color: #000; }
     
     .page {
-      width: 794px;
-      min-height: 1123px;
+      width: 100%;
+      max-width: 794px;
       margin: 0 auto 25px auto;
       background: #fff;
       position: relative;
@@ -25,20 +25,21 @@
     .footer-img-container { width: 100%; position: relative; }
     .footer-img-container img { width: 100%; height: auto; display: block; }
 
-    .page-body { padding: 15px 40px; flex-grow: 1; }
-    h2 { color: #102C57; text-align: center; margin: 5px 0 2px 0; font-size: 20px; font-weight: bold; }
-    h4 { color: #35598E; text-align: center; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; }
+    .page-body { padding: 15px 20px; flex-grow: 1; }
+    h2 { color: #102C57; text-align: center; margin: 5px 0 2px 0; font-size: 18px; font-weight: bold; }
+    h4 { color: #35598E; text-align: center; margin: 0 0 15px 0; font-size: 13px; font-weight: bold; }
     
-    .section-title { background: #102C57; color: #fff; padding: 8px 12px; font-weight: bold; border-radius: 4px; margin-top: 15px; margin-bottom: 10px; font-size: 13.5px; text-transform: uppercase; }
-    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .form-group { display: flex; flex-direction: column; }
-    .form-group.full-width { grid-column: 1 / -1; }
+    .section-title { background: #102C57; color: #fff; padding: 8px 12px; font-weight: bold; border-radius: 4px; margin-top: 15px; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; }
     
-    label { font-weight: bold; font-size: 12px; margin-bottom: 3px; color: #102C57; }
-    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { padding: 6px 10px; border: 1px solid #555; border-radius: 3px; font-size: 12.5px; width: 100%; }
+    /* Mobile-friendly Single Column Layout */
+    .form-grid { display: flex; flex-direction: column; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; width: 100%; }
+    
+    label { font-weight: bold; font-size: 12px; margin-bottom: 4px; color: #102C57; }
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { padding: 10px; border: 1px solid #555; border-radius: 4px; font-size: 14px; width: 100%; }
     input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; }
     
-    .submit-btn { background: #28a745; color: #fff; border: none; padding: 10px 20px; font-size: 15px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 20px; width: 100%; transition: 0.3s; }
+    .submit-btn { background: #28a745; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 25px; width: 100%; transition: 0.3s; }
     .submit-btn:hover { background: #218838; }
   </style>
 </head>
@@ -56,7 +57,7 @@
 
     <form id="employeeForm">
 
-      <!-- 1. UPLOADS & CAPTURES (MOVED TO TOP) -->
+      <!-- 1. UPLOADS & CAPTURES -->
       <div class="section-title">1. UPLOADS & CAPTURES (PHOTOS, THUMB & DOCUMENTS)</div>
       <div class="form-grid">
         <div class="form-group">
@@ -186,7 +187,7 @@
           <label>Reference By</label>
           <input type="text" name="REFERENCE_BY">
         </div>
-        <div class="form-group full-width">
+        <div class="form-group">
           <label>Mode of Transportation</label>
           <input type="text" name="TRANSPORTATION" placeholder="Bike / Bus / Auto">
         </div>
@@ -211,7 +212,7 @@
           <label>Mother's Age & Contact</label>
           <input type="text" name="MOTHER_CONTACT" placeholder="Age / Mobile">
         </div>
-        <div class="form-group full-width">
+        <div class="form-group">
           <label>Parents Address</label>
           <input type="text" name="PARENTS_ADDRESS">
         </div>
@@ -272,11 +273,11 @@
       <!-- 6. PAST EXPERIENCE & BANK DETAILS -->
       <div class="section-title">6. PAST EXPERIENCE & BANK DETAILS</div>
       <div class="form-grid">
-        <div class="form-group full-width">
+        <div class="form-group">
           <label>Past Experience Details</label>
           <textarea name="PAST_EXPERIENCE" rows="2"></textarea>
         </div>
-        <div class="form-group full-width">
+        <div class="form-group">
           <label>Known Skills</label>
           <input type="text" name="KNOWN_SKILLS">
         </div>
@@ -296,7 +297,7 @@
           <label>Aadhar Number</label>
           <input type="text" name="AADHAR_NUMBER">
         </div>
-        <div class="form-group full-width">
+        <div class="form-group">
           <label>PAN Number</label>
           <input type="text" name="PAN_NUMBER">
         </div>
