@@ -71,6 +71,21 @@
       cursor: pointer;
     }
 
+    .preview-container {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .preview-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border: 1px solid #555;
+      border-radius: 4px;
+      display: none;
+    }
+
     .relative-block { border: 1px dashed #102C57; padding: 10px; border-radius: 4px; margin-bottom: 10px; background: #fdfdfd; }
     .relative-title { font-weight: bold; font-size: 12px; color: #35598E; margin-bottom: 8px; }
 
@@ -108,32 +123,44 @@
         </div>
       </div>
 
-      <!-- 1. UPLOADS & CAPTURES -->
+      <!-- 1. UPLOADS & CAPTURES WITH CAMERA & GALLERY OPTIONS -->
       <div class="section-title">1. UPLOADS & CAPTURES (PHOTOS, THUMB & DOCUMENTS)</div>
       <div class="form-grid">
+        <!-- AADHAR PIC -->
         <div class="form-group">
           <label>AADHAR CARD PHOTO ({{ADHAR_PIC}})</label>
-          <input type="file" accept="image/*" name="ADHAR_PIC_FILE">
+          <input type="file" accept="image/*" capture="environment" id="adhar_file" onchange="previewImage(event, 'adhar_preview')">
+          <div class="preview-container"><img id="adhar_preview" class="preview-img" alt="Preview"></div>
         </div>
+        <!-- PAN PIC -->
         <div class="form-group">
           <label>PAN CARD PHOTO ({{PAN_PIC}})</label>
-          <input type="file" accept="image/*" name="PAN_PIC_FILE">
+          <input type="file" accept="image/*" capture="environment" id="pan_file" onchange="previewImage(event, 'pan_preview')">
+          <div class="preview-container"><img id="pan_preview" class="preview-img" alt="Preview"></div>
         </div>
+        <!-- LIVE PHOTO -->
         <div class="form-group">
           <label>PASSPORT SIZE LIVE PHOTO ({{LIVE_PHOTO}})</label>
-          <input type="file" accept="image/*" name="LIVE_PHOTO_FILE">
+          <input type="file" accept="image/*" capture="user" id="live_file" onchange="previewImage(event, 'live_preview')">
+          <div class="preview-container"><img id="live_preview" class="preview-img" alt="Preview"></div>
         </div>
+        <!-- DIGITAL SIGN -->
         <div class="form-group">
           <label>DIGITAL SIGN ({{DIGITAL_SIGN}})</label>
-          <input type="file" accept="image/*" name="DIGITAL_SIGN_FILE">
+          <input type="file" accept="image/*" capture="environment" id="sign_file" onchange="previewImage(event, 'sign_preview')">
+          <div class="preview-container"><img id="sign_preview" class="preview-img" alt="Preview"></div>
         </div>
+        <!-- LEFT THUMB -->
         <div class="form-group">
           <label>LEFT THUMB IMPRESSION ({{THUMB_LEFT}})</label>
-          <input type="file" accept="image/*" name="THUMB_LEFT_FILE">
+          <input type="file" accept="image/*" capture="environment" id="thumb_left_file" onchange="previewImage(event, 'thumb_left_preview')">
+          <div class="preview-container"><img id="thumb_left_preview" class="preview-img" alt="Preview"></div>
         </div>
+        <!-- RIGHT THUMB -->
         <div class="form-group">
           <label>RIGHT THUMB IMPRESSION ({{THUMB_RIGHT}})</label>
-          <input type="file" accept="image/*" name="THUMB_RIGHT_FILE">
+          <input type="file" accept="image/*" capture="environment" id="thumb_right_file" onchange="previewImage(event, 'thumb_right_preview')">
+          <div class="preview-container"><img id="thumb_right_preview" class="preview-img" alt="Preview"></div>
         </div>
       </div>
 
@@ -521,6 +548,21 @@
       input.style.display = 'none';
       input.required = false;
       input.value = '';
+    }
+  }
+
+  // 6. Image Preview Function (Instead of showing file name, shows actual thumbnail image preview)
+  function previewImage(event, previewId) {
+    const reader = new FileReader();
+    const previewImg = document.getElementById(previewId);
+    reader.onload = function(){
+      if(reader.readyState === 2){
+        previewImg.src = reader.result;
+        previewImg.style.display = 'block';
+      }
+    }
+    if(event.target.files[0]) {
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 </script>
