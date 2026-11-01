@@ -3,190 +3,310 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pastela Care - Employee Registration Form</title>
+  <title>Passtelacare - Employee Registration Form</title>
   <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #f0f2f5; margin: 0; padding: 20px; color: #333; }
-    .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .header-banner, .footer-banner { width: 100%; text-align: center; margin: 10px 0; }
-    .header-banner img, .footer-banner img { width: 100%; height: auto; max-height: 120px; object-fit: contain; }
-    h2 { color: #102C57; text-align: center; margin-bottom: 5px; }
-    h4 { color: #35598E; text-align: center; margin-top: 0; margin-bottom: 25px; }
-    .section-title { background: #102C57; color: #fff; padding: 10px 15px; font-weight: bold; border-radius: 4px; margin-top: 25px; margin-bottom: 15px; font-size: 15px; }
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: #555; margin: 0; padding: 20px 0; color: #000; }
+    
+    .page {
+      width: 794px;
+      min-height: 1123px;
+      margin: 0 auto 25px auto;
+      background: #fff;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .header-img-container img { width: 100%; height: auto; display: block; }
+    .footer-img-container { width: 100%; position: relative; }
+    .footer-img-container img { width: 100%; height: auto; display: block; }
+
+    .page-body { padding: 15px 40px; flex-grow: 1; }
+    h2 { color: #102C57; text-align: center; margin: 5px 0 2px 0; font-size: 20px; font-weight: bold; }
+    h4 { color: #35598E; text-align: center; margin: 0 0 15px 0; font-size: 14px; font-weight: bold; }
+    
+    .section-title { background: #102C57; color: #fff; padding: 8px 12px; font-weight: bold; border-radius: 4px; margin-top: 15px; margin-bottom: 10px; font-size: 13.5px; text-transform: uppercase; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .form-group { display: flex; flex-direction: column; }
     .form-group.full-width { grid-column: 1 / -1; }
-    label { font-weight: 600; font-size: 13px; margin-bottom: 5px; color: #102C57; }
-    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { padding: 9px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; width: 100%; }
+    
+    label { font-weight: bold; font-size: 12px; margin-bottom: 3px; color: #102C57; }
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { padding: 6px 10px; border: 1px solid #555; border-radius: 3px; font-size: 12.5px; width: 100%; }
     input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; }
-    .submit-btn { background: #102C57; color: #fff; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 30px; width: 100%; transition: 0.3s; }
-    .submit-btn:hover { background: #35598E; }
+    
+    .submit-btn { background: #28a745; color: #fff; border: none; padding: 10px 20px; font-size: 15px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 20px; width: 100%; transition: 0.3s; }
+    .submit-btn:hover { background: #218838; }
   </style>
 </head>
 <body>
 
-<div class="container">
-  
-  <!-- HEADER IMAGE -->
-  <div class="header-banner">
-    <img src="NEWHEADER.png" alt="Header Banner" onerror="this.onerror=null; this.src='https://via.placeholder.com/900x120/102C57/FFFFFF?text=PASTELA+CARE+HEADER';">
+<div class="page">
+  <!-- HEADER CONTAINER -->
+  <div class="header-img-container">
+    <img src="NEWHEADER.png" alt="Header">
   </div>
 
-  <h2>PASTELA CARE PRIVATE LIMITED</h2>
-  <h4>EMPLOYEE REGISTRATION FORM</h4>
+  <div class="page-body">
+    <h2>PASTELA CARE PRIVATE LIMITED</h2>
+    <h4>EMPLOYEE REGISTRATION FORM</h4>
 
-  <form id="employeeForm">
+    <form id="employeeForm">
 
-    <!-- 1. STAFF GENERAL DETAILS -->
-    <div class="section-title">1. STAFF GENERAL DETAILS</div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Full Name (પૂરું નામ)</label>
-        <input type="text" name="FULL_NAME" required placeholder="Enter Full Name">
+      <!-- 1. STAFF GENERAL DETAILS -->
+      <div class="section-title">1. STAFF GENERAL DETAILS</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name (પૂરું નામ)</label>
+          <input type="text" name="FULL_NAME" required placeholder="Enter Full Name">
+        </div>
+        <div class="form-group">
+          <label>Unique ID</label>
+          <input type="text" name="UNIQUE_ID" placeholder="Auto Generated / Enter ID">
+        </div>
+        <div class="form-group">
+          <label>Mobile Number (મોબાઈલ નંબર)</label>
+          <input type="tel" name="MOBILE" required placeholder="Enter Mobile Number">
+        </div>
+        <div class="form-group">
+          <label>Address (સરનામું)</label>
+          <input type="text" name="ADDRESS" placeholder="Full Address">
+        </div>
+        <div class="form-group">
+          <label>City (શહેર)</label>
+          <input type="text" name="CITY" placeholder="City">
+        </div>
+        <div class="form-group">
+          <label>Area (વિસ્તાર)</label>
+          <input type="text" name="AREA" placeholder="Area">
+        </div>
+        <div class="form-group">
+          <label>Date of Birth (જન્મ તારીખ)</label>
+          <input type="date" name="DOB">
+        </div>
+        <div class="form-group">
+          <label>Age (ઉંમર)</label>
+          <input type="number" name="AGE" placeholder="Age">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select name="STATUS">
+            <option value="OPEN">OPEN</option>
+            <option value="BLACK LISTED">BLACK LISTED</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Timestamp</label>
+          <input type="text" name="TIMESTAMP" id="v_timestamp" readonly placeholder="Auto Date & Time">
+        </div>
       </div>
-      <div class="form-group">
-        <label>Unique ID</label>
-        <input type="text" name="UNIQUE_ID" placeholder="Auto Generated / Enter ID">
-      </div>
-      <div class="form-group">
-        <label>Mobile Number (મોબાઈલ નંબર)</label>
-        <input type="tel" name="MOBILE" required placeholder="Enter Mobile Number">
-      </div>
-      <div class="form-group">
-        <label>Address (સરનામું)</label>
-        <input type="text" name="ADDRESS" placeholder="Full Address">
-      </div>
-      <div class="form-group">
-        <label>City (શહેર)</label>
-        <input type="text" name="CITY" placeholder="City">
-      </div>
-      <div class="form-group">
-        <label>Area (વિસ્તાર)</label>
-        <input type="text" name="AREA" placeholder="Area">
-      </div>
-      <div class="form-group">
-        <label>Date of Birth (જન્મ તારીખ)</label>
-        <input type="date" name="DOB">
-      </div>
-      <div class="form-group">
-        <label>Age (ઉંમર)</label>
-        <input type="number" name="AGE" placeholder="Age">
-      </div>
-      <div class="form-group">
-        <label>Status</label>
-        <select name="STATUS">
-          <option value="OPEN">OPEN</option>
-          <option value="BLACK LISTED">BLACK LISTED</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Timestamp</label>
-        <input type="text" name="TIMESTAMP" readonly placeholder="Auto Date & Time">
-      </div>
-    </div>
 
-    <!-- 2. EMPLOYMENT STATUS & PREFERENCES -->
-    <div class="section-title">2. EMPLOYMENT STATUS & PREFERENCES</div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Employment Type</label>
-        <select name="EMP_TYPE">
-          <option value="FIX">FIX</option>
-          <option value="CONTRACT">CONTRACT</option>
-        </select>
+      <!-- 2. EMPLOYMENT STATUS & PREFERENCES -->
+      <div class="section-title">2. EMPLOYMENT STATUS & PREFERENCES</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Employment Type</label>
+          <select name="EMP_TYPE">
+            <option value="FIX">FIX</option>
+            <option value="CONTRACT">CONTRACT</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Designation Applied For</label>
+          <input type="text" name="DESIGNATION" placeholder="e.g. Caretaker / Nurse">
+        </div>
+        <div class="form-group">
+          <label>Experience (અનુભવ)</label>
+          <input type="text" name="EXPERIENCE" placeholder="Years / Months">
+        </div>
+        <div class="form-group">
+          <label>Skill Preferred</label>
+          <input type="text" name="SKILL_PREFERRED">
+        </div>
+        <div class="form-group">
+          <label>Preferred Shift</label>
+          <select name="PREFERRED_SHIFT">
+            <option value="DAY">DAY</option>
+            <option value="NIGHT">NIGHT</option>
+            <option value="24 HRS">24 HRS</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Religion (ધર્મ)</label>
+          <input type="text" name="RELIGION">
+        </div>
+        <div class="form-group">
+          <label>Caste (જ્ઞાતિ)</label>
+          <input type="text" name="CAST">
+        </div>
+        <div class="form-group">
+          <label>Marital Status</label>
+          <select name="MARITAL_STATUS">
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Education (અભ્યાસ)</label>
+          <input type="text" name="EDUCATION">
+        </div>
+        <div class="form-group">
+          <label>Reference By</label>
+          <input type="text" name="REFERENCE_BY">
+        </div>
+        <div class="form-group full-width">
+          <label>Mode of Transportation</label>
+          <input type="text" name="TRANSPORTATION" placeholder="Bike / Bus / Auto">
+        </div>
       </div>
-      <div class="form-group">
-        <label>Designation Applied For</label>
-        <input type="text" name="DESIGNATION" placeholder="e.g. Caretaker / Nurse">
-      </div>
-      <div class="form-group">
-        <label>Experience (અનુભવ)</label>
-        <input type="text" name="EXPERIENCE" placeholder="Years / Months">
-      </div>
-      <div class="form-group">
-        <label>Skill Preferred</label>
-        <input type="text" name="SKILL_PREFERRED">
-      </div>
-      <div class="form-group">
-        <label>Preferred Shift</label>
-        <select name="PREFERRED_SHIFT">
-          <option value="DAY">DAY</option>
-          <option value="NIGHT">NIGHT</option>
-          <option value="24 HRS">24 HRS</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Religion (ધર્મ)</label>
-        <input type="text" name="RELIGION">
-      </div>
-      <div class="form-group">
-        <label>Caste (જ્ઞાતિ)</label>
-        <input type="text" name="CAST">
-      </div>
-      <div class="form-group">
-        <label>Marital Status</label>
-        <select name="MARITAL_STATUS">
-          <option value="Single">Single</option>
-          <option value="Married">Married</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Education (અભ્યાસ)</label>
-        <input type="text" name="EDUCATION">
-      </div>
-      <div class="form-group">
-        <label>Reference By</label>
-        <input type="text" name="REFERENCE_BY">
-      </div>
-      <div class="form-group">
-        <label>Mode of Transportation</label>
-        <input type="text" name="TRANSPORTATION" placeholder="Bike / Bus / Auto">
-      </div>
-    </div>
 
-    <!-- 3. FAMILY & RELATIVE DETAILS -->
-    <div class="section-title">3. FAMILY & RELATIVE DETAILS</div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Father's Name</label>
-        <input type="text" name="FATHER_NAME">
+      <!-- 3. FAMILY & RELATIVE DETAILS -->
+      <div class="section-title">3. FAMILY & RELATIVE DETAILS</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Father's Name</label>
+          <input type="text" name="FATHER_NAME">
+        </div>
+        <div class="form-group">
+          <label>Father's Age & Contact</label>
+          <input type="text" name="FATHER_CONTACT" placeholder="Age / Mobile">
+        </div>
+        <div class="form-group">
+          <label>Mother's Name</label>
+          <input type="text" name="MOTHER_NAME">
+        </div>
+        <div class="form-group">
+          <label>Mother's Age & Contact</label>
+          <input type="text" name="MOTHER_CONTACT" placeholder="Age / Mobile">
+        </div>
+        <div class="form-group full-width">
+          <label>Parents Address</label>
+          <input type="text" name="PARENTS_ADDRESS">
+        </div>
+        <div class="form-group">
+          <label>Relative Name & Relation</label>
+          <input type="text" name="RELATIVE_NAME" placeholder="Name & Relation">
+        </div>
+        <div class="form-group">
+          <label>Relative Mobile Number</label>
+          <input type="tel" name="RELATIVE_MOBILE">
+        </div>
       </div>
-      <div class="form-group">
-        <label>Father's Age & Contact</label>
-        <input type="text" name="FATHER_CONTACT" placeholder="Age / Mobile">
-      </div>
-      <div class="form-group">
-        <label>Mother's Name</label>
-        <input type="text" name="MOTHER_NAME">
-      </div>
-      <div class="form-group">
-        <label>Mother's Age & Contact</label>
-        <input type="text" name="MOTHER_CONTACT" placeholder="Age / Mobile">
-      </div>
-      <div class="form-group full-width">
-        <label>Parents Address</label>
-        <input type="text" name="PARENTS_ADDRESS">
-      </div>
-      <div class="form-group">
-        <label>Relative Name & Relation</label>
-        <input type="text" name="RELATIVE_NAME" placeholder="Name & Relation">
-      </div>
-      <div class="form-group">
-        <label>Relative Mobile Number</label>
-        <input type="tel" name="RELATIVE_MOBILE">
-      </div>
-    </div>
 
-    <!-- 4. MEDICAL & JOB SPECIFIC PREFERENCES -->
-    <div class="section-title">4. MEDICAL & JOB PREFERENCES</div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Meal Preference</label>
-        <select name="MEAL_PREFERENCE">
-          <option value="Veg">Veg</option>
-          <option value="Non-Veg">Non-Veg</option>
-        </select>
+      <!-- 4. MEDICAL & JOB PREFERENCES -->
+      <div class="section-title">4. MEDICAL & JOB PREFERENCES</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Meal Preference</label>
+          <select name="MEAL_PREFERENCE">
+            <option value="Veg">Veg</option>
+            <option value="Non-Veg">Non-Veg</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Covid Vaccinated?</label>
+          <select name="COVID_VACCINATED">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Work if Patient Eats Non-Veg?</label>
+          <select name="WORK_NON_VEG">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Have Smartphone?</label>
+          <select name="HAVE_SMARTPHONE">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Languages Known</label>
+          <input type="text" name="LANGUAGES_KNOWN" placeholder="Gujarati, Hindi, English">
+        </div>
+        <div class="form-group">
+          <label>Read English Medicine Name?</label>
+          <select name="READ_ENGLISH_MEDICINE">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Covid Vaccinated?</label>
-        <select
+
+      <!-- 5. PAST EXPERIENCE & BANK DETAILS -->
+      <div class="section-title">5. PAST EXPERIENCE & BANK DETAILS</div>
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label>Past Experience Details</label>
+          <textarea name="PAST_EXPERIENCE" rows="2"></textarea>
+        </div>
+        <div class="form-group full-width">
+          <label>Known Skills</label>
+          <input type="text" name="KNOWN_SKILLS">
+        </div>
+        <div class="form-group">
+          <label>Bank Name</label>
+          <input type="text" name="BANK_NAME">
+        </div>
+        <div class="form-group">
+          <label>Account Number</label>
+          <input type="text" name="ACCOUNT_NUMBER">
+        </div>
+        <div class="form-group">
+          <label>IFSC Code</label>
+          <input type="text" name="IFSC_CODE">
+        </div>
+        <div class="form-group">
+          <label>Aadhar Number</label>
+          <input type="text" name="AADHAR_NUMBER">
+        </div>
+        <div class="form-group full-width">
+          <label>PAN Number</label>
+          <input type="text" name="PAN_NUMBER">
+        </div>
+      </div>
+
+      <!-- 6. UPLOADS & CAPTURES -->
+      <div class="section-title">6. UPLOADS & CAPTURES (PHOTOS & THUMB)</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Passport Size Live Photo ({{LIVE_PHOTO}})</label>
+          <input type="file" accept="image/*" name="LIVE_PHOTO_FILE">
+        </div>
+        <div class="form-group">
+          <label>Digital Sign ({{DIGITAL_SIGN}})</label>
+          <input type="file" accept="image/*" name="DIGITAL_SIGN_FILE">
+        </div>
+        <div class="form-group">
+          <label>Left Thumb Impression ({{THUMB_LEFT}})</label>
+          <input type="file" accept="image/*" name="THUMB_LEFT_FILE">
+        </div>
+        <div class="form-group">
+          <label>Right Thumb Impression ({{THUMB_RIGHT}})</label>
+          <input type="file" accept="image/*" name="THUMB_RIGHT_FILE">
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
+    </form>
+  </div>
+
+  <!-- FOOTER CONTAINER -->
+  <div class="footer-img-container">
+    <img src="FOOTER.png" alt="Footer">
+  </div>
+</div>
+
+<script>
+  document.getElementById('v_timestamp').value = new Date().toLocaleString();
+</script>
+
+</body>
+</html>
