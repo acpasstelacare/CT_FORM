@@ -7,12 +7,12 @@
   <style>
     @page { size: A4; margin: 0; }
     * { box-sizing: border-box; font-family: Arial, sans-serif; text-transform: uppercase; }
-    body { background: #555; margin: 0; padding: 10px; color: #000; }
+    body { background: #444; margin: 0; padding: 5px; color: #000; }
     
     .page {
       width: 100%;
       max-width: 794px;
-      margin: 0 auto 25px auto;
+      margin: 0 auto 15px auto;
       background: #fff;
       position: relative;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -25,21 +25,21 @@
     .footer-img-container { width: 100%; position: relative; }
     .footer-img-container img { width: 100%; height: auto; display: block; }
 
-    .page-body { padding: 15px 20px; flex-grow: 1; }
-    h2 { color: #102C57; text-align: center; margin: 5px 0 2px 0; font-size: 18px; font-weight: bold; }
-    h4 { color: #35598E; text-align: center; margin: 0 0 15px 0; font-size: 13px; font-weight: bold; }
+    .page-body { padding: 10px 15px; flex-grow: 1; }
+    h2 { color: #102C57; text-align: center; margin: 3px 0 1px 0; font-size: 16px; font-weight: bold; }
+    h4 { color: #35598E; text-align: center; margin: 0 0 10px 0; font-size: 12px; font-weight: bold; }
     
-    .section-title { background: #102C57; color: #fff; padding: 8px 12px; font-weight: bold; border-radius: 4px; margin-top: 15px; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; }
+    .section-title { background: #102C57; color: #fff; padding: 6px 10px; font-weight: bold; border-radius: 3px; margin-top: 10px; margin-bottom: 6px; font-size: 12px; text-transform: uppercase; }
     
-    .form-grid { display: flex; flex-direction: column; gap: 12px; }
+    .form-grid { display: flex; flex-direction: column; gap: 8px; }
     .form-group { display: flex; flex-direction: column; width: 100%; }
     
-    label { font-weight: bold; font-size: 12px; margin-bottom: 4px; color: #102C57; }
+    label { font-weight: bold; font-size: 11px; margin-bottom: 2px; color: #102C57; }
     input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { 
-      padding: 10px; 
-      border: 1px solid #555; 
-      border-radius: 4px; 
-      font-size: 14px; 
+      padding: 6px 8px; 
+      border: 1px solid #666; 
+      border-radius: 3px; 
+      font-size: 13px; 
       width: 100%; 
       text-transform: uppercase;
     }
@@ -48,51 +48,51 @@
     .checkbox-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      border: 1px solid #555;
-      padding: 10px;
-      border-radius: 4px;
-      max-height: 250px;
+      gap: 5px;
+      border: 1px solid #666;
+      padding: 8px;
+      border-radius: 3px;
+      max-height: 200px;
       overflow-y: auto;
       background: #fafafa;
     }
     .checkbox-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 13px;
+      gap: 8px;
+      font-size: 12px;
       font-weight: bold;
       color: #333;
       cursor: pointer;
     }
     .checkbox-item input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       cursor: pointer;
     }
 
     .preview-container {
-      margin-top: 6px;
+      margin-top: 4px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     .preview-img {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
       border: 1px solid #555;
-      border-radius: 4px;
+      border-radius: 3px;
       display: none;
     }
 
-    .relative-block { border: 1px dashed #102C57; padding: 10px; border-radius: 4px; margin-bottom: 10px; background: #fdfdfd; }
-    .relative-title { font-weight: bold; font-size: 12px; color: #35598E; margin-bottom: 8px; }
+    .relative-block { border: 1px dashed #102C57; padding: 8px; border-radius: 3px; margin-bottom: 6px; background: #fdfdfd; }
+    .relative-title { font-weight: bold; font-size: 11px; color: #35598E; margin-bottom: 4px; }
 
-    .btn-container { display: flex; gap: 10px; margin-top: 25px; }
-    .submit-btn { background: #28a745; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .btn-container { display: flex; gap: 10px; margin-top: 15px; }
+    .submit-btn { background: #28a745; color: #fff; border: none; padding: 10px; font-size: 15px; font-weight: bold; border-radius: 3px; cursor: pointer; flex: 1; transition: 0.3s; }
     .submit-btn:hover { background: #218838; }
-    .print-btn { background: #007bff; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .print-btn { background: #007bff; color: #fff; border: none; padding: 10px; font-size: 15px; font-weight: bold; border-radius: 3px; cursor: pointer; flex: 1; transition: 0.3s; }
     .print-btn:hover { background: #0056b3; }
 
     /* PRINT STYLES */
@@ -101,7 +101,7 @@
       .page { box-shadow: none; max-width: 100%; width: 100%; margin: 0; }
       .btn-container, input[type="file"] { display: none !important; }
       .checkbox-list { max-height: none; overflow: visible; border: none; padding: 0; }
-      input, select, textarea { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; padding: 4px 0 !important; }
+      input, select, textarea { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; padding: 2px 0 !important; }
       .preview-img { display: block !important; }
     }
   </style>
@@ -334,7 +334,7 @@
           <input type="text" name="PARENTS_ADDRESS">
         </div>
 
-        <div style="margin-top:10px; font-weight:bold; font-size:12px; color:#102C57;">RELATIVE INFORMATION (UP TO 4 RELATIVES):</div>
+        <div style="margin-top:6px; font-weight:bold; font-size:11px; color:#102C57;">RELATIVE INFORMATION (UP TO 4 RELATIVES):</div>
         
         <div class="relative-block">
           <div class="relative-title">RELATIVE 1</div>
