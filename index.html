@@ -25,74 +25,87 @@
     .footer-img-container { width: 100%; position: relative; }
     .footer-img-container img { width: 100%; height: auto; display: block; }
 
-    .page-body { padding: 10px 15px; flex-grow: 1; }
-    h2 { color: #102C57; text-align: center; margin: 3px 0 1px 0; font-size: 16px; font-weight: bold; }
-    h4 { color: #35598E; text-align: center; margin: 0 0 10px 0; font-size: 12px; font-weight: bold; }
+    /* CSS ADJUSTMENT FOR BHARCHAK LOOK */
+    .page-body { padding: 18px 24px; flex-grow: 1; }
+    h2 { color: #102C57; text-align: center; margin: 8px 0 4px 0; font-size: 20px; font-weight: bold; letter-spacing: 0.5px; }
+    h4 { color: #35598E; text-align: center; margin: 0 0 18px 0; font-size: 14px; font-weight: bold; }
     
-    .section-title { background: #102C57; color: #fff; padding: 6px 10px; font-weight: bold; border-radius: 3px; margin-top: 10px; margin-bottom: 6px; font-size: 12px; text-transform: uppercase; }
+    .section-title { 
+      background: #102C57; 
+      color: #fff; 
+      padding: 10px 14px; 
+      font-weight: bold; 
+      border-radius: 4px; 
+      margin-top: 18px; 
+      margin-bottom: 12px; 
+      font-size: 13px; 
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
     
-    .form-grid { display: flex; flex-direction: column; gap: 8px; }
+    .form-grid { display: flex; flex-direction: column; gap: 14px; }
     .form-group { display: flex; flex-direction: column; width: 100%; }
     
-    label { font-weight: bold; font-size: 11px; margin-bottom: 2px; color: #102C57; }
+    label { font-weight: bold; font-size: 12px; margin-bottom: 6px; color: #102C57; }
     input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { 
-      padding: 6px 8px; 
-      border: 1px solid #666; 
-      border-radius: 3px; 
-      font-size: 13px; 
+      padding: 12px; 
+      border: 1.5px solid #444; 
+      border-radius: 4px; 
+      font-size: 14px; 
       width: 100%; 
       text-transform: uppercase;
+      background-color: #fff;
     }
-    input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; background-color: #f8fafc; }
     
     .checkbox-list {
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      border: 1px solid #666;
-      padding: 8px;
-      border-radius: 3px;
-      max-height: 200px;
+      gap: 10px;
+      border: 1.5px solid #444;
+      padding: 14px;
+      border-radius: 4px;
+      max-height: 280px;
       overflow-y: auto;
       background: #fafafa;
     }
     .checkbox-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 12px;
+      gap: 10px;
+      font-size: 13px;
       font-weight: bold;
-      color: #333;
+      color: #222;
       cursor: pointer;
     }
     .checkbox-item input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
       cursor: pointer;
     }
 
     .preview-container {
-      margin-top: 4px;
+      margin-top: 8px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
     .preview-img {
-      width: 80px;
-      height: 80px;
+      width: 110px;
+      height: 110px;
       object-fit: cover;
       border: 1px solid #555;
-      border-radius: 3px;
+      border-radius: 4px;
       display: none;
     }
 
-    .relative-block { border: 1px dashed #102C57; padding: 8px; border-radius: 3px; margin-bottom: 6px; background: #fdfdfd; }
-    .relative-title { font-weight: bold; font-size: 11px; color: #35598E; margin-bottom: 4px; }
+    .relative-block { border: 1.5px dashed #102C57; padding: 14px; border-radius: 4px; margin-bottom: 12px; background: #fdfdfd; }
+    .relative-title { font-weight: bold; font-size: 13px; color: #35598E; margin-bottom: 8px; }
 
-    .btn-container { display: flex; gap: 10px; margin-top: 15px; }
-    .submit-btn { background: #28a745; color: #fff; border: none; padding: 10px; font-size: 15px; font-weight: bold; border-radius: 3px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .btn-container { display: flex; gap: 12px; margin-top: 30px; margin-bottom: 10px; }
+    .submit-btn { background: #28a745; color: #fff; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
     .submit-btn:hover { background: #218838; }
-    .print-btn { background: #007bff; color: #fff; border: none; padding: 10px; font-size: 15px; font-weight: bold; border-radius: 3px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .print-btn { background: #007bff; color: #fff; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
     .print-btn:hover { background: #0056b3; }
 
     /* PRINT STYLES */
@@ -101,7 +114,7 @@
       .page { box-shadow: none; max-width: 100%; width: 100%; margin: 0; }
       .btn-container, input[type="file"] { display: none !important; }
       .checkbox-list { max-height: none; overflow: visible; border: none; padding: 0; }
-      input, select, textarea { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; padding: 2px 0 !important; }
+      input, select, textarea { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; padding: 4px 0 !important; }
       .preview-img { display: block !important; }
     }
   </style>
@@ -334,7 +347,7 @@
           <input type="text" name="PARENTS_ADDRESS">
         </div>
 
-        <div style="margin-top:6px; font-weight:bold; font-size:11px; color:#102C57;">RELATIVE INFORMATION (UP TO 4 RELATIVES):</div>
+        <div style="margin-top:10px; font-weight:bold; font-size:12px; color:#102C57;">RELATIVE INFORMATION (UP TO 4 RELATIVES):</div>
         
         <div class="relative-block">
           <div class="relative-title">RELATIVE 1</div>
