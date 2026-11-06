@@ -1,656 +1,1285 @@
 <!DOCTYPE html>
+
 <html lang="gu">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Passtelacare - Employee Registration Form</title>
+
   <style>
+
     @page { size: A4; margin: 0; }
+
     * { box-sizing: border-box; font-family: Arial, sans-serif; text-transform: uppercase; }
-    body { background: #444; margin: 0; padding: 5px; color: #000; }
+
+    body { background: #555; margin: 0; padding: 10px; color: #000; }
+
     
+
     .page {
+
       width: 100%;
+
       max-width: 794px;
-      margin: 0 auto 15px auto;
+
+      margin: 0 auto 25px auto;
+
       background: #fff;
+
       position: relative;
+
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
       display: flex;
+
       flex-direction: column;
+
       justify-content: space-between;
+
     }
+
+
 
     .header-img-container img { width: 100%; height: auto; display: block; }
+
     .footer-img-container { width: 100%; position: relative; }
+
     .footer-img-container img { width: 100%; height: auto; display: block; }
 
-    /* CSS ADJUSTMENT FOR BHARCHAK LOOK */
-    .page-body { padding: 18px 24px; flex-grow: 1; }
-    h2 { color: #102C57; text-align: center; margin: 8px 0 4px 0; font-size: 20px; font-weight: bold; letter-spacing: 0.5px; }
-    h4 { color: #35598E; text-align: center; margin: 0 0 18px 0; font-size: 14px; font-weight: bold; }
+
+
+    .page-body { padding: 15px 20px; flex-grow: 1; }
+
+    h2 { color: #102C57; text-align: center; margin: 5px 0 2px 0; font-size: 18px; font-weight: bold; }
+
+    h4 { color: #35598E; text-align: center; margin: 0 0 15px 0; font-size: 13px; font-weight: bold; }
+
     
-    .section-title { 
-      background: #102C57; 
-      color: #fff; 
-      padding: 10px 14px; 
-      font-weight: bold; 
-      border-radius: 4px; 
-      margin-top: 18px; 
-      margin-bottom: 12px; 
-      font-size: 13px; 
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+
+    .section-title { background: #102C57; color: #fff; padding: 8px 12px; font-weight: bold; border-radius: 4px; margin-top: 15px; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; }
+
     
-    .form-grid { display: flex; flex-direction: column; gap: 14px; }
+
+    .form-grid { display: flex; flex-direction: column; gap: 12px; }
+
     .form-group { display: flex; flex-direction: column; width: 100%; }
+
     
-    label { font-weight: bold; font-size: 12px; margin-bottom: 6px; color: #102C57; }
+
+    label { font-weight: bold; font-size: 12px; margin-bottom: 4px; color: #102C57; }
+
     input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { 
-      padding: 12px; 
-      border: 1.5px solid #444; 
+
+      padding: 10px; 
+
+      border: 1px solid #555; 
+
       border-radius: 4px; 
+
       font-size: 14px; 
+
       width: 100%; 
+
       text-transform: uppercase;
-      background-color: #fff;
+
     }
-    input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; background-color: #f8fafc; }
+
+    input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; }
+
     
+
     .checkbox-list {
+
       display: flex;
+
       flex-direction: column;
-      gap: 10px;
-      border: 1.5px solid #444;
-      padding: 14px;
+
+      gap: 8px;
+
+      border: 1px solid #555;
+
+      padding: 10px;
+
       border-radius: 4px;
-      max-height: 280px;
+
+      max-height: 250px;
+
       overflow-y: auto;
+
       background: #fafafa;
+
     }
+
     .checkbox-item {
+
       display: flex;
+
       align-items: center;
+
       gap: 10px;
+
       font-size: 13px;
+
       font-weight: bold;
-      color: #222;
+
+      color: #333;
+
       cursor: pointer;
+
     }
+
     .checkbox-item input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
+
+      width: 18px;
+
+      height: 18px;
+
       cursor: pointer;
+
     }
+
+
 
     .preview-container {
-      margin-top: 8px;
+
+      margin-top: 6px;
+
       display: flex;
+
       align-items: center;
+
       gap: 10px;
+
     }
+
     .preview-img {
-      width: 110px;
-      height: 110px;
+
+      width: 100px;
+
+      height: 100px;
+
       object-fit: cover;
+
       border: 1px solid #555;
+
       border-radius: 4px;
+
       display: none;
+
     }
 
-    .relative-block { border: 1.5px dashed #102C57; padding: 14px; border-radius: 4px; margin-bottom: 12px; background: #fdfdfd; }
-    .relative-title { font-weight: bold; font-size: 13px; color: #35598E; margin-bottom: 8px; }
 
-    .btn-container { display: flex; gap: 12px; margin-top: 30px; margin-bottom: 10px; }
-    .submit-btn { background: #28a745; color: #fff; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+
+    .relative-block { border: 1px dashed #102C57; padding: 10px; border-radius: 4px; margin-bottom: 10px; background: #fdfdfd; }
+
+    .relative-title { font-weight: bold; font-size: 12px; color: #35598E; margin-bottom: 8px; }
+
+
+
+    .btn-container { display: flex; gap: 10px; margin-top: 25px; }
+
+    .submit-btn { background: #28a745; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+
     .submit-btn:hover { background: #218838; }
-    .print-btn { background: #007bff; color: #fff; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+
+    .print-btn { background: #007bff; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+
     .print-btn:hover { background: #0056b3; }
 
+
+
     /* PRINT STYLES */
+
     @media print {
+
       body { background: #fff; padding: 0; }
+
       .page { box-shadow: none; max-width: 100%; width: 100%; margin: 0; }
+
       .btn-container, input[type="file"] { display: none !important; }
+
       .checkbox-list { max-height: none; overflow: visible; border: none; padding: 0; }
+
       input, select, textarea { border: none !important; border-bottom: 1px solid #000 !important; border-radius: 0 !important; padding: 4px 0 !important; }
+
       .preview-img { display: block !important; }
+
     }
+
   </style>
+
 </head>
+
 <body>
 
+
+
 <div class="page">
+
   <!-- HEADER CONTAINER -->
+
   <div class="header-img-container">
+
     <img src="NEWHEADER.png" alt="Header">
+
   </div>
 
+
+
   <div class="page-body">
+
     <h2>PASTELA CARE PRIVATE LIMITED</h2>
+
     <h4>EMPLOYEE REGISTRATION FORM</h4>
+
+
 
     <form id="employeeForm">
 
+
+
       <!-- TOP SECTION: UNIQUE ID & STATUS -->
+
       <div class="section-title">TOP HEADER DETAILS</div>
+
       <div class="form-grid">
+
         <div class="form-group">
+
           <label>UNIQUE ID (AUTO GENERATED)</label>
+
           <input type="text" name="UNIQUE_ID" id="v_unique_id" readonly placeholder="AUTO GENERATED">
+
         </div>
+
         <div class="form-group">
+
           <label>STATUS</label>
+
           <select name="STATUS">
+
             <option value="OPEN" selected>OPEN</option>
+
             <option value="BLACK LISTED">BLACK LISTED</option>
+
           </select>
+
         </div>
+
       </div>
+
+
 
       <!-- 1. UPLOADS & CAPTURES -->
+
       <div class="section-title">1. UPLOADS & CAPTURES (PHOTOS, THUMB & DOCUMENTS)</div>
+
       <div class="form-grid">
+
         <div class="form-group">
+
           <label>AADHAR CARD PHOTO</label>
+
           <input type="file" accept="image/*" capture="environment" id="adhar_file" onchange="previewImage(event, 'adhar_preview')">
+
           <div class="preview-container"><img id="adhar_preview" class="preview-img" alt="Preview"></div>
+
         </div>
+
         <div class="form-group">
+
           <label>PAN CARD PHOTO</label>
+
           <input type="file" accept="image/*" capture="environment" id="pan_file" onchange="previewImage(event, 'pan_preview')">
+
           <div class="preview-container"><img id="pan_preview" class="preview-img" alt="Preview"></div>
+
         </div>
+
         <div class="form-group">
+
           <label>PASSPORT SIZE LIVE PHOTO</label>
+
           <input type="file" accept="image/*" capture="user" id="live_file" onchange="previewImage(event, 'live_preview')">
+
           <div class="preview-container"><img id="live_preview" class="preview-img" alt="Preview"></div>
+
         </div>
+
         <div class="form-group">
+
           <label>DIGITAL SIGN</label>
+
           <input type="file" accept="image/*" capture="environment" id="sign_file" onchange="previewImage(event, 'sign_preview')">
+
           <div class="preview-container"><img id="sign_preview" class="preview-img" alt="Preview"></div>
+
         </div>
+
         <div class="form-group">
+
           <label>LEFT THUMB IMPRESSION</label>
+
           <input type="file" accept="image/*" capture="environment" id="thumb_left_file" onchange="previewImage(event, 'thumb_left_preview')">
+
           <div class="preview-container"><img id="thumb_left_preview" class="preview-img" alt="Preview"></div>
+
         </div>
+
         <div class="form-group">
+
           <label>RIGHT THUMB IMPRESSION</label>
+
           <input type="file" accept="image/*" capture="environment" id="thumb_right_file" onchange="previewImage(event, 'thumb_right_preview')">
+
           <div class="preview-container"><img id="thumb_right_preview" class="preview-img" alt="Preview"></div>
+
         </div>
+
       </div>
+
+
 
       <!-- 2. STAFF GENERAL DETAILS -->
+
       <div class="section-title">2. STAFF GENERAL DETAILS</div>
+
       <div class="form-grid">
+
         <div class="form-group">
+
           <label>FULL NAME (પૂરું નામ)</label>
+
           <input type="text" name="FULL_NAME" required placeholder="ENTER FULL NAME">
+
         </div>
+
         <div class="form-group">
+
           <label>MOBILE NUMBER (10 DIGITS ONLY)</label>
+
           <input type="tel" name="MOBILE" required pattern="[0-9]{10}" maxlength="10" placeholder="ENTER 10 DIGIT MOBILE NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+
         </div>
+
         <div class="form-group">
+
           <label>AADHAR NUMBER (12 DIGITS)</label>
+
           <input type="text" name="AADHAR_NUMBER" pattern="[0-9]{12}" maxlength="12" placeholder="ENTER AADHAR NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+
         </div>
+
         <div class="form-group">
+
           <label>PAN NUMBER (10 CHARACTERS - E.G. ABCDE1234F)</label>
+
           <input type="text" name="PAN_NUMBER" pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}" maxlength="10" placeholder="ENTER 10 DIGIT PAN NUMBER" title="Valid PAN format: 5 letters, 4 digits, 1 letter">
+
         </div>
+
         <div class="form-group">
+
           <label>ADDRESS (સરનામું)</label>
+
           <input type="text" name="ADDRESS" placeholder="FULL ADDRESS">
+
         </div>
+
         <div class="form-group">
+
           <label>CITY (શહેર)</label>
+
           <input type="text" name="CITY" placeholder="CITY">
+
         </div>
+
         <div class="form-group">
+
           <label>AREA (વિસ્તાર)</label>
+
           <input type="text" name="AREA" placeholder="AREA">
+
         </div>
+
         <div class="form-group">
+
           <label>DATE OF BIRTH (જન્મ તારીખ)</label>
+
           <input type="date" name="DOB" id="v_dob" onchange="calculateAgeFromDOB()">
+
         </div>
+
         <div class="form-group">
+
           <label>AGE (ઉંમર)</label>
+
           <input type="number" name="AGE" id="v_age" placeholder="AGE" oninput="calculateDOBFromAge()">
+
         </div>
+
         <div class="form-group">
+
           <label>TIMESTAMP (RUNNING CLOCK)</label>
+
           <input type="text" name="TIMESTAMP" id="v_timestamp" readonly placeholder="RUNNING TIME">
+
         </div>
+
       </div>
+
+
 
       <!-- 3. EMPLOYMENT STATUS & PREFERENCES -->
+
       <div class="section-title">3. EMPLOYMENT STATUS & PREFERENCES</div>
+
       <div class="form-grid">
+
         <div class="form-group">
+
           <label>EMPLOYMENT TYPE</label>
+
           <select name="EMP_TYPE">
+
             <option value="CONTRACT" selected>CONTRACT</option>
+
             <option value="FIX">FIX</option>
+
           </select>
+
         </div>
+
         <div class="form-group">
+
           <label>DESIGNATION APPLIED FOR</label>
+
           <select name="DESIGNATION">
+
             <option value="CARETAKER">CARETAKER</option>
+
             <option value="NURSE">NURSE</option>
+
             <option value="REGISTERED NURSE">REGISTERED NURSE</option>
+
           </select>
+
         </div>
+
         <div class="form-group">
+
           <label>EXPERIENCE (અનુભવ)</label>
+
           <select name="EXPERIENCE">
+
             <option value="FRESHER" selected>FRESHER</option>
+
             <option value="<0.5 YEARS">&lt;0.5 YEARS</option>
+
             <option value="0.5-1 YEAR">0.5-1 YEAR</option>
+
             <option value="1 YEAR">1 YEAR</option>
+
             <option value="1-2 YEAR">1-2 YEAR</option>
+
             <option value="2-5 YEAR">2-5 YEAR</option>
+
             <option value="> 5 YEARS">&gt; 5 YEARS</option>
+
           </select>
+
         </div>
+
         <div class="form-group">
+
           <label>PREFERRED SHIFT</label>
+
           <select name="PREFERRED_SHIFT">
+
             <option value="24 HRS" selected>24 HRS</option>
+
             <option value="DAY">DAY</option>
+
             <option value="NIGHT">NIGHT</option>
+
             <option value="DAY+NIGHT">DAY+NIGHT</option>
+
             <option value="PART TIME">PART TIME</option>
+
             <option value="ANY">ANY</option>
+
           </select>
+
         </div>
+
         <div class="form-group">
+
           <label>RELIGION (ધર્મ)</label>
+
           <input type="text" name="RELIGION">
+
         </div>
+
         <div class="form-group">
+
           <label>CASTE (જ્ઞાતિ)</label>
+
           <input type="text" name="CAST">
+
         </div>
+
         <div class="form-group">
+
           <label>MARITAL STATUS</label>
+
           <select name="MARITAL_STATUS">
+
             <option value="SINGLE">SINGLE</option>
+
             <option value="MARRIED">MARRIED</option>
+
           </select>
+
         </div>
+
         <div class="form-group">
+
           <label>EDUCATION STATUS</label>
+
           <select name="EDUCATION">
+
             <option value="ILLITERATE">ILLITERATE</option>
+
             <option value="PRIMARY SCHOOL">PRIMARY SCHOOL</option>
+
             <option value="SECONDARY SCHOOL">SECONDARY SCHOOL</option>
+
             <option value="TILL 12TH GRADE">TILL 12TH GRADE</option>
+
             <option value="GRADUATE">GRADUATE</option>
+
             <option value="ANM">ANM</option>
+
             <option value="GNM/BSC NURSING">GNM/BSC NURSING</option>
+
             <option value="OTHER">OTHER</option>
+
           </select>
+
         </div>
+
         <div class="form-group">
+
           <label>REFERENCE BY</label>
+
           <input type="text" name="REFERENCE_BY">
+
         </div>
+
         <div class="form-group">
+
           <label>MODE OF TRANSPORTATION</label>
+
           <select name="TRANSPORTATION">
+
             <option value="BUS/RICKSHAW" selected>BUS/RICKSHAW</option>
+
             <option value="TWO WHEELER">TWO WHEELER</option>
+
             <option value="BICYCLE">BICYCLE</option>
+
             <option value="NO">NO</option>
+
           </select>
+
         </div>
+
       </div>
+
+
 
       <!-- 4. FAMILY & RELATIVE DETAILS -->
+
       <div class="section-title">4. FAMILY & RELATIVE DETAILS</div>
+
       <div class="form-grid">
+
         <div class="form-group">
+
           <label>FATHER'S NAME</label>
+
           <input type="text" name="FATHER_NAME">
+
         </div>
+
         <div class="form-group">
+
           <label>FATHER'S AGE</label>
+
           <input type="number" name="FATHER_AGE" placeholder="FATHER AGE">
+
         </div>
+
         <div class="form-group">
+
           <label>FATHER'S CONTACT NUMBER (10 DIGITS)</label>
+
           <input type="tel" name="FATHER_CONTACT" pattern="[0-9]{10}" maxlength="10" placeholder="FATHER MOBILE" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+
         </div>
 
+
+
         <div class="form-group">
+
           <label>MOTHER'S NAME</label>
+
           <input type="text" name="MOTHER_NAME">
-        </div>
-        <div class="form-group">
-          <label>MOTHER'S AGE</label>
-          <input type="number" name="MOTHER_AGE" placeholder="MOTHER AGE">
-        </div>
-        <div class="form-group">
-          <label>MOTHER'S CONTACT NUMBER (10 DIGITS)</label>
-          <input type="tel" name="MOTHER_CONTACT" pattern="[0-9]{10}" maxlength="10" placeholder="MOTHER MOBILE" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+
         </div>
 
         <div class="form-group">
-          <label>PARENTS ADDRESS</label>
-          <input type="text" name="PARENTS_ADDRESS">
+
+          <label>MOTHER'S AGE</label>
+
+          <input type="number" name="MOTHER_AGE" placeholder="MOTHER AGE">
+
         </div>
+
+        <div class="form-group">
+
+          <label>MOTHER'S CONTACT NUMBER (10 DIGITS)</label>
+
+          <input type="tel" name="MOTHER_CONTACT" pattern="[0-9]{10}" maxlength="10" placeholder="MOTHER MOBILE" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label>PARENTS ADDRESS</label>
+
+          <input type="text" name="PARENTS_ADDRESS">
+
+        </div>
+
+
 
         <div style="margin-top:10px; font-weight:bold; font-size:12px; color:#102C57;">RELATIVE INFORMATION (UP TO 4 RELATIVES):</div>
+
         
+
         <div class="relative-block">
+
           <div class="relative-title">RELATIVE 1</div>
+
           <div class="form-group"><label>NAME</label><input type="text" name="RELATIVE1_NAME"></div>
+
           <div class="form-group"><label>RELATION</label><input type="text" name="RELATIVE1_RELATION"></div>
+
           <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="RELATIVE1_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+
         </div>
 
+
+
         <div class="relative-block">
+
           <div class="relative-title">RELATIVE 2</div>
+
           <div class="form-group"><label>NAME</label><input type="text" name="RELATIVE2_NAME"></div>
+
           <div class="form-group"><label>RELATION</label><input type="text" name="RELATIVE2_RELATION"></div>
+
           <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="RELATIVE2_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+
         </div>
 
+
+
         <div class="relative-block">
+
           <div class="relative-title">RELATIVE 3</div>
+
           <div class="form-group"><label>NAME</label><input type="text" name="RELATIVE3_NAME"></div>
+
           <div class="form-group"><label>RELATION</label><input type="text" name="RELATIVE3_RELATION"></div>
+
           <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="RELATIVE3_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+
         </div>
 
+
+
         <div class="relative-block">
+
           <div class="relative-title">RELATIVE 4</div>
+
           <div class="form-group"><label>NAME</label><input type="text" name="RELATIVE4_NAME"></div>
+
           <div class="form-group"><label>RELATION</label><input type="text" name="RELATIVE4_RELATION"></div>
+
           <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="RELATIVE4_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+
         </div>
+
+
 
       </div>
+
+
 
       <!-- 5. MEDICAL & JOB PREFERENCES -->
+
       <div class="section-title">5. MEDICAL & JOB PREFERENCES</div>
+
       <div class="form-grid">
+
         <div class="form-group">
+
           <label>MEAL PREFERENCE</label>
+
           <select name="MEAL_PREFERENCE">
+
             <option value="VEG" selected>VEG</option>
+
             <option value="NON VEG">NON VEG</option>
+
             <option value="SWAMINARAYAN">SWAMINARAYAN</option>
+
             <option value="JAIN">JAIN</option>
+
             <option value="ANY">ANY</option>
+
           </select>
-        </div>
-        <div class="form-group">
-          <label>COVID VACCINATED?</label>
-          <select name="COVID_VACCINATED">
-            <option value="YES">YES</option>
-            <option value="NO">NO</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>WORK IF PATIENT EATS NON-VEG?</label>
-          <select name="WORK_NON_VEG">
-            <option value="YES">YES</option>
-            <option value="NO">NO</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>HAVE SMARTPHONE?</label>
-          <select name="HAVE_SMARTPHONE">
-            <option value="YES">YES</option>
-            <option value="NO">NO</option>
-          </select>
-        </div>
-        
-        <!-- LANGUAGES KNOWN -->
-        <div class="form-group">
-          <label>LANGUAGES KNOWN (SELECT ALL THAT APPLY)</label>
-          <div class="checkbox-list">
-            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="ENGLISH"> ENGLISH</label>
-            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="HINDI"> HINDI</label>
-            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="GUJARATI"> GUJARATI</label>
-            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="OTHER" id="lang_other_chk" onclick="toggleOtherInput('lang_other_chk', 'lang_other_input')"> OTHER</label>
-          </div>
-          <input type="text" name="LANGUAGES_KNOWN_OTHER" id="lang_other_input" placeholder="SPECIFY OTHER LANGUAGE" style="display:none; margin-top:5px;">
+
         </div>
 
         <div class="form-group">
-          <label>READ ENGLISH MEDICINE NAME?</label>
-          <select name="READ_ENGLISH_MEDICINE">
+
+          <label>COVID VACCINATED?</label>
+
+          <select name="COVID_VACCINATED">
+
             <option value="YES">YES</option>
+
             <option value="NO">NO</option>
+
           </select>
+
         </div>
+
+        <div class="form-group">
+
+          <label>WORK IF PATIENT EATS NON-VEG?</label>
+
+          <select name="WORK_NON_VEG">
+
+            <option value="YES">YES</option>
+
+            <option value="NO">NO</option>
+
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>HAVE SMARTPHONE?</label>
+
+          <select name="HAVE_SMARTPHONE">
+
+            <option value="YES">YES</option>
+
+            <option value="NO">NO</option>
+
+          </select>
+
+        </div>
+
+        
+
+        <!-- LANGUAGES KNOWN -->
+
+        <div class="form-group">
+
+          <label>LANGUAGES KNOWN (SELECT ALL THAT APPLY)</label>
+
+          <div class="checkbox-list">
+
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="ENGLISH"> ENGLISH</label>
+
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="HINDI"> HINDI</label>
+
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="GUJARATI"> GUJARATI</label>
+
+            <label class="checkbox-item"><input type="checkbox" name="LANGUAGES_KNOWN" value="OTHER" id="lang_other_chk" onclick="toggleOtherInput('lang_other_chk', 'lang_other_input')"> OTHER</label>
+
+          </div>
+
+          <input type="text" name="LANGUAGES_KNOWN_OTHER" id="lang_other_input" placeholder="SPECIFY OTHER LANGUAGE" style="display:none; margin-top:5px;">
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label>READ ENGLISH MEDICINE NAME?</label>
+
+          <select name="READ_ENGLISH_MEDICINE">
+
+            <option value="YES">YES</option>
+
+            <option value="NO">NO</option>
+
+          </select>
+
+        </div>
+
       </div>
+
+
 
       <!-- 6. SKILL ASSESSMENT & PAST EXPERIENCE -->
+
       <div class="section-title">6. SKILL ASSESSMENT & PAST EXPERIENCE</div>
+
       <div class="form-grid">
+
         
+
         <!-- KNOWN SKILLS -->
+
         <div class="form-group">
+
           <label>KNOWN SKILLS (SELECT ALL THAT APPLY)</label>
+
           <div class="checkbox-list">
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHANGE DIAPER"> CHANGE DIAPER</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="URINE/STOOL WASH"> URINE/STOOL WASH</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="SPONGING"> SPONGING</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHANGE POSITION"> CHANGE POSITION</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="EXERCISE"> EXERCISE</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHANGE THE CLOTH"> CHANGE THE CLOTH</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="WASH THE CLOTH"> WASH THE CLOTH</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHANGE BED SHEET"> CHANGE BED SHEET</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CLEAN THE ROOM OF PATIENT"> CLEAN THE ROOM OF PATIENT</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="GIVE MEDICINE"> GIVE MEDICINE</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="MINOR DRESSING"> MINOR DRESSING</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="EMPTY URINE BAG"> EMPTY URINE BAG</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CLEAN THE ULCER/WOUND"> CLEAN THE ULCER/WOUND</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="ASSIST IN WHEELCHAIR"> ASSIST IN WHEELCHAIR</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="SEATING"> SEATING</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="FEEDING THROUGH NASAL TUBE"> FEEDING THROUGH NASAL TUBE</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="MASSAGE"> MASSAGE</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="URINARY CATHETER INSERTING"> URINARY CATHETER INSERTING</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="RYLES TUBE FEEDING"> RYLES TUBE FEEDING</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="IV INFUSION"> IV INFUSION</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="INTRAMUSCULAR INJECTION"> INTRAMUSCULAR INJECTION</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="INTRAVENOUS INJECTION"> INTRAVENOUS INJECTION</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="DIABETES INJECTION"> DIABETES INJECTION</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHECK BLOOD SUGAR"> CHECK BLOOD SUGAR</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="CHECK VITAL (PULSE, BP, TEMPERATURE)"> CHECK VITAL (PULSE, BP, TEMPERATURE)</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="TRACHEOSTOMY CARE"> TRACHEOSTOMY CARE</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="VENTILATOR USE AND PROVIDE OXYGEN"> VENTILATOR USE AND PROVIDE OXYGEN</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="COLOSTOMY CARE"> COLOSTOMY CARE</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="NEBULISER USE"> NEBULISER USE</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="COLOSTOMY BAG CHANGE"> COLOSTOMY BAG CHANGE</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="PEG TUBE FEEDING"> PEG TUBE FEEDING</label>
+
             <label class="checkbox-item"><input type="checkbox" name="KNOWN_SKILLS" value="OTHER" id="skill_other_chk" onclick="toggleOtherInput('skill_other_chk', 'skill_other_input')"> OTHER</label>
+
           </div>
+
           <input type="text" name="KNOWN_SKILLS_OTHER" id="skill_other_input" placeholder="SPECIFY OTHER SKILL" style="display:none; margin-top:5px;">
+
+        </div>
+
+
+
+        <div class="form-group">
+
+          <label>PAST EXPERIENCE DETAILS</label>
+
+          <textarea name="PAST_EXPERIENCE" rows="3"></textarea>
+
         </div>
 
         <div class="form-group">
-          <label>PAST EXPERIENCE DETAILS</label>
-          <textarea name="PAST_EXPERIENCE" rows="3"></textarea>
-        </div>
-        <div class="form-group">
+
           <label>BENEFICIARY NAME (ACCOUNT HOLDER NAME)</label>
+
           <input type="text" name="BENEFICIARY_NAME" placeholder="ENTER BENEFICIARY NAME">
+
         </div>
+
         <div class="form-group">
+
           <label>BANK NAME</label>
+
           <input type="text" name="BANK_NAME">
+
         </div>
+
         <div class="form-group">
+
           <label>ACCOUNT NUMBER</label>
+
           <input type="text" name="ACCOUNT_NUMBER">
+
         </div>
+
         <div class="form-group">
+
           <label>IFSC CODE (11 CHARACTERS)</label>
+
           <input type="text" name="IFSC_CODE" pattern="^[A-Za-z]{4}0[A-Za-z0-9]{6}$" maxlength="11" title="11 Characters IFSC Code (e.g. SBIN0001234)" placeholder="ENTER 11 DIGIT IFSC CODE">
+
         </div>
+
       </div>
+
+
 
       <!-- 7. FORM SUBMISSION INFO -->
+
       <div class="section-title">7. FORM SUBMISSION DETAILS</div>
+
       <div class="form-grid">
+
         <div class="form-group">
+
           <label>FORM SUBMITTED BY</label>
+
           <input type="text" name="FORM_SUBMITTED_BY" required placeholder="ENTER YOUR NAME / ADMIN NAME">
+
         </div>
+
       </div>
+
+
 
       <div class="btn-container">
+
         <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
+
         <button type="button" class="print-btn" onclick="window.print()">PRINT / SAVE AS PDF</button>
+
       </div>
+
     </form>
+
   </div>
+
+
 
   <!-- FOOTER CONTAINER -->
+
   <div class="footer-img-container">
+
     <img src="FOOTER.png" alt="Footer">
+
   </div>
+
 </div>
 
+
+
 <script>
+
   // UPDATE YOUR APPS SCRIPT WEB APP URL HERE:
+
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
 
+
+
   // 1. Auto Generate Unique ID
+
   document.getElementById('v_unique_id').value = 'EMP 00176';
 
+
+
   // 2. Running Clock for Timestamp
+
   setInterval(() => {
+
     const now = new Date();
+
     document.getElementById('v_timestamp').value = now.toLocaleString().toUpperCase();
+
   }, 1000);
 
+
+
   // 3. Auto calculate Age from DOB
+
   function calculateAgeFromDOB() {
+
     const dobVal = document.getElementById('v_dob').value;
+
     if (dobVal) {
+
       const birthDate = new Date(dobVal);
+
       const today = new Date();
+
       let age = today.getFullYear() - birthDate.getFullYear();
+
       const m = today.getMonth() - birthDate.getMonth();
+
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+
         age--;
+
       }
+
       document.getElementById('v_age').value = age;
+
     }
+
   }
+
+
 
   // 4. Auto calculate DOB from Age
+
   function calculateDOBFromAge() {
+
     const ageVal = document.getElementById('v_age').value;
+
     if (ageVal && ageVal > 0) {
+
       const today = new Date();
+
       const birthYear = today.getFullYear() - parseInt(ageVal);
+
       const approxDOB = birthYear + '-01-01';
+
       document.getElementById('v_dob').value = approxDOB;
+
     }
+
   }
+
+
 
   // 5. Toggle Other Input Field
+
   function toggleOtherInput(chkId, inputId) {
+
     const chk = document.getElementById(chkId);
+
     const input = document.getElementById(inputId);
+
     if (chk.checked) {
+
       input.style.display = 'block';
+
       input.required = true;
+
     } else {
+
       input.style.display = 'none';
+
       input.required = false;
+
       input.value = '';
+
     }
+
   }
+
+
 
   // 6. Image Preview Function
+
   function previewImage(event, previewId) {
+
     const reader = new FileReader();
+
     const previewImg = document.getElementById(previewId);
+
     reader.onload = function(){
+
       if(reader.readyState === 2){
+
         previewImg.src = reader.result;
+
         previewImg.style.display = 'block';
+
       }
+
     }
+
     if(event.target.files[0]) {
+
       reader.readAsDataURL(event.target.files[0]);
+
     }
+
   }
 
+
+
   // 7. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
+
   document.getElementById('employeeForm').addEventListener('submit', async function(e) {
+
     e.preventDefault();
+
     
+
     const submitBtn = document.querySelector('.submit-btn');
+
     submitBtn.disabled = true;
+
     submitBtn.innerText = "UPLOADING & GENERATING PDF...";
 
+
+
     const formData = new FormData(this);
+
     const dataObject = {};
 
+
+
     formData.forEach((value, key) => {
+
       if (key === 'LANGUAGES_KNOWN' || key === 'KNOWN_SKILLS') {
+
         if (!dataObject[key]) dataObject[key] = [];
+
         dataObject[key].push(value);
+
       } else {
+
         dataObject[key] = value;
+
       }
+
     });
+
+
 
     if (Array.isArray(dataObject.LANGUAGES_KNOWN)) dataObject.LANGUAGES_KNOWN = dataObject.LANGUAGES_KNOWN.join(', ');
+
     if (Array.isArray(dataObject.KNOWN_SKILLS)) dataObject.KNOWN_SKILLS = dataObject.KNOWN_SKILLS.join(', ');
 
+
+
     const getBase64 = file => new Promise((resolve, reject) => {
+
       if (!file || file.size === 0) return resolve('');
+
       const reader = new FileReader();
+
       reader.readAsDataURL(file);
+
       reader.onload = () => resolve(reader.result);
+
       reader.onerror = error => reject(error);
+
     });
+
+
 
     dataObject.ADHAR_PIC_FILE = await getBase64(document.getElementById('adhar_file').files[0]);
+
     dataObject.PAN_PIC_FILE = await getBase64(document.getElementById('pan_file').files[0]);
+
     dataObject.LIVE_PHOTO_FILE = await getBase64(document.getElementById('live_file').files[0]);
+
     dataObject.DIGITAL_SIGN_FILE = await getBase64(document.getElementById('sign_file').files[0]);
+
     dataObject.THUMB_LEFT_FILE = await getBase64(document.getElementById('thumb_left_file').files[0]);
+
     dataObject.THUMB_RIGHT_FILE = await getBase64(document.getElementById('thumb_right_file').files[0]);
 
+
+
     fetch(SCRIPT_URL, {
+
       method: 'POST',
+
       body: JSON.stringify(dataObject)
+
     })
+
     .then(res => res.json())
+
     .then(res => {
+
       if (res.status === 'SUCCESS') {
+
         alert('Form Saved Successfully in Google Drive Folder!');
+
       } else {
+
         alert('Error: ' + res.message);
+
       }
+
     })
+
     .catch(err => {
+
       alert('Submission Failed!');
+
       console.error(err);
+
     })
+
     .finally(() => {
+
       submitBtn.disabled = false;
+
       submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+
     });
+
   });
+
 </script>
 
+
+
 </body>
+
 </html>
