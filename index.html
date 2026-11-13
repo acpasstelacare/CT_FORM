@@ -281,13 +281,14 @@
       <div class="form-grid">
 
         <div class="form-group">
-
-          <label>AADHAR CARD PHOTO</label>
-
-          <input type="file" accept="image/*" capture="environment" id="adhar_file" onchange="previewImage(event, 'adhar_preview')">
-
-          <div class="preview-container"><img id="adhar_preview" class="preview-img" alt="Preview"></div>
-
+          <label>AADHAR CARD - FRONT SIDE</label>
+          <input type="file" accept="image/*" capture="environment" id="adhar_front_file" onchange="previewImage(event, 'adhar_front_preview')">
+          <div class="preview-container"><img id="adhar_front_preview" class="preview-img" alt="Preview"></div>
+        </div>
+        <div class="form-group">
+          <label>AADHAR CARD - BACK SIDE</label>
+          <input type="file" accept="image/*" capture="environment" id="adhar_back_file" onchange="previewImage(event, 'adhar_back_preview')">
+          <div class="preview-container"><img id="adhar_back_preview" class="preview-img" alt="Preview"></div>
         </div>
 
         <div class="form-group">
