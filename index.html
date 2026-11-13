@@ -825,6 +825,68 @@
       submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
     });
   });
+  // આધાર કાર્ડ સ્કેન કરીને ડેટા ઓટો-ફિલ કરવાનું પરફેક્ટ ફંક્શન
+  async function scanAadhaarWithAI() {
+    const inputEl = document.getElementById('adhar_front_file');
+    
+    let imageBase64 = '';
+    // જો ક્રોપ થયેલો ફોટો હોય તો તે લો, નહીંતર ડાયરેક્ટ ફાઇલમાંથી લો
+    if (inputEl.dataset.croppedBase64) {
+      imageBase64 = inputEl.dataset.croppedBase64.split(',')[1];
+    } else if (inputEl.files && inputEl.files[0]) {
+      const file = inputEl.files[0];
+      imageBase64 = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (!imageBase64) {
+      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફોટો અપલોડ કરો!");
+      return;
+    }
+
+    alert("AI આધાર કાર્ડ વાંચી રહ્યું છે, કૃપા કરીને ૧-૨ સેકન્ડ રાહ જુઓ...");
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "scan_aadhaar", image: imageBase64 })
+      });
+
+      const result = await response.json();
+      
+      if (result && result.status === "SUCCESS" && result.data) {
+        let scanned = result.data;
+        
+        // ૧. પૂરું નામ ઓટો-ફિલ
+        if (scanned.name) {
+          document.querySelector('[name="FULL_NAME"]').value = scanned.name;
+        }
+        // ૨. સરનામું ઓટો-ફિલ
+        if (scanned.address) {
+          document.querySelector('[name="ADDRESS"]').value = scanned.address;
+        }
+        // ૩. જન્મ તારીખ અને ઉંમર ઓટો-ફિલ
+        if (scanned.dob) {
+          document.getElementById('v_dob').value = scanned.dob;
+          calculateAgeFromDOB(); // ઉંમર જાતે જ ગણાઈ જશે
+        }
+        // ૪. આધાર નંબર ઓટો-ફિલ
+        if (scanned.aadharNumber) {
+          document.querySelector('[name="AADHAR_NUMBER"]').value = scanned.aadharNumber;
+        }
+
+        alert("સફળતાપૂર્વક આધાર કાર્ડમાંથી ડેટા ઓટો-ફિલ થઈ ગયો!");
+      } else {
+        alert("આધાર કાર્ડમાંથી ડેટા વાંચવામાં મુશ્કેલી પડી. કૃપા કરીને સ્પષ્ટ ફોટો અપલોડ કરો.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("સ્કેનિંગ એરર: " + error.message);
+    }
+  }
 
 </script>
 
