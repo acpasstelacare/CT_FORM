@@ -1221,16 +1221,12 @@
 
 
 
-    dataObject.ADHAR_PIC_FILE = await getBase64(document.getElementById('adhar_file').files[0]);
-
+    dataObject.ADHAR_FRONT_FILE = await getBase64(document.getElementById('adhar_front_file').files[0]);
+    dataObject.ADHAR_BACK_FILE = await getBase64(document.getElementById('adhar_back_file').files[0]);
     dataObject.PAN_PIC_FILE = await getBase64(document.getElementById('pan_file').files[0]);
-
     dataObject.LIVE_PHOTO_FILE = await getBase64(document.getElementById('live_file').files[0]);
-
     dataObject.DIGITAL_SIGN_FILE = await getBase64(document.getElementById('sign_file').files[0]);
-
     dataObject.THUMB_LEFT_FILE = await getBase64(document.getElementById('thumb_left_file').files[0]);
-
     dataObject.THUMB_RIGHT_FILE = await getBase64(document.getElementById('thumb_right_file').files[0]);
 
 
