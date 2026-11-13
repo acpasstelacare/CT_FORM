@@ -184,15 +184,11 @@
           <label>AADHAR CARD - FRONT SIDE</label>
           <input type="file" accept="image/*" capture="environment" id="adhar_front_file" onchange="previewImage(event, 'adhar_front_preview')">
           <div class="preview-container"><img id="adhar_front_preview" class="preview-img" alt="Preview"></div>
-        </div>
-        <div class="form-group">
-          <label>AADHAR CARD - FRONT SIDE</label>
-          <input type="file" accept="image/*" capture="environment" id="adhar_front_file" onchange="previewImage(event, 'adhar_front_preview')">
-          <div class="preview-container"><img id="adhar_front_preview" class="preview-img" alt="Preview"></div>
           
-          <!-- 👇 આ નાનું બટન અહીં ઉમેરી દો 👇 -->
-          <button type="button" onclick="scanAadhaarWithAI()" style="margin-top: 6px; background: #1a73e8; color: #fff; border: none; padding: 8px 12px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 11px;">🤖 AI થી આધાર સ્કેન કરો અને ઓટો-ફિલ કરો</button>
+          <!-- AI Scan Button -->
+          <button type="button" onclick="scanAadhaarWithAI()" style="margin-top: 8px; background: #1a73e8; color: #fff; border: none; padding: 10px 14px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 12px;">🤖 AI થી આધાર સ્કેન કરો અને ઓટો-ફિલ કરો</button>
         </div>
+
         <div class="form-group">
           <label>AADHAR CARD - BACK SIDE</label>
           <input type="file" accept="image/*" capture="environment" id="adhar_back_file" onchange="previewImage(event, 'adhar_back_preview')">
@@ -586,84 +582,6 @@
   // UPDATE YOUR APPS SCRIPT WEB APP URL HERE:
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
 
- async function scanAadhaarWithAI() {
-    const inputEl = document.getElementById('adhar_front_file');
-    
-    let imageBase64 = '';
-    if (inputEl.dataset.croppedBase64) {
-      imageBase64 = inputEl.dataset.croppedBase64.split(',')[1];
-    } else if (inputEl.files && inputEl.files[0]) {
-      const file = inputEl.files[0];
-      imageBase64 = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    if (!imageBase64) {
-      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફોટો અપલોડ કરો!");
-      return;
-    }
-
-    alert("AI આધાર કાર્ડ સ્કેન કરી રહ્યું છે, કૃપા કરીને ૧-૨ સેકન્ડ રાહ જુઓ...");
-
-    try {
-      const response = await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "scan_aadhaar", image: imageBase64 })
-      });
-
-      const result = await response.json();
-      
-      if (result && result.status === "SUCCESS" && result.data) {
-        let scanned = result.data;
-        let filledFieldsCount = 0;
-        
-        // ૧. પૂરું નામ ઓટો-ફિલ
-        if (scanned.name && scanned.name.trim() !== "") {
-          document.querySelector('[name="FULL_NAME"]').value = scanned.name;
-          filledFieldsCount++;
-        }
-        
-        // ૨. સરનામું ઓટો-ફિલ
-        if (scanned.address && scanned.address.trim() !== "") {
-          document.querySelector('[name="ADDRESS"]').value = scanned.address;
-          filledFieldsCount++;
-        }
-        
-        // ૩. જન્મ તારીખ અથવા વર્ષ હેન્ડલિંગ
-        if (scanned.dob && scanned.dob.trim() !== "") {
-          if (scanned.dob.length === 4) {
-            let currentYear = new Date().getFullYear();
-            document.getElementById('v_age').value = currentYear - parseInt(scanned.dob);
-            calculateDOBFromAge();
-          } else {
-            document.getElementById('v_dob').value = scanned.dob;
-            calculateAgeFromDOB();
-          }
-          filledFieldsCount++;
-        }
-        
-        // ૪. [Aadhaar Number Redacted / Safe Mapping]
-        if (scanned.aadharNumber && scanned.aadharNumber.trim() !== "") {
-          document.querySelector('[name="AADHAR_NUMBER"]').value = scanned.aadharNumber;
-          filledFieldsCount++;
-        }
-
-        if (filledFieldsCount > 0) {
-          alert("સફળતાપૂર્વક જેટલો ડેટા મળ્યો તેટલો ઓટો-ફિલ થઈ ગયો છે!");
-        } else {
-          alert("આધાર કાર્ડમાંથી ટેક્સ્ટ વાંચી શકાઈ નથી. કૃપા કરીને સ્પષ્ટ ફોટો અપલોડ કરો.");
-        }
-      } else {
-        alert("સ્કેનિંગ એરર: ડેટા મળી શક્યો નથી.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("નેટવર્ક એરર: " + error.message);
-    }
-  } 
   // 1. Auto Generate Unique ID
   document.getElementById('v_unique_id').value = 'EMP 00176';
 
@@ -733,7 +651,7 @@
         }
         const image = document.getElementById('cropImage');
         cropper = new Cropper(image, {
-          aspectRatio: NaN, // ફ્રી ક્રોપિંગ (ગમે તે સાઈઝમાં ક્રોપ કરી શકાય)
+          aspectRatio: NaN,
           viewMode: 1,
           autoCropArea: 0.9,
         });
@@ -822,7 +740,93 @@
     }
   }
 
-  // 7. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
+  // 7. AI AADHAAR SCANNING FUNCTION
+  async function scanAadhaarWithAI() {
+    const inputEl = document.getElementById('adhar_front_file');
+    
+    let imageBase64 = '';
+    if (inputEl.dataset.croppedBase64) {
+      imageBase64 = inputEl.dataset.croppedBase64.split(',')[1];
+    } else if (inputEl.files && inputEl.files[0]) {
+      const file = inputEl.files[0];
+      imageBase64 = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (!imageBase64) {
+      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફોટો અપલોડ કરો!");
+      return;
+    }
+
+    alert("AI આધાર કાર્ડ સ્કેન કરી રહ્યું છે, કૃપા કરીને ૧-૨ સેકન્ડ રાહ જુઓ...");
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "scan_aadhaar", image: imageBase64 })
+      });
+
+      const result = await response.json();
+      
+      if (result && result.status === "SUCCESS" && result.data) {
+        let scanned = result.data;
+        
+        // જો ડીબગ ટેક્સ્ટ देखना हो तो कमेंट हटा सकते हैं
+        if (scanned.debugText) {
+          console.log("AI Raw Text:", scanned.debugText);
+        }
+
+        let filledCount = 0;
+        
+        // ૧. પૂરું નામ ઓટો-ફિલ
+        if (scanned.name && scanned.name.trim() !== "") {
+          document.querySelector('[name="FULL_NAME"]').value = scanned.name;
+          filledCount++;
+        }
+        
+        // ૨. સરનામું ઓટો-ફિલ
+        if (scanned.address && scanned.address.trim() !== "") {
+          document.querySelector('[name="ADDRESS"]').value = scanned.address;
+          filledCount++;
+        }
+        
+        // ૩. જન્મ તારીખ અથવા વર્ષ હેન્ડલિંગ
+        if (scanned.dob && scanned.dob.trim() !== "") {
+          if (scanned.dob.length === 4) {
+            let currentYear = new Date().getFullYear();
+            document.getElementById('v_age').value = currentYear - parseInt(scanned.dob);
+            calculateDOBFromAge();
+          } else {
+            document.getElementById('v_dob').value = scanned.dob;
+            calculateAgeFromDOB();
+          }
+          filledCount++;
+        }
+        
+        // ૪. આધાર નંબર ઓટો-ફિલ
+        if (scanned.aadharNumber && scanned.aadharNumber.trim() !== "") {
+          document.querySelector('[name="AADHAR_NUMBER"]').value = scanned.aadharNumber;
+          filledCount++;
+        }
+
+        if (filledCount > 0) {
+          alert("સફળતાપૂર્વક આધાર કાર્ડમાંથી ઉપલબ્ધ ડેટા ઓટો-ફિલ થઈ ગયો!");
+        } else {
+          alert("આધાર કાર્ડમાંથી ટેક્સ્ટ પકડી શકાઈ નથી. કૃપા કરીને સ્પષ્ટ ફોટો ક્રોપ કરીને અપલોડ કરો.");
+        }
+      } else {
+        alert("સ્કેનિંગ એરર: ડેટા મળી શક્યો નથી.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("નેટવર્ક એરર: " + error.message);
+    }
+  }
+
+  // 8. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
   document.getElementById('employeeForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -863,7 +867,7 @@
     dataObject.PAN_PIC_FILE = await getFinalImageBase64('pan_file');
     dataObject.LIVE_PHOTO_FILE = await getFinalImageBase64('live_file');
     dataObject.THUMB_LEFT_FILE = await getFinalImageBase64('thumb_left_file');
-    dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
+    dataObject.THUMB_RIGHT_FILE = await getFinalImageBaseG4('thumb_right_file');
 
     // Canvas Signature Validation & Base64 Conversion
     if (canvas) {
@@ -903,69 +907,6 @@
       submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
     });
   });
-  // આધાર કાર્ડ સ્કેન કરીને ડેટા ઓટો-ફિલ કરવાનું પરફેક્ટ ફંક્શન
-  async function scanAadhaarWithAI() {
-    const inputEl = document.getElementById('adhar_front_file');
-    
-    let imageBase64 = '';
-    // જો ક્રોપ થયેલો ફોટો હોય તો તે લો, નહીંતર ડાયરેક્ટ ફાઇલમાંથી લો
-    if (inputEl.dataset.croppedBase64) {
-      imageBase64 = inputEl.dataset.croppedBase64.split(',')[1];
-    } else if (inputEl.files && inputEl.files[0]) {
-      const file = inputEl.files[0];
-      imageBase64 = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    if (!imageBase64) {
-      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફોટો અપલોડ કરો!");
-      return;
-    }
-
-    alert("AI આધાર કાર્ડ વાંચી રહ્યું છે, કૃપા કરીને ૧-૨ સેકન્ડ રાહ જુઓ...");
-
-    try {
-      const response = await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "scan_aadhaar", image: imageBase64 })
-      });
-
-      const result = await response.json();
-      
-      if (result && result.status === "SUCCESS" && result.data) {
-        let scanned = result.data;
-        
-        // ૧. પૂરું નામ ઓટો-ફિલ
-        if (scanned.name) {
-          document.querySelector('[name="FULL_NAME"]').value = scanned.name;
-        }
-        // ૨. સરનામું ઓટો-ફિલ
-        if (scanned.address) {
-          document.querySelector('[name="ADDRESS"]').value = scanned.address;
-        }
-        // ૩. જન્મ તારીખ અને ઉંમર ઓટો-ફિલ
-        if (scanned.dob) {
-          document.getElementById('v_dob').value = scanned.dob;
-          calculateAgeFromDOB(); // ઉંમર જાતે જ ગણાઈ જશે
-        }
-        // ૪. આધાર નંબર ઓટો-ફિલ
-        if (scanned.aadharNumber) {
-          document.querySelector('[name="AADHAR_NUMBER"]').value = scanned.aadharNumber;
-        }
-
-        alert("સફળતાપૂર્વક આધાર કાર્ડમાંથી ડેટા ઓટો-ફિલ થઈ ગયો!");
-      } else {
-        alert("આધાર કાર્ડમાંથી ડેટા વાંચવામાં મુશ્કેલી પડી. કૃપા કરીને સ્પષ્ટ ફોટો અપલોડ કરો.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("સ્કેનિંગ એરર: " + error.message);
-    }
-  }
-
 </script>
 
 </body>
