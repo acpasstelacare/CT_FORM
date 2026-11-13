@@ -187,6 +187,10 @@
           
           <!-- AI Scan Button -->
           <button type="button" onclick="scanAadhaarWithAI()" style="margin-top: 8px; background: #1a73e8; color: #fff; border: none; padding: 10px 14px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 12px;">🤖 AI થી આધાર સ્કેન કરો અને ઓટો-ફિલ કરો</button>
+        <div style="margin-top: 8px;">
+  <label style="font-size: 11px; color: #555;">AI સ્કેન કરેલો કાચો ડેટા (કૉપિ કરવા માટે):</label>
+  <textarea id="rawAadhaarText" rows="4" placeholder="AI સ્કેન થયા પછી ડેટા અહીં દેખાશે..." style="width:100%; font-size:13px; font-family:monospace; text-transform:uppercase; background:#f9f9f9; padding:6px; border:1px solid #ccc; border-radius:4px;"></textarea>
+</div>
         </div>
 
         <div class="form-group">
@@ -741,17 +745,17 @@
   }
 
   // 7. AI AADHAAR SCANNING FUNCTION
-  async function scanAadhaarWithAI() {
+async function scanAadhaarWithAI() {
     const inputEl = document.getElementById('adhar_front_file');
     
     let imageBase64 = '';
     if (inputEl.dataset.croppedBase64) {
-      imageBase64 = inputEl.dataset.croppedBase64.split(',')[1];
+      imageBase64 = inputEl.dataset.croppedBase64;
     } else if (inputEl.files && inputEl.files[0]) {
       const file = inputEl.files[0];
       imageBase64 = await new Promise((resolve) => {
         const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result.split(',')[1]);
+        reader.onload = (e) => resolve(e.target.result);
         reader.readAsDataURL(file);
       });
     }
@@ -761,64 +765,25 @@
       return;
     }
 
-    alert("AI આધાર કાર્ડ સ્કેન કરી રહ્યું છે, કૃપા કરીને ૧-૨ સેકન્ડ રાહ જુઓ...");
+    alert("AI આધાર કાર્ડ સ્કેન કરી રહ્યું છે...");
 
     try {
+      // જો બેઝ-૬૪ માં હેડર હોય તો કાઢી નાખવું
+      const base64DataOnly = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
+
       const response = await fetch(SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "scan_aadhaar", image: imageBase64 })
+        body: JSON.stringify({ action: "scan_aadhaar", image: base64DataOnly })
       });
 
       const result = await response.json();
       
-      if (result && result.status === "SUCCESS" && result.data) {
-        let scanned = result.data;
-        
-        // જો ડીબગ ટેક્સ્ટ देखना हो तो कमेंट हटा सकते हैं
-        if (scanned.debugText) {
-          console.log("AI Raw Text:", scanned.debugText);
-        }
-
-        let filledCount = 0;
-        
-        // ૧. પૂરું નામ ઓટો-ફિલ
-        if (scanned.name && scanned.name.trim() !== "") {
-          document.querySelector('[name="FULL_NAME"]').value = scanned.name;
-          filledCount++;
-        }
-        
-        // ૨. સરનામું ઓટો-ફિલ
-        if (scanned.address && scanned.address.trim() !== "") {
-          document.querySelector('[name="ADDRESS"]').value = scanned.address;
-          filledCount++;
-        }
-        
-        // ૩. જન્મ તારીખ અથવા વર્ષ હેન્ડલિંગ
-        if (scanned.dob && scanned.dob.trim() !== "") {
-          if (scanned.dob.length === 4) {
-            let currentYear = new Date().getFullYear();
-            document.getElementById('v_age').value = currentYear - parseInt(scanned.dob);
-            calculateDOBFromAge();
-          } else {
-            document.getElementById('v_dob').value = scanned.dob;
-            calculateAgeFromDOB();
-          }
-          filledCount++;
-        }
-        
-        // ૪. આધાર નંબર ઓટો-ફિલ
-        if (scanned.aadharNumber && scanned.aadharNumber.trim() !== "") {
-          document.querySelector('[name="AADHAR_NUMBER"]').value = scanned.aadharNumber;
-          filledCount++;
-        }
-
-        if (filledCount > 0) {
-          alert("સફળતાપૂર્વક આધાર કાર્ડમાંથી ઉપલબ્ધ ડેટા ઓટો-ફિલ થઈ ગયો!");
-        } else {
-          alert("આધાર કાર્ડમાંથી ટેક્સ્ટ પકડી શકાઈ નથી. કૃપા કરીને સ્પષ્ટ ફોટો ક્રોપ કરીને અપલોડ કરો.");
-        }
+      if (result && result.status === "SUCCESS" && result.text) {
+        // ટેક્સ્ટ બોક્સમાં બધો જ ડેટા કેપિટલ લેટર્સમાં ભરી દેવો
+        document.getElementById('rawAadhaarText').value = result.text.toUpperCase();
+        alert("ડેટા સફળતાપૂર્વક સ્કેન થઈ ગયો! નીચેના બોક્સમાંથી જોઈને અથવા કૉપિ કરીને ભરી દો.");
       } else {
-        alert("સ્કેનિંગ એરર: ડેટા મળી શક્યો નથી.");
+        alert("ડેટા વાંચવામાં નિષ્ફળ રહ્યું.");
       }
     } catch (error) {
       console.error(error);
