@@ -537,8 +537,7 @@
           <input type="text" name="FORM_SUBMITTED_BY" required placeholder="ENTER YOUR NAME / ADMIN NAME">
         </div>
 
-        <!-- DIGITAL SIGNATURE UPLOAD WITH CROP FACILITY -->
-        <!-- CANVAS SIGNATURE PAD (DRAW DIRECTLY) -->
+        <!-- CANVAS SIGNATURE PAD -->
         <div class="form-group">
           <label>DIGITAL SIGNATURE (DRAW BELOW)</label>
           <div style="border: 1px dashed #102C57; padding: 8px; background: #fdfdfd; border-radius: 4px;">
@@ -671,12 +670,10 @@
       });
       const croppedDataUrl = canvas.toDataURL('image/png');
 
-      // પ્રીવ્યુ ઈમેજમાં ક્રોપ થયેલો ફોટો બતાવો
       const previewImg = document.getElementById(currentPreviewId);
       previewImg.src = croppedDataUrl;
       previewImg.style.display = 'block';
 
-      // ફાઇલ ઇનપુટમાં ક્રોપ થયેલો ડેટા સેવ કરો
       currentFileInput.dataset.croppedBase64 = croppedDataUrl;
 
       closeCropModal();
@@ -691,85 +688,6 @@
     }
   }
 
-  // 7. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
-  document.getElementById('employeeForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const submitBtn = document.querySelector('.submit-btn');
-    submitBtn.disabled = true;
-    submitBtn.innerText = "UPLOADING & GENERATING PDF...";
-
-    const formData = new FormData(this);
-    const dataObject = {};
-
-    formData.forEach((value, key) => {
-      if (key === 'LANGUAGES_KNOWN' || key === 'KNOWN_SKILLS') {
-        if (!dataObject[key]) dataObject[key] = [];
-        dataObject[key].push(value);
-      } else {
-        dataObject[key] = value;
-      }
-    });
-
-    if (Array.isArray(dataObject.LANGUAGES_KNOWN)) dataObject.LANGUAGES_KNOWN = dataObject.LANGUAGES_KNOWN.join(', ');
-    if (Array.isArray(dataObject.KNOWN_SKILLS)) dataObject.KNOWN_SKILLS = dataObject.KNOWN_SKILLS.join(', ');
-
-    // જો ફોટો ક્રોપ થયેલો હોય તો ક્રોપ થયેલો ડેટા લેશે, નહીંતર ઓરિજિનલ ફાઇલ લેશે
-    const getFinalImageBase64 = inputId => new Promise((resolve, reject) => {
-      const inputEl = document.getElementById(inputId);
-      if (inputEl.dataset.croppedBase64) {
-        return resolve(inputEl.dataset.croppedBase64);
-      }
-      const file = inputEl.files[0];
-      if (!file || file.size === 0) return resolve('');
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-
-    dataObject.ADHAR_FRONT_FILE = await getFinalImageBase64('adhar_front_file');
-    dataObject.ADHAR_BACK_FILE = await getFinalImageBase64('adhar_back_file');
-    dataObject.PAN_PIC_FILE = await getFinalImageBase64('pan_file');
-    dataObject.LIVE_PHOTO_FILE = await getFinalImageBase64('live_file');
-    dataObject.THUMB_LEFT_FILE = await getFinalImageBase64('thumb_left_file');
-    dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
-    dataObject.DIGITAL_SIGN_FILE = await getFinalImageBase64('sign_file');
-
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(dataObject)
-    })
-    .then(res => res.json())
-    .then(res => {
-      if (res.status === 'SUCCESS') {
-        alert('Form Saved Successfully in Google Drive Folder!');
-      } else {
-        alert('Error: ' + res.message);
-      }
-    })
-    .catch(err => {
-      alert('Submission Failed!');
-      console.error(err);
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
-    });
-  });
-  // કેનવાસ ખાલી છે કે નહીં તેની ચકાસણી
-    let blankCanvas = document.createElement('canvas');
-    blankCanvas.width = canvas.width;
-    blankCanvas.height = canvas.height;
-    
-    if (canvas && canvas.toDataURL() === blankCanvas.toDataURL()) {
-      alert("Please provide your digital signature before submitting!");
-      submitBtn.disabled = false;
-      submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
-      return;
-    }
-
-    dataObject.DIGITAL_SIGN_FILE = canvas ? canvas.toDataURL('image/png') : '';
   // Canvas Signature Initialization & Events
   let canvas, ctx, isDrawing = false;
   
@@ -817,7 +735,90 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height); 
     }
   }
+
+  // 7. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
+  document.getElementById('employeeForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerText = "UPLOADING & GENERATING PDF...";
+
+    const formData = new FormData(this);
+    const dataObject = {};
+
+    formData.forEach((value, key) => {
+      if (key === 'LANGUAGES_KNOWN' || key === 'KNOWN_SKILLS') {
+        if (!dataObject[key]) dataObject[key] = [];
+        dataObject[key].push(value);
+      } else {
+        dataObject[key] = value;
+      }
+    });
+
+    if (Array.isArray(dataObject.LANGUAGES_KNOWN)) dataObject.LANGUAGES_KNOWN = dataObject.LANGUAGES_KNOWN.join(', ');
+    if (Array.isArray(dataObject.KNOWN_SKILLS)) dataObject.KNOWN_SKILLS = dataObject.KNOWN_SKILLS.join(', ');
+
+    const getFinalImageBase64 = inputId => new Promise((resolve, reject) => {
+      const inputEl = document.getElementById(inputId);
+      if (inputEl.dataset.croppedBase64) {
+        return resolve(inputEl.dataset.croppedBase64);
+      }
+      const file = inputEl.files[0];
+      if (!file || file.size === 0) return resolve('');
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+
+    dataObject.ADHAR_FRONT_FILE = await getFinalImageBase64('adhar_front_file');
+    dataObject.ADHAR_BACK_FILE = await getFinalImageBase64('adhar_back_file');
+    dataObject.PAN_PIC_FILE = await getFinalImageBase64('pan_file');
+    dataObject.LIVE_PHOTO_FILE = await getFinalImageBase64('live_file');
+    dataObject.THUMB_LEFT_FILE = await getFinalImageBase64('thumb_left_file');
+    dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
+
+    // Canvas Signature Validation & Base64 Conversion
+    if (canvas) {
+      let blankCanvas = document.createElement('canvas');
+      blankCanvas.width = canvas.width;
+      blankCanvas.height = canvas.height;
+      
+      if (canvas.toDataURL() === blankCanvas.toDataURL()) {
+        alert("Please provide your digital signature before submitting!");
+        submitBtn.disabled = false;
+        submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+        return;
+      }
+      dataObject.DIGITAL_SIGN_FILE = canvas.toDataURL('image/png');
+    } else {
+      dataObject.DIGITAL_SIGN_FILE = '';
+    }
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(dataObject)
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.status === 'SUCCESS') {
+        alert('Form Saved Successfully in Google Drive Folder!');
+      } else {
+        alert('Error: ' + res.message);
+      }
+    })
+    .catch(err => {
+      alert('Submission Failed!');
+      console.error(err);
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+    });
+  });
 </script>
 
 </body>
 </html>
+
