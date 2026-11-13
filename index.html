@@ -757,6 +757,66 @@
       submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
     });
   });
+  // કેનવાસ ખાલી છે કે નહીં તેની ચકાસણી
+    let blankCanvas = document.createElement('canvas');
+    blankCanvas.width = canvas.width;
+    blankCanvas.height = canvas.height;
+    
+    if (canvas && canvas.toDataURL() === blankCanvas.toDataURL()) {
+      alert("Please provide your digital signature before submitting!");
+      submitBtn.disabled = false;
+      submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+      return;
+    }
+
+    dataObject.DIGITAL_SIGN_FILE = canvas ? canvas.toDataURL('image/png') : '';
+  // Canvas Signature Initialization & Events
+  let canvas, ctx, isDrawing = false;
+  
+  window.addEventListener('DOMContentLoaded', () => {
+    canvas = document.getElementById('sigCanvas');
+    if (canvas) {
+      ctx = canvas.getContext('2d');
+      
+      function resizeCanvas() {
+        let rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width || 400;
+        canvas.height = 120;
+      }
+      resizeCanvas();
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDraw);
+
+      canvas.addEventListener('touchstart', (e) => { startDraw(e.touches[0]); e.preventDefault(); });
+      canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); });
+      canvas.addEventListener('touchend', stopDraw);
+    }
+  });
+
+  function startDraw(e) {
+    isDrawing = true;
+    ctx.beginPath();
+    let rect = canvas.getBoundingClientRect();
+    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+  }
+
+  function draw(e) {
+    if (!isDrawing) return;
+    let rect = canvas.getBoundingClientRect();
+    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  function stopDraw() { isDrawing = false; }
+  function clearCanvas() { 
+    if(ctx && canvas) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    }
+  }
 </script>
 
 </body>
