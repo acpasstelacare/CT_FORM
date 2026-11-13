@@ -586,7 +586,7 @@
   // UPDATE YOUR APPS SCRIPT WEB APP URL HERE:
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
 
-  async function scanAadhaarWithAI() {
+ async function scanAadhaarWithAI() {
     const inputEl = document.getElementById('adhar_front_file');
     
     let imageBase64 = '';
@@ -606,7 +606,7 @@
       return;
     }
 
-    alert("AI આધાર કાર્ડ વાંચી રહ્યું છે, કૃપા કરીને ૧-૨ સેકન્ડ રાહ જુઓ...");
+    alert("AI આધાર કાર્ડ સ્કેન કરી રહ્યું છે, કૃપા કરીને ૧-૨ સેકન્ડ રાહ જુઓ...");
 
     try {
       const response = await fetch(SCRIPT_URL, {
@@ -618,30 +618,52 @@
       
       if (result && result.status === "SUCCESS" && result.data) {
         let scanned = result.data;
+        let filledFieldsCount = 0;
         
-        if (scanned.name) {
+        // ૧. પૂરું નામ ઓટો-ફિલ
+        if (scanned.name && scanned.name.trim() !== "") {
           document.querySelector('[name="FULL_NAME"]').value = scanned.name;
+          filledFieldsCount++;
         }
-        if (scanned.address) {
+        
+        // ૨. સરનામું ઓટો-ફિલ
+        if (scanned.address && scanned.address.trim() !== "") {
           document.querySelector('[name="ADDRESS"]').value = scanned.address;
+          filledFieldsCount++;
         }
-        if (scanned.dob) {
-          document.getElementById('v_dob').value = scanned.dob;
-          calculateAgeFromDOB();
+        
+        // ૩. જન્મ તારીખ અથવા વર્ષ હેન્ડલિંગ
+        if (scanned.dob && scanned.dob.trim() !== "") {
+          if (scanned.dob.length === 4) {
+            let currentYear = new Date().getFullYear();
+            document.getElementById('v_age').value = currentYear - parseInt(scanned.dob);
+            calculateDOBFromAge();
+          } else {
+            document.getElementById('v_dob').value = scanned.dob;
+            calculateAgeFromDOB();
+          }
+          filledFieldsCount++;
         }
-        if (scanned.aadharNumber) {
+        
+        // ૪. [Aadhaar Number Redacted / Safe Mapping]
+        if (scanned.aadharNumber && scanned.aadharNumber.trim() !== "") {
           document.querySelector('[name="AADHAR_NUMBER"]').value = scanned.aadharNumber;
+          filledFieldsCount++;
         }
 
-        alert("સફળતાપૂર્વક આધાર કાર્ડમાંથી ડેટા ઓટો-ફિલ થઈ ગયો!");
+        if (filledFieldsCount > 0) {
+          alert("સફળતાપૂર્વક જેટલો ડેટા મળ્યો તેટલો ઓટો-ફિલ થઈ ગયો છે!");
+        } else {
+          alert("આધાર કાર્ડમાંથી ટેક્સ્ટ વાંચી શકાઈ નથી. કૃપા કરીને સ્પષ્ટ ફોટો અપલોડ કરો.");
+        }
       } else {
-        alert("સ્કેનિંગ એરર: " + (result.message || "ડેટા વાંચી શકાયો નથી."));
+        alert("સ્કેનિંગ એરર: ડેટા મળી શક્યો નથી.");
       }
     } catch (error) {
       console.error(error);
-      alert("નેટવર્ક કે કનેクション એરર: " + error.message);
+      alert("નેટવર્ક એરર: " + error.message);
     }
-  }
+  } 
   // 1. Auto Generate Unique ID
   document.getElementById('v_unique_id').value = 'EMP 00176';
 
