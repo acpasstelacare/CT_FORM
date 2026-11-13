@@ -765,10 +765,9 @@ async function scanAadhaarWithAI() {
       return;
     }
 
-    alert("AI આધાર કાર્ડ સ્કેન કરી રહ્યું છે...");
+    alert("AI આધાર કાર્ડ સ્કેન કરી રહ્યું છે, ૧-૨ સેકન્ડ રાહ જુઓ...");
 
     try {
-      // જો બેઝ-૬૪ માં હેડર હોય તો કાઢી નાખવું
       const base64DataOnly = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
 
       const response = await fetch(SCRIPT_URL, {
@@ -778,19 +777,22 @@ async function scanAadhaarWithAI() {
 
       const result = await response.json();
       
-      if (result && result.status === "SUCCESS" && result.text) {
-        // ટેક્સ્ટ બોક્સમાં બધો જ ડેટા કેપિટલ લેટર્સમાં ભરી દેવો
-        document.getElementById('rawAadhaarText').value = result.text.toUpperCase();
-        alert("ડેટા સફળતાપૂર્વક સ્કેન થઈ ગયો! નીચેના બોક્સમાંથી જોઈને અથવા કૉપિ કરીને ભરી દો.");
+      // ટેક્સ્ટ બોક્સમાં ડેટા મૂકવાનું લોજિક
+      const textBox = document.getElementById('rawAadhaarText');
+      if (textBox) {
+        textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
+      }
+
+      if (result && result.status === "SUCCESS") {
+        alert("સફળતાપૂર્વક સ્કેન થઈ ગયું! નીચેના બોક્સમાં બધા અક્ષરો કેપિટલ (CAPITAL) માં આવી ગયા છે.");
       } else {
-        alert("ડેટા વાંચવામાં નિષ્ફળ રહ્યું.");
+        alert("સ્કેનિંગ એરર આવી.");
       }
     } catch (error) {
       console.error(error);
       alert("નેટવર્ક એરર: " + error.message);
     }
   }
-
   // 8. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
   document.getElementById('employeeForm').addEventListener('submit', async function(e) {
     e.preventDefault();
