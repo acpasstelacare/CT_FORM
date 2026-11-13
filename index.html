@@ -200,11 +200,15 @@
           <input type="file" accept="image/*" capture="user" id="live_file" onchange="previewImage(event, 'live_preview')">
           <div class="preview-container"><img id="live_preview" class="preview-img" alt="Preview"></div>
         </div>
-        <div class="form-group">
-          <label>DIGITAL SIGN</label>
-          <input type="file" accept="image/*" capture="environment" id="sign_file" onchange="previewImage(event, 'sign_preview')">
-          <div class="preview-container"><img id="sign_preview" class="preview-img" alt="Preview"></div>
-        </div>
+       <div class="form-group">
+  <label>DIGITAL SIGNATURE (DRAW BELOW)</label>
+  <div style="border: 1px dashed #102C57; padding: 8px; background: #fdfdfd; border-radius: 4px;">
+    <canvas id="sigCanvas" style="display: block; width: 100%; height: 120px; background: #fff; border: 1px solid #555; cursor: crosshair; touch-action: none;"></canvas>
+    <div style="display: flex; gap: 10px; margin-top: 8px;">
+      <button type="button" onclick="clearCanvas()" style="background: #dc3545; color: #fff; border: none; padding: 8px 12px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 12px;">CLEAR SIGNATURE</button>
+    </div>
+  </div>
+</div>
         <div class="form-group">
           <label>LEFT THUMB IMPRESSION</label>
           <input type="file" accept="image/*" capture="environment" id="thumb_left_file" onchange="previewImage(event, 'thumb_left_preview')">
@@ -725,7 +729,19 @@
     dataObject.ADHAR_BACK_FILE = await getFinalImageBase64('adhar_back_file');
     dataObject.PAN_PIC_FILE = await getFinalImageBase64('pan_file');
     dataObject.LIVE_PHOTO_FILE = await getFinalImageBase64('live_file');
-    dataObject.DIGITAL_SIGN_FILE = await getFinalImageBase64('sign_file');
+    // કેનવાસ ખાલી છે કે નહીં તેની ચકાસણી
+    let blankCanvas = document.createElement('canvas');
+    blankCanvas.width = canvas.width;
+    blankCanvas.height = canvas.height;
+    
+    if (canvas && canvas.toDataURL() === blankCanvas.toDataURL()) {
+      alert("Please provide your digital signature before submitting!");
+      submitBtn.disabled = false;
+      submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+      return;
+    }
+
+    dataObject.DIGITAL_SIGN_FILE = canvas ? canvas.toDataURL('image/png') : '';
     dataObject.THUMB_LEFT_FILE = await getFinalImageBase64('thumb_left_file');
     dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
 
@@ -750,6 +766,53 @@
       submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
     });
   });
+  // Canvas Signature Initialization & Events
+  let canvas, ctx, isDrawing = false;
+  
+  window.addEventListener('DOMContentLoaded', () => {
+    canvas = document.getElementById('sigCanvas');
+    if (canvas) {
+      ctx = canvas.getContext('2d');
+      
+      function resizeCanvas() {
+        let rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width || 400;
+        canvas.height = 120;
+      }
+      resizeCanvas();
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDraw);
+
+      canvas.addEventListener('touchstart', (e) => { startDraw(e.touches[0]); e.preventDefault(); });
+      canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); });
+      canvas.addEventListener('touchend', stopDraw);
+    }
+  });
+
+  function startDraw(e) {
+    isDrawing = true;
+    ctx.beginPath();
+    let rect = canvas.getBoundingClientRect();
+    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+  }
+
+  function draw(e) {
+    if (!isDrawing) return;
+    let rect = canvas.getBoundingClientRect();
+    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  function stopDraw() { isDrawing = false; }
+  function clearCanvas() { 
+    if(ctx && canvas) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    }
+  }
 </script>
 
 </body>
