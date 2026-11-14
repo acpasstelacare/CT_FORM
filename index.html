@@ -746,22 +746,39 @@
 
   // 7. AI AADHAAR SCANNING FUNCTION
 async function scanAadhaarWithAI() {
-    const inputEl = document.getElementById('adhar_front_file');
+    // ફ્રન્ટ અને બેક બંને ફાઇલ ઇનપુટ મેળવો (તમારા ફોર્મમાં આઈડી મુજબ ચકાસી લેવું)
+    const frontInput = document.getElementById('adhar_front_file');
+    const backInput = document.getElementById('adhar_back_file'); 
     
     let imageBase64 = '';
-    if (inputEl.dataset.croppedBase64) {
-      imageBase64 = inputEl.dataset.croppedBase64;
-    } else if (inputEl.files && inputEl.files[0]) {
-      const file = inputEl.files[0];
+    
+    // ૧. પહેલા ફ્રન્ટ સાઈડ ચેક કરો
+    if (frontInput && frontInput.dataset.croppedBase64) {
+      imageBase64 = frontInput.dataset.croppedBase64;
+    } else if (frontInput && frontInput.files && frontInput.files[0]) {
       imageBase64 = await new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => resolve(e.target.result);
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(frontInput.files[0]);
       });
     }
+    
+    // ૨. જો ફ્રન્ટમાં ફોટો ન હોય, તો બેક સાઈડ ચેક કરો
+    if (!imageBase64 && backInput) {
+      if (backInput.dataset.croppedBase64) {
+        imageBase64 = backInput.dataset.croppedBase64;
+      } else if (backInput.files && backInput.files[0]) {
+        imageBase64 = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(backInput.files[0]);
+        });
+      }
+    }
 
+    // ૩. જો બંનેમાંથી ક્યાંય ફોટો ન હોય તો જ એરર બતાવો
     if (!imageBase64) {
-      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફોટો અપલોડ કરો!");
+      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફ્રન્ટ અથવા બેક ફોટો અપલોડ કરો!");
       return;
     }
 
@@ -777,14 +794,13 @@ async function scanAadhaarWithAI() {
 
       const result = await response.json();
       
-      // ટેક્સ્ટ બોક્સમાં ડેટા મૂકવાનું લોજિક
       const textBox = document.getElementById('rawAadhaarText');
       if (textBox) {
         textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
       }
 
       if (result && result.status === "SUCCESS") {
-        alert("સફળતાપૂર્વક સ્કેન થઈ ગયું! નીચેના બોક્સમાં બધા અક્ષરો કેપિટલ (CAPITAL) માં આવી ગયા છે.");
+        alert("સફળતાપૂર્વક સ્કેન થઈ ગયું!");
       } else {
         alert("સ્કેનિંગ એરર આવી.");
       }
