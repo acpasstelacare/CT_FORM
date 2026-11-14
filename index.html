@@ -746,29 +746,31 @@
 
   // 7. AI AADHAAR SCANNING FUNCTION
 async function scanAadhaarWithAI() {
-    // ફ્રન્ટ અને બેક બંને ફાઇલ ઇનપુટ મેળવો (તમારા ફોર્મમાં આઈડી મુજબ ચકાસી લેવું)
     const frontInput = document.getElementById('adhar_front_file');
-    const backInput = document.getElementById('adhar_back_file'); 
+    const backInput = document.getElementById('adhar_back_file'); // ખાતરી કરી લેજો કે બેક સાઈડની આઈડી આ જ છે
     
-    let imageBase64 = '';
+    let frontBase64 = '';
+    let backBase64 = '';
     
-    // ૧. પહેલા ફ્રન્ટ સાઈડ ચેક કરો
-    if (frontInput && frontInput.dataset.croppedBase64) {
-      imageBase64 = frontInput.dataset.croppedBase64;
-    } else if (frontInput && frontInput.files && frontInput.files[0]) {
-      imageBase64 = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target.result);
-        reader.readAsDataURL(frontInput.files[0]);
-      });
+    // ૧. ફ્રન્ટ ફોટો ચેક કરો
+    if (frontInput) {
+      if (frontInput.dataset.croppedBase64) {
+        frontBase64 = frontInput.dataset.croppedBase64;
+      } else if (frontInput.files && frontInput.files[0]) {
+        frontBase64 = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(frontInput.files[0]);
+        });
+      }
     }
     
-    // ૨. જો ફ્રન્ટમાં ફોટો ન હોય, તો બેક સાઈડ ચેક કરો
-    if (!imageBase64 && backInput) {
+    // ૨. બેક ફોટો ચેક કરો
+    if (backInput) {
       if (backInput.dataset.croppedBase64) {
-        imageBase64 = backInput.dataset.croppedBase64;
+        backBase64 = backInput.dataset.croppedBase64;
       } else if (backInput.files && backInput.files[0]) {
-        imageBase64 = await new Promise((resolve) => {
+        backBase64 = await new Promise((resolve) => {
           const reader = new FileReader();
           reader.onload = (e) => resolve(e.target.result);
           reader.readAsDataURL(backInput.files[0]);
@@ -776,20 +778,27 @@ async function scanAadhaarWithAI() {
       }
     }
 
-    // ૩. જો બંનેમાંથી ક્યાંય ફોટો ન હોય તો જ એરર બતાવો
-    if (!imageBase64) {
-      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફ્રન્ટ અથવા બેક ફોટો અપલોડ કરો!");
+    // જો બંને ખાલી હોય તો જ એરર આપો
+    if (!frontBase64 && !backBase64) {
+      alert("કૃપા કરીને ઓછામાં ઓછું એક (ફ્રન્ટ અથવા બેક) આધાર કાર્ડનો ફોટો અપલોડ કરો!");
       return;
     }
 
     alert("AI આધાર કાર્ડ સ્કેન કરી રહ્યું છે, ૧-૨ સેકન્ડ રાહ જુઓ...");
 
     try {
-      const base64DataOnly = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
+      const payloadData = { action: "scan_aadhaar" };
+      
+      if (frontBase64) {
+        payloadData.frontImage = frontBase64.includes(',') ? frontBase64.split(',')[1] : frontBase64;
+      }
+      if (backBase64) {
+        payloadData.backImage = backBase64.includes(',') ? backBase64.split(',')[1] : backBase64;
+      }
 
       const response = await fetch(SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "scan_aadhaar", image: base64DataOnly })
+        body: JSON.stringify(payloadData)
       });
 
       const result = await response.json();
@@ -808,8 +817,7 @@ async function scanAadhaarWithAI() {
       console.error(error);
       alert("નેટવર્ક એરર: " + error.message);
     }
-  }
-  // 8. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
+  }  // 8. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
   document.getElementById('employeeForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
