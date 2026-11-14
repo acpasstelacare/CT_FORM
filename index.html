@@ -257,7 +257,7 @@
         </div>
         <div class="form-group">
           <label>AADHAR NUMBER (12 DIGITS)</label>
-          <input type="text" name="AADHAR_NUMBER" id="aadhar_number" pattern="[0-9]{12}" maxlength="12" placeholder="ENTER AADHAR NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')" onblur="checkExistingEmployee(this.value)">
+          <input type="text" name="AADHAR_NUMBER" id="aadhar_number" pattern="[0-9]{12}" maxlength="12" placeholder="ENTER AADHAR NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length === 12) { checkExistingEmployee(this.value); }">
         </div>
         <div class="form-group">
           <label>PAN NUMBER (10 CHARACTERS - E.G. ABCDE1234F)</label>
