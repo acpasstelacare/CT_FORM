@@ -825,6 +825,105 @@ async function scanAadhaarWithAI() {
       console.error(error);
       alert("નેટવર્ક એરર: " + error.message);
     }
+  // ૧. AI સ્કેન કરવા માટેનું મુખ્ય બટન દબાઈ ત્યારે આ ચાલે છે
+  async function scanAadhaarWithAI() {
+    const frontInput = document.getElementById('adhar_front_file');
+    const backInput = document.getElementById('adhar_back_file'); 
+    
+    let frontBase64 = '';
+    let backBase64 = '';
+    
+    // (ફોટો રીડ કરવાની કોડ પ્રોસેસ...)
+    if (frontInput && frontInput.files && frontInput.files[0]) {
+      frontBase64 = await toBase64(frontInput.files[0]);
+    }
+    if (backInput && backInput.files && backInput.files[0]) {
+      backBase64 = await toBase64(backInput.files[0]);
+    }
+
+    if (!frontBase64 && !backBase64) {
+      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફોટો અપલોડ કરો!");
+      return;
+    }
+
+    alert("AI સ્કેન કરી રહ્યું છે...");
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ 
+          action: "scan_aadhaar", 
+          frontImage: frontBase64, 
+          backImage: backBase64 
+        })
+      });
+
+      const result = await response.json();
+      
+      const textBox = document.getElementById('rawAadhaarText');
+      if (textBox) {
+        textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
+        
+        // 👇 **અહીંયાથી ઓટો-ફિલ ફંક્શન કૉલ થાય છે (આ લાઇન ઉમેરવાની છે)** 👇
+        if (result && result.text) {
+          parseAndAutofill(result.text);
+        }
+      }
+
+      if (result && result.status === "SUCCESS") {
+        alert("સફળતાપૂર્વક સ્કેન થઈ ગયું!");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("એરર: " + error.message);
+    }
+  }
+
+
+  // ૨. આ એ જ ફંક્શન છે જે ટેક્સ્ટ વાંચીને ફોર્મમાં ભરે છે (આને પણ નીચે જ મૂકી દેવાનું)
+  function parseAndAutofill(rawText) {
+    // જો ડેટા પ્રોપર ન હોય તો આગળ ન વધવું
+    if (!rawText || rawText.includes("NO TEXT FOUND") || rawText.includes("API RAW RESPONSE") || rawText.includes("SCRIPT ERROR")) {
+      return;
+    }
+
+    const lines = rawText.split('\n');
+    let parsedData = {};
+    
+    lines.forEach(line => {
+      const parts = line.split(':');
+      if (parts.length >= 2) {
+        const key = parts[0].trim();
+        const val = parts.slice(1).join(':').trim();
+        parsedData[key] = val;
+      }
+    });
+
+    // જો પ્રોપર નામ ન મળે તો ફોર્મ ન ભરવું
+    if (!parsedData['NAME'] || parsedData['NAME'] === 'NOT AVAILABLE' || parsedData['NAME'] === '') {
+      return;
+    }
+
+    // હવે ફોર્મના બોક્સમાં ઓટોમેટિક ડેટા નંખાશે:
+    if (document.getElementById('full_name')) {
+      document.getElementById('full_name').value = parsedData['NAME'];
+    }
+    if (parsedData['MOBILE NUMBER'] && parsedData['MOBILE NUMBER'] !== 'NOT AVAILABLE' && document.getElementById('mobile_number')) {
+      document.getElementById('mobile_number').value = parsedData['MOBILE NUMBER'];
+    }
+    if (parsedData['GENDER'] && document.getElementById('gender')) {
+      document.getElementById('gender').value = parsedData['GENDER'];
+    }
+    if (parsedData['DATE OF BIRTH'] && document.getElementById('dob')) {
+      document.getElementById('dob').value = parsedData['DATE OF BIRTH'];
+    }
+    if (parsedData['AADHAR NUMBER'] && document.getElementById('aadhar_number')) {
+      document.getElementById('aadhar_number').value = parsedData['AADHAR NUMBER'];
+    }
+    if (parsedData['ADDRESS'] && document.getElementById('address')) {
+      document.getElementById('address').value = parsedData['ADDRESS'];
+    }
+  }
   }  // 8. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
   document.getElementById('employeeForm').addEventListener('submit', async function(e) {
     e.preventDefault();
