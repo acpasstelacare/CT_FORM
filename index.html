@@ -605,50 +605,47 @@
     <button type="button" class="crop-cancel-btn" onclick="closeCropModal()">CANCEL</button>
   </div>
 </div>
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
 
-  <script>
-    // UPDATE YOUR APPS SCRIPT WEB APP URL HERE:
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
-  
-    // 1. Auto Generate Unique ID
-    document.getElementById('v_unique_id').value = 'EMP 00176';
-  
-    // 2. Running Clock for Timestamp
-    setInterval(() => {
-      const now = new Date();
-      document.getElementById('v_timestamp').value = now.toLocaleString().toUpperCase();
-    }, 1000);
-  
-    // 3. Auto calculate Age from DOB
-    function calculateAgeFromDOB() {
-      const dobVal = document.getElementById('v_dob').value;
-      if (dobVal) {
-        const birthDate = new Date(dobVal);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-          age--;
-        }
-        document.getElementById('v_age').value = age;
+  document.getElementById('v_unique_id').value = 'EMP 00176';
+
+  setInterval(() => {
+    const now = new Date();
+    const tsEl = document.getElementById('v_timestamp');
+    if(tsEl) tsEl.value = now.toLocaleString().toUpperCase();
+  }, 1000);
+
+  function calculateAgeFromDOB() {
+    const dobVal = document.getElementById('v_dob').value;
+    if (dobVal) {
+      const birthDate = new Date(dobVal);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
       }
+      const ageEl = document.getElementById('v_age');
+      if(ageEl) ageEl.value = age;
     }
-  
-    // 4. Auto calculate DOB from Age
-    function calculateDOBFromAge() {
-      const ageVal = document.getElementById('v_age').value;
-      if (ageVal && ageVal > 0) {
-        const today = new Date();
-        const birthYear = today.getFullYear() - parseInt(ageVal);
-        const approxDOB = birthYear + '-01-01';
-        document.getElementById('v_dob').value = approxDOB;
-      }
+  }
+
+  function calculateDOBFromAge() {
+    const ageVal = document.getElementById('v_age').value;
+    if (ageVal && ageVal > 0) {
+      const today = new Date();
+      const birthYear = today.getFullYear() - parseInt(ageVal);
+      const approxDOB = birthYear + '-01-01';
+      const dobEl = document.getElementById('v_dob');
+      if(dobEl) dobEl.value = approxDOB;
     }
-  
-    // 5. Toggle Other Input Field
-    function toggleOtherInput(chkId, inputId) {
-      const chk = document.getElementById(chkId);
-      const input = document.getElementById(inputId);
+  }
+
+  function toggleOtherInput(chkId, inputId) {
+    const chk = document.getElementById(chkId);
+    const input = document.getElementById(inputId);
+    if (chk && input) {
       if (chk.checked) {
         input.style.display = 'block';
         input.required = true;
@@ -658,193 +655,183 @@
         input.value = '';
       }
     }
-  
-    // 6. Image Crop & Preview Functions
-    let cropper = null;
-    let currentPreviewId = null;
-    let currentFileInput = null;
-  
-    function previewImage(event, previewId) {
-      const file = event.target.files[0];
-      if (file) {
-        currentPreviewId = previewId;
-        currentFileInput = event.target;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('cropImage').src = e.target.result;
-          document.getElementById('cropModal').style.display = 'flex';
-          
-          if (cropper) {
-            cropper.destroy();
-          }
-          const image = document.getElementById('cropImage');
-          cropper = new Cropper(image, {
-            aspectRatio: NaN,
-            viewMode: 1,
-            autoCropArea: 0.9,
-          });
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  
-    function rotateCropImage() {
-      if (cropper) {
-        cropper.rotate(90);
-      }
-    }
-  
-    function confirmCrop() {
-      if (cropper) {
-        const canvas = cropper.getCroppedCanvas({
-          maxWidth: 1000,
-          maxHeight: 1000,
+  }
+
+  let cropper = null;
+  let currentPreviewId = null;
+  let currentFileInput = null;
+
+  function previewImage(event, previewId) {
+    const file = event.target.files[0];
+    if (file) {
+      currentPreviewId = previewId;
+      currentFileInput = event.target;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('cropImage').src = e.target.result;
+        document.getElementById('cropModal').style.display = 'flex';
+        if (cropper) {
+          cropper.destroy();
+        }
+        const image = document.getElementById('cropImage');
+        cropper = new Cropper(image, {
+          aspectRatio: NaN,
+          viewMode: 1,
+          autoCropArea: 0.9,
         });
-        const croppedDataUrl = canvas.toDataURL('image/png');
-  
-        const previewImg = document.getElementById(currentPreviewId);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function rotateCropImage() {
+    if (cropper) {
+      cropper.rotate(90);
+    }
+  }
+
+  function confirmCrop() {
+    if (cropper) {
+      const canvas = cropper.getCroppedCanvas({
+        maxWidth: 1000,
+        maxHeight: 1000,
+      });
+      const croppedDataUrl = canvas.toDataURL('image/png');
+      const previewImg = document.getElementById(currentPreviewId);
+      if(previewImg) {
         previewImg.src = croppedDataUrl;
         previewImg.style.display = 'block';
-  
+      }
+      if(currentFileInput) {
         currentFileInput.dataset.croppedBase64 = croppedDataUrl;
-  
-        closeCropModal();
       }
+      closeCropModal();
     }
-  
-    function closeCropModal() {
-      document.getElementById('cropModal').style.display = 'none';
-      if (cropper) {
-        cropper.destroy();
-        cropper = null;
+  }
+
+  function closeCropModal() {
+    const modal = document.getElementById('cropModal');
+    if(modal) modal.style.display = 'none';
+    if (cropper) {
+      cropper.destroy();
+      cropper = null;
+    }
+  }
+
+  let canvas, ctx, isDrawing = false;
+  window.addEventListener('DOMContentLoaded', () => {
+    canvas = document.getElementById('sigCanvas');
+    if (canvas) {
+      ctx = canvas.getContext('2d');
+      function resizeCanvas() {
+        let rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width || 400;
+        canvas.height = 120;
       }
+      resizeCanvas();
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDraw);
+
+      canvas.addEventListener('touchstart', (e) => { startDraw(e.touches[0]); e.preventDefault(); });
+      canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); });
+      canvas.addEventListener('touchend', stopDraw);
     }
-  
-    // Canvas Signature Initialization & Events
-    let canvas, ctx, isDrawing = false;
+  });
+
+  function startDraw(e) {
+    isDrawing = true;
+    ctx.beginPath();
+    let rect = canvas.getBoundingClientRect();
+    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+  }
+
+  function draw(e) {
+    if (!isDrawing) return;
+    let rect = canvas.getBoundingClientRect();
+    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  function stopDraw() { isDrawing = false; }
+  function clearCanvas() { 
+    if(ctx && canvas) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    }
+  }
+
+  async function scanAllWithAI() {
+    const frontInput = document.getElementById('adhar_front_file');
+    const backInput = document.getElementById('adhar_back_file');
+    const panInput = document.getElementById('pan_file');
     
-    window.addEventListener('DOMContentLoaded', () => {
-      canvas = document.getElementById('sigCanvas');
-      if (canvas) {
-        ctx = canvas.getContext('2d');
-        
-        function resizeCanvas() {
-          let rect = canvas.getBoundingClientRect();
-          canvas.width = rect.width || 400;
-          canvas.height = 120;
-        }
-        resizeCanvas();
-  
-        canvas.addEventListener('mousedown', startDraw);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDraw);
-  
-        canvas.addEventListener('touchstart', (e) => { startDraw(e.touches[0]); e.preventDefault(); });
-        canvas.addEventListener('touchmove', (e) => { draw(e.touches[0]); e.preventDefault(); });
-        canvas.addEventListener('touchend', stopDraw);
-      }
-    });
-  
-    function startDraw(e) {
-      isDrawing = true;
-      ctx.beginPath();
-      let rect = canvas.getBoundingClientRect();
-      ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-    }
-  
-    function draw(e) {
-      if (!isDrawing) return;
-      let rect = canvas.getBoundingClientRect();
-      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-      ctx.strokeStyle = '#000';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    }
-  
-    function stopDraw() { isDrawing = false; }
-    function clearCanvas() { 
-      if(ctx && canvas) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); 
-      }
-    }
-  
-  // 7. AI ALL-IN-ONE SCANNING & AUTO-FILL FUNCTION (Aadhaar Front/Back & PAN)
-    // 7. AI ALL-IN-ONE SCANNING & AUTO-FILL FUNCTION (Aadhaar Front/Back & PAN)
-    async function scanAllWithAI() {
-      const frontInput = document.getElementById('adhar_front_file');
-      const backInput = document.getElementById('adhar_back_file');
-      const panInput = document.getElementById('pan_file');
-      
-      let frontBase64 = '';
-      let backBase64 = '';
-      let panBase64 = '';
-      
-      // હેલ્પર ફંક્શન ફોટો રીડ કરવા માટે
-      async function getBase64(inputEl) {
-        if (!inputEl) return '';
-        if (inputEl.dataset.croppedBase64) {
-          let val = inputEl.dataset.croppedBase64;
-          return val.includes(',') ? val.split(',')[1] : val;
-        } else if (inputEl.files && inputEl.files[0]) {
-          return await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              let res = e.target.result;
-              resolve(res.includes(',') ? res.split(',')[1] : res);
-            };
-            reader.readAsDataURL(inputEl.files[0]);
-          });
-        }
-        return '';
-      }
-  
-      frontBase64 = await getBase64(frontInput);
-      backBase64 = await getBase64(backInput);
-      panBase64 = await getBase64(panInput);
-  
-      // ઓછામાં ઓછું કોઈ એક કાર્ડ અપલોડ થયેલું હોવું જોઈએ
-      if (!frontBase64 && !backBase64 && !panBase64) {
-        alert("કૃપા કરીને ઓછામાં ઓછું આધાર અથવા પાન કાર્ડનો ફોટો અપલોડ કરો!");
-        return;
-      }
-  
-      alert("AI ડેટા સ્કેન કરી રહ્યું છે, ૧-૨ સેકન્ડ રાહ જુઓ...");
-  
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({ 
-            action: "scan_all", 
-            frontImage: frontBase64, 
-            backImage: backBase64,
-            panImage: panBase64 
-          })
+    let frontBase64 = '';
+    let backBase64 = '';
+    let panBase64 = '';
+    
+    async function getBase64(inputEl) {
+      if (!inputEl) return '';
+      if (inputEl.dataset.croppedBase64) {
+        let val = inputEl.dataset.croppedBase64;
+        return val.includes(',') ? val.split(',')[1] : val;
+      } else if (inputEl.files && inputEl.files[0]) {
+        return await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            let res = e.target.result;
+            resolve(res.includes(',') ? res.split(',')[1] : res);
+          };
+          reader.readAsDataURL(inputEl.files[0]);
         });
-  
-        const result = await response.json();
-        
-        const textBox = document.getElementById('rawAadhaarText');
-        if (textBox) {
-          textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
-          
-          if (result && result.text) {
-            parseAndAutofillAll(result.text);
-          }
-        }
-  
-        if (result && result.status === "SUCCESS") {
-          alert("સફળતાપૂર્વક સ્કેન અને ઓટો-ફિલ થઈ ગયું!");
-        } else {
-          alert("સ્કેનિંગ એરર આવી.");
-        }
-      } catch (error) {
-        console.error(error);
-        alert("નેટવર્ક એરર: " + error.message);
       }
+      return '';
     }
-  
-    // 8. PARSE AND AUTO-FILL ALL FUNCTION
-   // 8. PARSE AND AUTO-FILL ALL FUNCTION
+
+    frontBase64 = await getBase64(frontInput);
+    backBase64 = await getBase64(backInput);
+    panBase64 = await getBase64(panInput);
+
+    if (!frontBase64 && !backBase64 && !panBase64) {
+      alert("કૃપા કરીને ઓછામાં ઓછું આધાર અથવા પાન કાર્ડનો ફોટો અપલોડ કરો!");
+      return;
+    }
+
+    alert("AI ડેટા સ્કેન કરી રહ્યું છે, ૧-૨ સેકન્ડ રાહ જુઓ...");
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ 
+          action: "scan_all", 
+          frontImage: frontBase64, 
+          backImage: backBase64,
+          panImage: panBase64 
+        })
+      });
+
+      const result = await response.json();
+      const textBox = document.getElementById('rawAadhaarText');
+      if (textBox) {
+        textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
+        if (result && result.text) {
+          parseAndAutofillAll(result.text);
+        }
+      }
+
+      if (result && result.status === "SUCCESS") {
+        alert("સફળતાપૂર્વક સ્કેન અને ઓટો-ફિલ થઈ ગયું!");
+      } else {
+        alert("સ્કેનિંગ એરર આવી.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("નેટવર્ક એરર: " + error.message);
+    }
+  }
+
   function parseAndAutofillAll(rawText) {
     if (!rawText || rawText.includes("NO TEXT FOUND") || rawText.includes("API RAW RESPONSE") || rawText.includes("SCRIPT ERROR")) {
       return;
@@ -856,7 +843,6 @@
     lines.forEach(line => {
       const cleanLine = line.replace(/\*/g, '').trim();
       const parts = cleanLine.split(':');
-      
       if (parts.length >= 2) {
         const key = parts[0].trim();
         const val = parts.slice(1).join(':').trim();
@@ -864,30 +850,24 @@
       }
     });
 
-    console.log("Parsed Data:", parsedData);
-
-    // ૧. Full Name
     const fullNameVal = parsedData['NAME'];
     if (fullNameVal && fullNameVal !== 'NOT AVAILABLE') {
       const el = document.querySelector('input[name="FULL_NAME"]') || document.getElementById('full_name');
       if (el) el.value = fullNameVal;
     }
 
-    // ૨. Mobile Number
     const mobileVal = parsedData['MOBILE NUMBER'];
     if (mobileVal && mobileVal !== 'NOT AVAILABLE') {
       const el = document.querySelector('input[name="MOBILE"]') || document.getElementById('mobile_number');
       if (el) el.value = mobileVal;
     }
 
-    // ૩. Gender
     const genderVal = parsedData['GENDER'];
     if (genderVal) {
       const el = document.querySelector('select[name="gender"]') || document.querySelector('select[name="GENDER"]') || document.getElementById('gender');
       if (el) el.value = genderVal;
     }
 
-    // ૪. Date of Birth
     const dobVal = parsedData['DATE OF BIRTH'];
     if (dobVal) {
       let dobStr = dobVal;
@@ -906,14 +886,12 @@
       }
     }
 
-    // ૫. Aadhar Number
     const aadharVal = parsedData['AADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
     if (aadharVal && aadharVal !== 'NOT AVAILABLE') {
       const el = document.querySelector('input[name="AADHAR_NUMBER"]') || document.getElementById('aadhar_number');
       if (el) el.value = aadharVal;
     }
 
-    // ૬. PAN Number
     const panVal = parsedData['PAN NUMBER'];
     const panField = document.querySelector('input[name="PAN_NUMBER"]');
     if (panVal && panVal !== 'NOT AVAILABLE' && panField) {
@@ -925,103 +903,110 @@
       }
     }
 
-    // ૭. Address
     const addressVal = parsedData['ADDRESS'];
     if (addressVal && addressVal !== 'NOT AVAILABLE') {
       const el = document.querySelector('input[name="ADDRESS"]') || document.getElementById('address');
       if (el) el.value = addressVal;
     }
 
-    // AI સ્કેન પૂરું થતાં જ આધાર ચેક કરો
     const aadharValFinal = parsedData['AADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
     if (aadharValFinal && aadharValFinal !== 'NOT AVAILABLE') {
       checkExistingEmployee(aadharValFinal);
     }
   }
 
-  // 9. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
-  document.getElementById('employeeForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const submitBtn = document.querySelector('.submit-btn');
-    submitBtn.disabled = true;
-    submitBtn.innerText = "UPLOADING & GENERATING PDF...";
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('employeeForm');
+    if (form) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const submitBtn = document.querySelector('.submit-btn');
+        if(submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerText = "UPLOADING & GENERATING PDF...";
+        }
 
-    const formData = new FormData(this);
-    const dataObject = {};
+        const formData = new FormData(this);
+        const dataObject = {};
 
-    formData.forEach((value, key) => {
-      if (key === 'LANGUAGES_KNOWN' || key === 'KNOWN_SKILLS') {
-        if (!dataObject[key]) dataObject[key] = [];
-        dataObject[key].push(value);
-      } else {
-        dataObject[key] = value;
-      }
-    });
+        formData.forEach((value, key) => {
+          if (key === 'LANGUAGES_KNOWN' || key === 'KNOWN_SKILLS') {
+            if (!dataObject[key]) dataObject[key] = [];
+            dataObject[key].push(value);
+          } else {
+            dataObject[key] = value;
+          }
+        });
 
-    if (Array.isArray(dataObject.LANGUAGES_KNOWN)) dataObject.LANGUAGES_KNOWN = dataObject.LANGUAGES_KNOWN.join(', ');
-    if (Array.isArray(dataObject.KNOWN_SKILLS)) dataObject.KNOWN_SKILLS = dataObject.KNOWN_SKILLS.join(', ');
+        if (Array.isArray(dataObject.LANGUAGES_KNOWN)) dataObject.LANGUAGES_KNOWN = dataObject.LANGUAGES_KNOWN.join(', ');
+        if (Array.isArray(dataObject.KNOWN_SKILLS)) dataObject.KNOWN_SKILLS = dataObject.KNOWN_SKILLS.join(', ');
 
-    const getFinalImageBase64 = inputId => new Promise((resolve, reject) => {
-      const inputEl = document.getElementById(inputId);
-      if (inputEl.dataset.croppedBase64) {
-        return resolve(inputEl.dataset.croppedBase64);
-      }
-      const file = inputEl.files[0];
-      if (!file || file.size === 0) return resolve('');
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
+        const getFinalImageBase64 = inputId => new Promise((resolve, reject) => {
+          const inputEl = document.getElementById(inputId);
+          if (!inputEl) return resolve('');
+          if (inputEl.dataset.croppedBase64) {
+            return resolve(inputEl.dataset.croppedBase64);
+          }
+          const file = inputEl.files[0];
+          if (!file || file.size === 0) return resolve('');
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
 
-    dataObject.ADHAR_FRONT_FILE = await getFinalImageBase64('adhar_front_file');
-    dataObject.ADHAR_BACK_FILE = await getFinalImageBase64('adhar_back_file');
-    dataObject.PAN_PIC_FILE = await getFinalImageBase64('pan_file');
-    dataObject.LIVE_PHOTO_FILE = await getFinalImageBase64('live_file');
-    dataObject.THUMB_LEFT_FILE = await getFinalImageBase64('thumb_left_file');
-    dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
+        dataObject.ADHAR_FRONT_FILE = await getFinalImageBase64('adhar_front_file');
+        dataObject.ADHAR_BACK_FILE = await getFinalImageBase64('adhar_back_file');
+        dataObject.PAN_PIC_FILE = await getFinalImageBase64('pan_file');
+        dataObject.LIVE_PHOTO_FILE = await getFinalImageBase64('live_file');
+        dataObject.THUMB_LEFT_FILE = await getFinalImageBase64('thumb_left_file');
+        dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
 
-    // Canvas Signature Validation & Base64 Conversion
-    if (canvas) {
-      let blankCanvas = document.createElement('canvas');
-      blankCanvas.width = canvas.width;
-      blankCanvas.height = canvas.height;
-      
-      if (canvas.toDataURL() === blankCanvas.toDataURL()) {
-        alert("Please provide your digital signature before submitting!");
-        submitBtn.disabled = false;
-        submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
-        return;
-      }
-      dataObject.DIGITAL_SIGN_FILE = canvas.toDataURL('image/png');
-    } else {
-      dataObject.DIGITAL_SIGN_FILE = '';
+        if (canvas) {
+          let blankCanvas = document.createElement('canvas');
+          blankCanvas.width = canvas.width;
+          blankCanvas.height = canvas.height;
+          
+          if (canvas.toDataURL() === blankCanvas.toDataURL()) {
+            alert("Please provide your digital signature before submitting!");
+            if(submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+            }
+            return;
+          }
+          dataObject.DIGITAL_SIGN_FILE = canvas.toDataURL('image/png');
+        } else {
+          dataObject.DIGITAL_SIGN_FILE = '';
+        }
+
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(dataObject)
+        })
+        .then(res => res.json())
+        .then(res => {
+          if (res.status === 'SUCCESS') {
+            alert('Form Saved Successfully in Google Drive Folder!');
+          } else {
+            alert('Error: ' + res.message);
+          }
+        })
+        .catch(err => {
+          alert('Submission Failed!');
+          console.error(err);
+        })
+        .finally(() => {
+          if(submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+          }
+        });
+      });
     }
-
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(dataObject)
-    })
-    .then(res => res.json())
-    .then(res => {
-      if (res.status === 'SUCCESS') {
-        alert('Form Saved Successfully in Google Drive Folder!');
-      } else {
-        alert('Error: ' + res.message);
-      }
-    })
-    .catch(err => {
-      alert('Submission Failed!');
-      console.error(err);
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
-    });
   });
 
-  // 10. CHECK EXISTING EMPLOYEE FROM GOOGLE SHEET VIA AADHAR
   async function checkExistingEmployee(aadharNum) {
     const cleanAadhar = (aadharNum || "").replace(/\s+/g, "").trim();
     if (cleanAadhar.length !== 12) return;
@@ -1082,6 +1067,7 @@
       console.error("Aadhar check error:", err);
       alertBox.style.display = "none";
     }
+  }
 </script>
   
   </body>
