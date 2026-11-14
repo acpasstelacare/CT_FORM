@@ -869,8 +869,18 @@
     if (parsedData['GENDER'] && document.getElementById('gender')) {
       document.getElementById('gender').value = parsedData['GENDER'];
     }
-    if (parsedData['DATE OF BIRTH'] && document.getElementById('dob')) {
-      document.getElementById('dob').value = parsedData['DATE OF BIRTH'];
+    if (parsedData['DATE OF BIRTH'] && document.getElementById('v_dob')) {
+      let dobStr = parsedData['DATE OF BIRTH'];
+      if (dobStr.includes('/')) {
+        const parts = dobStr.split('/');
+        if (parts.length === 3) {
+          dobStr = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+      }
+      document.getElementById('v_dob').value = dobStr;
+      if (typeof calculateAgeFromDOB === 'function') {
+        calculateAgeFromDOB();
+      }
     }
     
     const aadharVal = parsedData['AADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
