@@ -1074,26 +1074,47 @@
             });
           }
         });
-    // ૩. અગાઉ અપલોડ કરેલી ફાઇલોના પ્રીવ્યુ (Images) ઓટો-ડિસ્પ્લે કરવા માટે
+    // ૩. અગાઉ અપલોડ કરેલી ફાઇલોના પ્રીવ્યુ અને ફાઇલ ડેટા ઓટો-સેટ કરવા માટે
     if (rec.docBase64s) {
       const docMap = {
-        "adhar_front_preview": rec.docBase64s["ADHAR_FRONT_URL"],
-        "adhar_back_preview": rec.docBase64s["ADHAR_BACK_URL"],
-        "pan_preview": rec.docBase64s["PAN_CARD_URL"],
-        "live_preview": rec.docBase64s["LIVE_PHOTO_URL"],
-        "thumb_left_preview": rec.docBase64s["LEFT_THUMB_URL"],
-        "thumb_right_preview": rec.docBase64s["RIGHT_THUMB_URL"]
+        "adhar_front_file": rec.docBase64s["ADHAR_FRONT_URL"],
+        "adhar_back_file": rec.docBase64s["ADHAR_BACK_URL"],
+        "pan_file": rec.docBase64s["PAN_CARD_URL"],
+        "live_file": rec.docBase64s["LIVE_PHOTO_URL"],
+        "thumb_left_file": rec.docBase64s["LEFT_THUMB_URL"],
+        "thumb_right_file": rec.docBase64s["RIGHT_THUMB_URL"]
       };
 
-      Object.keys(docMap).forEach(previewId => {
-        const b64Data = docMap[previewId];
+      const previewMap = {
+        "adhar_front_file": "adhar_front_preview",
+        "adhar_back_file": "adhar_back_preview",
+        "pan_file": "pan_preview",
+        "live_file": "live_preview",
+        "thumb_left_file": "thumb_left_preview",
+        "thumb_right_file": "thumb_right_preview"
+      };
+
+      Object.keys(docMap).forEach(inputId => {
+        const b64Data = docMap[inputId];
+        const inputEl = document.getElementById(inputId);
+        const previewId = previewMap[inputId];
         const imgEl = document.getElementById(previewId);
-        if (imgEl && b64Data) {
-          imgEl.src = b64Data.replace("base64;", "base64,");
-          imgEl.style.display = "block";
-        } else if (imgEl) {
-          imgEl.style.display = "none";
-          imgEl.src = "";
+
+        if (b64Data) {
+          const formattedB64 = b64Data.replace("base64;", "base64,");
+          if (inputEl) {
+            inputEl.dataset.croppedBase64 = formattedB64; // 👉 આનાથી પાસપોર્ટ અને અંગૂઠા ડ્રાઈવમાં સેવ થઈ જશે
+          }
+          if (imgEl) {
+            imgEl.src = formattedB64;
+            imgEl.style.display = "block";
+          }
+        } else {
+          if (inputEl) delete inputEl.dataset.croppedBase64;
+          if (imgEl) {
+            imgEl.style.display = "none";
+            imgEl.src = "";
+          }
         }
       });
     }
