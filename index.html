@@ -410,33 +410,37 @@
         <div style="margin-top:10px; font-weight:bold; font-size:12px; color:#102C57;">RELATIVE INFORMATION (UP TO 4 RELATIVES):</div>
         
         <div class="relative-block">
+         <!-- RELATIVE 1 -->
+        <div class="relative-block">
           <div class="relative-title">RELATIVE 1</div>
-          <div class="form-group"><label>NAME</label><input type="text" name="RELATIVE1_NAME"></div>
-          <div class="form-group"><label>RELATION</label><input type="text" name="RELATIVE1_RELATION"></div>
-          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="RELATIVE1_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          <div class="form-group"><label>NAME</label><input type="text" name="REL_1_NAME"></div>
+          <div class="form-group"><label>RELATION</label><input type="text" name="REL_1_RELATION"></div>
+          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_1_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
         </div>
 
+        <!-- RELATIVE 2 -->
         <div class="relative-block">
           <div class="relative-title">RELATIVE 2</div>
-          <div class="form-group"><label>NAME</label><input type="text" name="RELATIVE2_NAME"></div>
-          <div class="form-group"><label>RELATION</label><input type="text" name="RELATIVE2_RELATION"></div>
-          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="RELATIVE2_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          <div class="form-group"><label>NAME</label><input type="text" name="REL_2_NAME"></div>
+          <div class="form-group"><label>RELATION</label><input type="text" name="REL_2_RELATION"></div>
+          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_2_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
         </div>
 
+        <!-- RELATIVE 3 -->
         <div class="relative-block">
           <div class="relative-title">RELATIVE 3</div>
-          <div class="form-group"><label>NAME</label><input type="text" name="RELATIVE3_NAME"></div>
-          <div class="form-group"><label>RELATION</label><input type="text" name="RELATIVE3_RELATION"></div>
-          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="RELATIVE3_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          <div class="form-group"><label>NAME</label><input type="text" name="REL_3_NAME"></div>
+          <div class="form-group"><label>RELATION</label><input type="text" name="REL_3_RELATION"></div>
+          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_3_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
         </div>
 
+        <!-- RELATIVE 4 -->
         <div class="relative-block">
           <div class="relative-title">RELATIVE 4</div>
-          <div class="form-group"><label>NAME</label><input type="text" name="RELATIVE4_NAME"></div>
-          <div class="form-group"><label>RELATION</label><input type="text" name="RELATIVE4_RELATION"></div>
-          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="RELATIVE4_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          <div class="form-group"><label>NAME</label><input type="text" name="REL_4_NAME"></div>
+          <div class="form-group"><label>RELATION</label><input type="text" name="REL_4_RELATION"></div>
+          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_4_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
         </div>
-
       </div>
 
       <!-- 5. MEDICAL & JOB PREFERENCES -->
@@ -1030,14 +1034,22 @@
       if (res.status === "FOUND" && res.record) {
         const rec = res.record;
         
+        // ૧. તમામ ટેક્સ્ટ, ડ્રોપડાઉન અને રિલેટિવ્સના ફિલ્ડ્સ ઓટો-ફિલ કરો
         const fields = [
           "UNIQUE_ID", "STATUS", "DESIGNATION", "FULL_NAME", "MOBILE", "PAN_NUMBER", 
           "GENDER", "DOB", "AGE", "ADDRESS", "AREA", "CITY", "EMP_TYPE", "EXPERIENCE", 
           "PREFERRED_SHIFT", "EDUCATION", "RELIGION", "CAST", "MARITAL_STATUS", 
           "REFERENCE_BY", "TRANSPORTATION", "FATHER_NAME", "FATHER_AGE", "FATHER_CONTACT", 
-          "MOTHER_NAME", "MOTHER_AGE", "MOTHER_CONTACT", "PARENTS_ADDRESS", "MEAL_PREFERENCE", 
-          "COVID_VACCINATED", "WORK_NON_VEG", "HAVE_SMARTPHONE", "LANGUAGES_KNOWN", 
-          "LANGUAGES_KNOWN_OTHER", "KNOWN_SKILLS", "KNOWN_SKILLS_OTHER", "PAST_EXPERIENCE", 
+          "MOTHER_NAME", "MOTHER_AGE", "MOTHER_CONTACT", "PARENTS_ADDRESS", 
+          
+          // Relatives Fields
+          "REL_1_NAME", "REL_1_RELATION", "REL_1_MOBILE",
+          "REL_2_NAME", "REL_2_RELATION", "REL_2_MOBILE",
+          "REL_3_NAME", "REL_3_RELATION", "REL_3_MOBILE",
+          "REL_4_NAME", "REL_4_RELATION", "REL_4_MOBILE",
+
+          "MEAL_PREFERENCE", "COVID_VACCINATED", "WORK_NON_VEG", "HAVE_SMARTPHONE", 
+          "LANGUAGES_KNOWN_OTHER", "KNOWN_SKILLS_OTHER", "PAST_EXPERIENCE", 
           "BENEFICIARY_NAME", "BANK_NAME", "ACCOUNT_NUMBER", "IFSC_CODE"
         ];
 
@@ -1048,6 +1060,22 @@
           }
         });
 
+        // ૨. ચેકબોક્સ ઓટો-ટિક કરવા માટે (Languages & Skills)
+        ["LANGUAGES_KNOWN", "KNOWN_SKILLS"].forEach(key => {
+          // પહેલા બધા અનચેક કરી દો
+          document.querySelectorAll(`input[name="${key}"]`).forEach(chk => chk.checked = false);
+          
+          if (rec[key]) {
+            const savedVals = String(rec[key]).split(",").map(v => v.trim().toUpperCase());
+            document.querySelectorAll(`input[name="${key}"]`).forEach(chk => {
+              if (savedVals.includes(chk.value.toUpperCase())) {
+                chk.checked = true;
+              }
+            });
+          }
+        });
+
+        // ૩. બ્લેકલિસ્ટેડ અથવા સક્સેસ એલર્ટ મેસેજ
         const statusStr = String(rec.STATUS || "").toUpperCase();
         if (statusStr.includes("BLACK")) {
           alertBox.style.backgroundColor = "#ffebee";
