@@ -753,6 +753,7 @@
   }
 
 // 7. AI ALL-IN-ONE SCANNING & AUTO-FILL FUNCTION (Aadhaar Front/Back & PAN)
+  // 7. AI ALL-IN-ONE SCANNING & AUTO-FILL FUNCTION (Aadhaar Front/Back & PAN)
   async function scanAllWithAI() {
     const frontInput = document.getElementById('adhar_front_file');
     const backInput = document.getElementById('adhar_back_file');
@@ -826,7 +827,94 @@
     }
   }
 
-  // બધો ડેટા પર્સ કરીને ફોર્મમાં ભરવાનું ફંક્શન (પાન ઓપ્શનલ સાથે)
+  // 8. PARSE AND AUTO-FILL ALL FUNCTION
+  function parseAndAutofillAll(rawText) {
+    if (!rawText || rawText.includes("NO TEXT FOUND") || rawText.includes("API RAW RESPONSE") || rawText.includes("SCRIPT ERROR")) {
+      return;
+    }
+
+    const lines = rawText.split('\n');
+    let parsedData = {};
+    
+    lines.forEach(line => {
+      const cleanLine = line.replace(/\*/g, '').trim();
+      const parts = cleanLine.split(':');
+      
+      if (parts.length >= 2) {
+        const key = parts[0].trim();
+        const val = parts.slice(1).join(':').trim();
+        parsedData[key] = val;
+      }
+    });
+
+    console.log("Parsed Data:", parsedData);
+
+    // ૧. Full Name
+    const fullNameVal = parsedData['NAME'];
+    if (fullNameVal && fullNameVal !== 'NOT AVAILABLE') {
+      const el = document.querySelector('input[name="FULL_NAME"]') || document.getElementById('full_name');
+      if (el) el.value = fullNameVal;
+    }
+
+    // ૨. Mobile Number
+    const mobileVal = parsedData['MOBILE NUMBER'];
+    if (mobileVal && mobileVal !== 'NOT AVAILABLE') {
+      const el = document.querySelector('input[name="MOBILE"]') || document.getElementById('mobile_number');
+      if (el) el.value = mobileVal;
+    }
+
+    // ૩. Gender
+    const genderVal = parsedData['GENDER'];
+    if (genderVal) {
+      const el = document.querySelector('select[name="gender"]') || document.querySelector('select[name="GENDER"]') || document.getElementById('gender');
+      if (el) el.value = genderVal;
+    }
+
+    // ૪. Date of Birth
+    const dobVal = parsedData['DATE OF BIRTH'];
+    if (dobVal) {
+      let dobStr = dobVal;
+      if (dobStr.includes('/')) {
+        const parts = dobStr.split('/');
+        if (parts.length === 3) {
+          dobStr = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+      }
+      const el = document.getElementById('v_dob') || document.querySelector('input[name="DOB"]');
+      if (el) {
+        el.value = dobStr;
+        if (typeof calculateAgeFromDOB === 'function') {
+          calculateAgeFromDOB();
+        }
+      }
+    }
+
+    // ૫. Aadhar Number
+    const aadharVal = parsedData['AADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
+    if (aadharVal && aadharVal !== 'NOT AVAILABLE') {
+      const el = document.querySelector('input[name="AADHAR_NUMBER"]') || document.getElementById('aadhar_number');
+      if (el) el.value = aadharVal;
+    }
+
+    // ૬. PAN Number
+    const panVal = parsedData['PAN NUMBER'];
+    const panField = document.querySelector('input[name="PAN_NUMBER"]');
+    if (panVal && panVal !== 'NOT AVAILABLE' && panField) {
+      panField.value = panVal;
+    } else {
+      const panMatch = rawText.match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
+      if (panMatch && panMatch[0] && panField) {
+        panField.value = panMatch[0];
+      }
+    }
+
+    // ૭. Address
+    const addressVal = parsedData['ADDRESS'];
+    if (addressVal && addressVal !== 'NOT AVAILABLE') {
+      const el = document.querySelector('input[name="ADDRESS"]') || document.getElementById('address');
+      if (el) el.value = addressVal;
+    }
+  }  // બધો ડેટા પર્સ કરીને ફોર્મમાં ભરવાનું ફંક્શન (પાન ઓપ્શનલ સાથે)
  // 8. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
   document.getElementById('employeeForm').addEventListener('submit', async function(e) {
     e.preventDefault();
