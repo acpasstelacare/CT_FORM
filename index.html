@@ -1075,32 +1075,32 @@
           }
         });
 // ૩. અગાઉ અપલોડ કરેલી ફાઇલોના પ્રીવ્યુ (Images) ઓટો-ડિસ્પ્લે કરવા માટે
-        const docUrlMap = {
-          "adhar_front_preview": rec["ADHAR_FRONT_URL"],
-          "adhar_back_preview": rec["ADHAR_BACK_URL"],
-          "pan_preview": rec["PAN_CARD_URL"],
-          "live_preview": rec["LIVE_PHOTO_URL"],
-          "thumb_left_preview": rec["LEFT_THUMB_URL"],
-          "thumb_right_preview": rec["RIGHT_THUMB_URL"]
-        };
+    const docUrlMap = {
+      "adhar_front_preview": rec["ADHAR_FRONT_URL"],
+      "adhar_back_preview": rec["ADHAR_BACK_URL"],
+      "pan_preview": rec["PAN_CARD_URL"],
+      "live_preview": rec["LIVE_PHOTO_URL"],
+      "thumb_left_preview": rec["LEFT_THUMB_URL"],
+      "thumb_right_preview": rec["RIGHT_THUMB_URL"]
+    };
 
-        Object.keys(docUrlMap).forEach(previewId => {
-          const url = docUrlMap[previewId];
-          const imgEl = document.getElementById(previewId);
-          if (imgEl && url && url.startsWith("http")) {
-            // Google Drive URL ને Direct Image Link માં કન્વર્ટ કરો
-            let directUrl = url;
-            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (match && match[1]) {
-              directUrl = `https://lh3.googleusercontent.com/d/${match[1]}`;
-            }
-            imgEl.src = directUrl;
-            imgEl.style.display = "block";
-          } else if (imgEl) {
-            imgEl.style.display = "none";
-            imgEl.src = "";
-          }
-        });
+    Object.keys(docUrlMap).forEach(previewId => {
+      const url = docUrlMap[previewId];
+      const imgEl = document.getElementById(previewId);
+      if (imgEl && url && url.startsWith("http")) {
+        // Google Drive URL ને Direct Image Link માં કન્વર્ટ કરો
+        let directUrl = url;
+        const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          directUrl = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+        }
+        imgEl.src = directUrl;
+        imgEl.style.display = "block";
+      } else if (imgEl) {
+        imgEl.style.display = "none";
+        imgEl.src = "";
+      }
+    });
         // ૩. બ્લેકલિસ્ટેડ અથવા સક્સેસ એલર્ટ મેસેજ
         const statusStr = String(rec.STATUS || "").toUpperCase();
         if (statusStr.includes("BLACK")) {
