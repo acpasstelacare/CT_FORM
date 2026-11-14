@@ -188,9 +188,9 @@
           <!-- AI Scan Button -->
           <button type="button" onclick="scanAadhaarWithAI()" style="margin-top: 8px; background: #1a73e8; color: #fff; border: none; padding: 10px 14px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 12px;">🤖 AI થી આધાર સ્કેન કરો અને ઓટો-ફિલ કરો</button>
         <div style="margin-top: 8px;">
-  <label style="font-size: 11px; color: #555;">AI સ્કેન કરેલો કાચો ડેટા (કૉપિ કરવા માટે):</label>
-  <textarea id="rawAadhaarText" rows="4" placeholder="AI સ્કેન થયા પછી ડેટા અહીં દેખાશે..." style="width:100%; font-size:13px; font-family:monospace; text-transform:uppercase; background:#f9f9f9; padding:6px; border:1px solid #ccc; border-radius:4px;"></textarea>
-</div>
+          <label style="font-size: 11px; color: #555;">AI સ્કેન કરેલો કાચો ડેટા (કૉપિ કરવા માટે):</label>
+          <textarea id="rawAadhaarText" rows="4" placeholder="AI સ્કેન થયા પછી ડેટા અહીં દેખાશે..." style="width:100%; font-size:13px; font-family:monospace; text-transform:uppercase; background:#f9f9f9; padding:6px; border:1px solid #ccc; border-radius:4px;"></textarea>
+        </div>
         </div>
 
         <div class="form-group">
@@ -225,23 +225,23 @@
       <div class="form-grid">
         <div class="form-group">
           <label>FULL NAME (પૂરું નામ)</label>
-          <input type="text" name="FULL_NAME" required placeholder="ENTER FULL NAME">
+          <input type="text" name="FULL_NAME" id="full_name" required placeholder="ENTER FULL NAME">
         </div>
         <div class="form-group">
-  <label for="gender">GENDER (જાતિ)</label>
-  <select id="gender" name="gender" class="form-control">
-    <option value="">SELECT GENDER</option>
-    <option value="MALE">MALE</option>
-    <option value="FEMALE">FEMALE</option>
-  </select>
-</div>
+          <label for="gender">GENDER (જાતિ)</label>
+          <select id="gender" name="gender" class="form-control">
+            <option value="">SELECT GENDER</option>
+            <option value="MALE">MALE</option>
+            <option value="FEMALE">FEMALE</option>
+          </select>
+        </div>
         <div class="form-group">
           <label>MOBILE NUMBER (10 DIGITS ONLY)</label>
-          <input type="tel" name="MOBILE" required pattern="[0-9]{10}" maxlength="10" placeholder="ENTER 10 DIGIT MOBILE NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+          <input type="tel" name="MOBILE" id="mobile_number" required pattern="[0-9]{10}" maxlength="10" placeholder="ENTER 10 DIGIT MOBILE NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
         </div>
         <div class="form-group">
           <label>AADHAR NUMBER (12 DIGITS)</label>
-          <input type="text" name="AADHAR_NUMBER" pattern="[0-9]{12}" maxlength="12" placeholder="ENTER AADHAR NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+          <input type="text" name="AADHAR_NUMBER" id="aadhar_number" pattern="[0-9]{12}" maxlength="12" placeholder="ENTER AADHAR NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
         </div>
         <div class="form-group">
           <label>PAN NUMBER (10 CHARACTERS - E.G. ABCDE1234F)</label>
@@ -249,7 +249,7 @@
         </div>
         <div class="form-group">
           <label>ADDRESS (સરનામું)</label>
-          <input type="text" name="ADDRESS" placeholder="FULL ADDRESS">
+          <input type="text" name="ADDRESS" id="address" placeholder="FULL ADDRESS">
         </div>
         <div class="form-group">
           <label>CITY (શહેર)</label>
@@ -752,15 +752,15 @@
     }
   }
 
-  // 7. AI AADHAAR SCANNING FUNCTION
-async function scanAadhaarWithAI() {
+  // 7. AI AADHAAR SCANNING & AUTO-FILL FUNCTION
+  async function scanAadhaarWithAI() {
     const frontInput = document.getElementById('adhar_front_file');
-    const backInput = document.getElementById('adhar_back_file'); // ખાતરી કરી લેજો કે બેક સાઈડની આઈડી આ જ છે
+    const backInput = document.getElementById('adhar_back_file'); 
     
     let frontBase64 = '';
     let backBase64 = '';
     
-    // ૧. ફ્રન્ટ ફોટો ચેક કરો
+    // Front image check
     if (frontInput) {
       if (frontInput.dataset.croppedBase64) {
         frontBase64 = frontInput.dataset.croppedBase64;
@@ -773,7 +773,7 @@ async function scanAadhaarWithAI() {
       }
     }
     
-    // ૨. બેક ફોટો ચેક કરો
+    // Back image check
     if (backInput) {
       if (backInput.dataset.croppedBase64) {
         backBase64 = backInput.dataset.croppedBase64;
@@ -786,7 +786,6 @@ async function scanAadhaarWithAI() {
       }
     }
 
-    // જો બંને ખાલી હોય તો જ એરર આપો
     if (!frontBase64 && !backBase64) {
       alert("કૃપા કરીને ઓછામાં ઓછું એક (ફ્રન્ટ અથવા બેક) આધાર કાર્ડનો ફોટો અપલોડ કરો!");
       return;
@@ -814,10 +813,15 @@ async function scanAadhaarWithAI() {
       const textBox = document.getElementById('rawAadhaarText');
       if (textBox) {
         textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
+        
+        // Call autofill if result is valid
+        if (result && result.text) {
+          parseAndAutofill(result.text);
+        }
       }
 
       if (result && result.status === "SUCCESS") {
-        alert("સફળતાપૂર્વક સ્કેન થઈ ગયું!");
+        alert("સફળતાપૂર્વક સ્કેન અને ઓટો-ફિલ થઈ ગયું!");
       } else {
         alert("સ્કેનિંગ એરર આવી.");
       }
@@ -825,65 +829,12 @@ async function scanAadhaarWithAI() {
       console.error(error);
       alert("નેટવર્ક એરર: " + error.message);
     }
-  // ૧. AI સ્કેન કરવા માટેનું મુખ્ય બટન દબાઈ ત્યારે આ ચાલે છે
-  async function scanAadhaarWithAI() {
-    const frontInput = document.getElementById('adhar_front_file');
-    const backInput = document.getElementById('adhar_back_file'); 
-    
-    let frontBase64 = '';
-    let backBase64 = '';
-    
-    // (ફોટો રીડ કરવાની કોડ પ્રોસેસ...)
-    if (frontInput && frontInput.files && frontInput.files[0]) {
-      frontBase64 = await toBase64(frontInput.files[0]);
-    }
-    if (backInput && backInput.files && backInput.files[0]) {
-      backBase64 = await toBase64(backInput.files[0]);
-    }
-
-    if (!frontBase64 && !backBase64) {
-      alert("કૃપા કરીને પહેલાં આધાર કાર્ડનો ફોટો અપલોડ કરો!");
-      return;
-    }
-
-    alert("AI સ્કેન કરી રહ્યું છે...");
-
-    try {
-      const response = await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify({ 
-          action: "scan_aadhaar", 
-          frontImage: frontBase64, 
-          backImage: backBase64 
-        })
-      });
-
-      const result = await response.json();
-      
-      const textBox = document.getElementById('rawAadhaarText');
-      if (textBox) {
-        textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
-        
-        // 👇 **અહીંયાથી ઓટો-ફિલ ફંક્શન કૉલ થાય છે (આ લાઇન ઉમેરવાની છે)** 👇
-        if (result && result.text) {
-          parseAndAutofill(result.text);
-        }
-      }
-
-      if (result && result.status === "SUCCESS") {
-        alert("સફળતાપૂર્વક સ્કેન થઈ ગયું!");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("એરર: " + error.message);
-    }
   }
 
-
-  // ૨. આ એ જ ફંક્શન છે જે ટેક્સ્ટ વાંચીને ફોર્મમાં ભરે છે (આને પણ નીચે જ મૂકી દેવાનું)
+  // Parse and Autofill function with validation & star cleaning
   function parseAndAutofill(rawText) {
-    // જો ડેટા પ્રોપર ન હોય તો આગળ ન વધવું
     if (!rawText || rawText.includes("NO TEXT FOUND") || rawText.includes("API RAW RESPONSE") || rawText.includes("SCRIPT ERROR")) {
+      console.log("Invalid response, skipping autofill.");
       return;
     }
 
@@ -891,7 +842,10 @@ async function scanAadhaarWithAI() {
     let parsedData = {};
     
     lines.forEach(line => {
-      const parts = line.split(':');
+      // Remove all asterisks (*) to clean markdown format
+      const cleanLine = line.replace(/\*/g, '').trim();
+      const parts = cleanLine.split(':');
+      
       if (parts.length >= 2) {
         const key = parts[0].trim();
         const val = parts.slice(1).join(':').trim();
@@ -899,12 +853,13 @@ async function scanAadhaarWithAI() {
       }
     });
 
-    // જો પ્રોપર નામ ન મળે તો ફોર્મ ન ભરવું
+    // Validation: Check if proper name exists
     if (!parsedData['NAME'] || parsedData['NAME'] === 'NOT AVAILABLE' || parsedData['NAME'] === '') {
+      console.log("Valid name not found, skipping autofill.");
       return;
     }
 
-    // હવે ફોર્મના બોક્સમાં ઓટોમેટિક ડેટા નંખાશે:
+    // Autofill form fields
     if (document.getElementById('full_name')) {
       document.getElementById('full_name').value = parsedData['NAME'];
     }
@@ -917,14 +872,18 @@ async function scanAadhaarWithAI() {
     if (parsedData['DATE OF BIRTH'] && document.getElementById('dob')) {
       document.getElementById('dob').value = parsedData['DATE OF BIRTH'];
     }
-    if (parsedData['AADHAR NUMBER'] && document.getElementById('aadhar_number')) {
-      document.getElementById('aadhar_number').value = parsedData['AADHAR NUMBER'];
+    
+    const aadharVal = parsedData['AADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
+    if (aadharVal && document.getElementById('aadhar_number')) {
+      document.getElementById('aadhar_number').value = aadharVal;
     }
+
     if (parsedData['ADDRESS'] && document.getElementById('address')) {
       document.getElementById('address').value = parsedData['ADDRESS'];
     }
   }
-  }  // 8. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
+
+  // 8. FORM SUBMISSION LOGIC TO GOOGLE APPS SCRIPT
   document.getElementById('employeeForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
@@ -965,7 +924,7 @@ async function scanAadhaarWithAI() {
     dataObject.PAN_PIC_FILE = await getFinalImageBase64('pan_file');
     dataObject.LIVE_PHOTO_FILE = await getFinalImageBase64('live_file');
     dataObject.THUMB_LEFT_FILE = await getFinalImageBase64('thumb_left_file');
-    dataObject.THUMB_RIGHT_FILE = await getFinalImageBaseG4('thumb_right_file');
+    dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
 
     // Canvas Signature Validation & Base64 Conversion
     if (canvas) {
