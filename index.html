@@ -185,14 +185,14 @@
         
         <!-- ૧. આધાર ફ્રન્ટ સાઈડ -->
         <div class="form-group">
-          <label>AADHAR CARD - FRONT SIDE</label>
+          <label>ADHAR CARD - FRONT SIDE</label>
           <input type="file" accept="image/*" capture="environment" id="adhar_front_file" onchange="previewImage(event, 'adhar_front_preview')">
           <div class="preview-container"><img id="adhar_front_preview" class="preview-img" alt="Preview"></div>
         </div>
 
         <!-- ૨. આધાર બેક સાઈડ -->
         <div class="form-group">
-          <label>AADHAR CARD - BACK SIDE</label>
+          <label>ADHAR CARD - BACK SIDE</label>
           <input type="file" accept="image/*" capture="environment" id="adhar_back_file" onchange="previewImage(event, 'adhar_back_preview')">
           <div class="preview-container"><img id="adhar_back_preview" class="preview-img" alt="Preview"></div>
         </div>
@@ -256,8 +256,8 @@
           <input type="tel" name="MOBILE" id="mobile_number" required pattern="[0-9]{10}" maxlength="10" placeholder="ENTER 10 DIGIT MOBILE NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
         </div>
         <div class="form-group">
-          <label>AADHAR NUMBER (12 DIGITS)</label>
-          <input type="text" name="AADHAR_NUMBER" id="aadhar_number" pattern="[0-9]{12}" maxlength="12" placeholder="ENTER AADHAR NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length === 12) { checkExistingEmployee(this.value); }">
+          <label>ADHAR NUMBER (12 DIGITS)</label>
+          <input type="text" name="ADHAR_NUMBER" id="ADHAR_number" pattern="[0-9]{12}" maxlength="12" placeholder="ENTER ADHAR NUMBER" oninput="this.value=this.value.replace(/[^0-9]/g,''); if(this.value.length === 12) { checkExistingEmployee(this.value); }">
         </div>
         <div class="form-group">
           <label>PAN NUMBER (10 CHARACTERS - E.G. ABCDE1234F)</label>
@@ -890,10 +890,10 @@
       }
     }
 
-    const aadharVal = parsedData['AADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
-    if (aadharVal && aadharVal !== 'NOT AVAILABLE') {
-      const el = document.querySelector('input[name="AADHAR_NUMBER"]') || document.getElementById('aadhar_number');
-      if (el) el.value = aadharVal;
+    const ADHARVal = parsedData['ADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
+    if (ADHARVal && ADHARVal !== 'NOT AVAILABLE') {
+      const el = document.querySelector('input[name="ADHAR_NUMBER"]') || document.getElementById('ADHAR_number');
+      if (el) el.value = ADHARVal;
     }
 
     const panVal = parsedData['PAN NUMBER'];
@@ -913,9 +913,9 @@
       if (el) el.value = addressVal;
     }
 
-    const aadharValFinal = parsedData['AADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
-    if (aadharValFinal && aadharValFinal !== 'NOT AVAILABLE') {
-      checkExistingEmployee(aadharValFinal);
+    const ADHARValFinal = parsedData['ADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
+    if (ADHARValFinal && ADHARValFinal !== 'NOT AVAILABLE') {
+      checkExistingEmployee(ADHARValFinal);
     }
   }
 
@@ -1011,9 +1011,9 @@
     }
   });
 
-  async function checkExistingEmployee(aadharNum) {
-    const cleanAadhar = (aadharNum || "").replace(/\s+/g, "").trim();
-    if (cleanAadhar.length !== 12) return;
+  async function checkExistingEmployee(ADHARNum) {
+    const cleanADHAR = (ADHARNum || "").replace(/\s+/g, "").trim();
+    if (cleanADHAR.length !== 12) return;
 
     const alertBox = document.getElementById("empAlertBox");
     if (!alertBox) return;
@@ -1027,7 +1027,7 @@
     try {
       const response = await fetch(SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "check_aadhar", aadhar: cleanAadhar })
+        body: JSON.stringify({ action: "check_ADHAR", ADHAR: cleanADHAR })
       });
       const res = await response.json();
 
@@ -1135,7 +1135,7 @@
         alertBox.style.display = "none";
       }
     } catch (err) {
-      console.error("Aadhar check error:", err);
+      console.error("ADHAR check error:", err);
       alertBox.style.display = "none";
     }
   }
