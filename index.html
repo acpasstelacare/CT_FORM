@@ -1066,28 +1066,38 @@
         let rawDob = rec.DOB ? String(rec.DOB).trim() : "";
         let finalDob = "";
 
+        const monthMap = {
+          JAN: "01", FEB: "02", MAR: "03", APR: "04", MAY: "05", JUN: "06",
+          JUL: "07", AUG: "08", SEP: "09", OCT: "10", NOV: "11", DEC: "12"
+        };
+
         if (rawDob) {
+          const cleanDob = rawDob.replace(/\s+/g, " ").replace(/\s*-\s*/g, "-").trim();
+          const dmyTextMatch = cleanDob.match(/^(\d{1,2})[\s\-]([A-Za-z]{3,})[\s\-](\d{4})$/);
+
+          if (dmyTextMatch) {
+            const dd = dmyTextMatch[1].padStart(2, "0");
+            const monKey = dmyTextMatch[2].slice(0, 3).toUpperCase();
+            const yyyy = dmyTextMatch[3];
+            if (monthMap[monKey]) {
+              finalDob = `${yyyy}-${monthMap[monKey]}-${dd}`;
+            }
+          }
           // જો તારીખ YYYY-MM-DD કે ISO ફોર્મેટમાં હોય (દા.ત. 1991-01-01)
-          if (/^\d{4}-\d{2}-\d{2}/.test(rawDob)) {
-            finalDob = rawDob.slice(0, 10);
+          else if (/^\d{4}-\d{2}-\d{2}/.test(cleanDob)) {
+            finalDob = cleanDob.slice(0, 10);
           }
           // જો તારીખ DD/MM/YYYY કે DD-MM-YYYY ફોર્મેટમાં હોય
-          else if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(rawDob)) {
-            const sep = rawDob.includes("/") ? "/" : "-";
-            const parts = rawDob.split(sep);
+          else if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(cleanDob)) {
+            const sep = cleanDob.includes("/") ? "/" : "-";
+            const parts = cleanDob.split(sep);
             finalDob = `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
           }
           // જો માત્ર 4 અંકનું જન્મ વર્ષ (Year) હોય (દા.ત. 1991)
-          else if (/^\d{4}$/.test(rawDob)) {
-            finalDob = `${rawDob}-01-01`;
+          else if (/^\d{4}$/.test(cleanDob)) {
+            finalDob = `${cleanDob}-01-01`;
           }
-          // અન્ય કોઈ તારીખ ફોર્મેટ હોય
-          else {
-            const dObj = new Date(rawDob);
-            if (!isNaN(dObj.getTime())) {
-              finalDob = `${dObj.getFullYear()}-${String(dObj.getMonth() + 1).padStart(2, "0")}-${String(dObj.getDate()).padStart(2, "0")}`;
-            }
-          }
+        }
         }
 
         // જો DOB ન મળે પણ AGE (ઉંમર) હોય, તો 1-January ની તારીખ બનાવો
