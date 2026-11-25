@@ -244,8 +244,8 @@
           <input type="text" name="FULL_NAME" id="full_name" required placeholder="ENTER FULL NAME">
         </div>
         <div class="form-group">
-          <label for="gender">GENDER (જાતિ)</label>
-          <select id="gender" name="gender" class="form-control">
+          <label for="GENDER">GENDER (જાતિ)</label>
+          <select id="GENDER" name="GENDER" class="form-control">
             <option value="">SELECT GENDER</option>
             <option value="MALE">MALE</option>
             <option value="FEMALE">FEMALE</option>
@@ -866,10 +866,10 @@
       if (el) el.value = mobileVal;
     }
 
-    const genderVal = parsedData['GENDER'];
-    if (genderVal) {
-      const el = document.querySelector('select[name="gender"]') || document.querySelector('select[name="GENDER"]') || document.getElementById('gender');
-      if (el) el.value = genderVal;
+    const GENDERVal = parsedData['GENDER'];
+    if (GENDERVal) {
+      const el = document.querySelector('select[name="GENDER"]') || document.querySelector('select[name="GENDER"]') || document.getElementById('GENDER');
+      if (el) el.value = GENDERVal;
     }
 
     const dobVal = parsedData['DATE OF BIRTH'];
