@@ -1098,8 +1098,7 @@
             finalDob = `${cleanDob}-01-01`;
           }
         }
-        }
-
+        
         // જો DOB ન મળે પણ AGE (ઉંમર) હોય, તો 1-January ની તારીખ બનાવો
         const ageNum = parseInt((ageEl && ageEl.value) || rec.AGE || "", 10);
         if (!finalDob && !isNaN(ageNum) && ageNum > 0) {
