@@ -1059,7 +1059,48 @@
             el.value = rec[key];
           }
         });
+// 📅 DOB અને AGE / BIRTH YEAR માટે સ્માર્ટ લોજિક
+        const dobEl = document.getElementById("v_dob") || document.querySelector('[name="DOB"]');
+        const ageEl = document.getElementById("v_age") || document.querySelector('[name="AGE"]');
 
+        let rawDob = rec.DOB ? String(rec.DOB).trim() : "";
+        let finalDob = "";
+
+        if (rawDob) {
+          // જો તારીખ YYYY-MM-DD કે ISO ફોર્મેટમાં હોય (દા.ત. 1991-01-01)
+          if (/^\d{4}-\d{2}-\d{2}/.test(rawDob)) {
+            finalDob = rawDob.slice(0, 10);
+          }
+          // જો તારીખ DD/MM/YYYY કે DD-MM-YYYY ફોર્મેટમાં હોય
+          else if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(rawDob)) {
+            const sep = rawDob.includes("/") ? "/" : "-";
+            const parts = rawDob.split(sep);
+            finalDob = `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
+          }
+          // જો માત્ર 4 અંકનું જન્મ વર્ષ (Year) હોય (દા.ત. 1991)
+          else if (/^\d{4}$/.test(rawDob)) {
+            finalDob = `${rawDob}-01-01`;
+          }
+          // અન્ય કોઈ તારીખ ફોર્મેટ હોય
+          else {
+            const dObj = new Date(rawDob);
+            if (!isNaN(dObj.getTime())) {
+              finalDob = `${dObj.getFullYear()}-${String(dObj.getMonth() + 1).padStart(2, "0")}-${String(dObj.getDate()).padStart(2, "0")}`;
+            }
+          }
+        }
+
+        // જો DOB ન મળે પણ AGE (ઉંમર) હોય, તો 1-January ની તારીખ બનાવો
+        const ageNum = parseInt((ageEl && ageEl.value) || rec.AGE || "", 10);
+        if (!finalDob && !isNaN(ageNum) && ageNum > 0) {
+          const birthYear = new Date().getFullYear() - ageNum;
+          finalDob = `${birthYear}-01-01`;
+        }
+
+        // DOB બોક્સમાં વેલ્યુ સેટ કરો
+        if (dobEl && finalDob) {
+          dobEl.value = finalDob;
+        }
         // ૨. ચેકબોક્સ ઓટો-ટિક કરવા માટે (Languages & Skills)
         ["LANGUAGES_KNOWN", "KNOWN_SKILLS"].forEach(key => {
           // પહેલા બધા અનચેક કરી દો
