@@ -99,7 +99,9 @@
     .submit-btn:hover { background: #218838; }
     .print-btn { background: #007bff; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
     .print-btn:hover { background: #0056b3; }
-
+.doc-btn { background: #ff9800; color: #fff; border: none; padding: 12px; font-size: 15px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .doc-btn:hover:not(:disabled) { background: #e68900; }
+    .doc-btn:disabled { background: #cccccc; color: #666666; cursor: not-allowed; opacity: 0.7; }
     /* CROP MODAL STYLING */
     #cropModal {
       display: none;
@@ -587,6 +589,7 @@
 
       <div class="btn-container">
         <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
+        <button type="button" id="updateDocsOnlyBtn" class="doc-btn" onclick="submitDocumentsOnly()" disabled>SUBMIT/UPDATE DOCUMENTS ONLY</button>
         <button type="button" class="print-btn" onclick="window.print()">PRINT / SAVE AS PDF</button>
       </div>
     </form>
