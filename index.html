@@ -1061,13 +1061,13 @@ function clearCanvas() {
     };
 
     if (canvas) {
-      const blankCanvas = document.createElement("canvas");
-      blankCanvas.width = canvas.width;
-      blankCanvas.height = canvas.height;
-      if (canvas.toDataURL() !== blankCanvas.toDataURL()) {
-        payload.DIGITAL_SIGN_FILE = canvas.toDataURL("image/png");
-      }
-    }
+  const blankCanvas = document.createElement("canvas");
+  blankCanvas.width = canvas.width;
+  blankCanvas.height = canvas.height;
+  if (isSignUpdated && canvas.toDataURL() !== blankCanvas.toDataURL()) {
+    payload.DIGITAL_SIGN_FILE = canvas.toDataURL("image/png");
+  }
+}
 
     if (docBtn) {
       docBtn.disabled = true;
