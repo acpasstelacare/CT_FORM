@@ -612,7 +612,7 @@
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
 
-  document.getElementById('v_unique_id').value = 'EMP 00176';
+  document.getElementById('v_unique_id').value = 'AUTO GENERATED';;
 
   setInterval(() => {
     const now = new Date();
@@ -1181,8 +1181,12 @@
           alertBox.style.border = "2px solid #2e7d32";
           alertBox.innerHTML = `✅ આ કર્મચારી (${rec.FULL_NAME} - ${rec.UNIQUE_ID}) પહેલેથી સિસ્ટમમાં રજીસ્ટર (ALREADY EXISTING) છે.<br><span style="font-size:12px; font-weight:normal;">તેમની વિગતો ફોર્મમાં ભરાઈ ગઈ છે. કોઈ ફેરફાર કરવો હોય તો કરીને Save કરો, એટલે Google Sheet માં આ જ રેકોર્ડ અપડેટ થઈ જશે.</span>`;
         }
-      } else {
+     } else {
         alertBox.style.display = "none";
+        const uidEl = document.getElementById("v_unique_id") || document.querySelector('[name="UNIQUE_ID"]');
+        if (uidEl && res.nextUniqueId) {
+          uidEl.value = res.nextUniqueId;
+        }
       }
     } catch (err) {
       console.error("ADHAR check error:", err);
