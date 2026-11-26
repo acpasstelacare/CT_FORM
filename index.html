@@ -972,22 +972,27 @@ function clearCanvas() {
         dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
 
         if (canvas) {
-          let blankCanvas = document.createElement('canvas');
-          blankCanvas.width = canvas.width;
-          blankCanvas.height = canvas.height;
-          
-          if (canvas.toDataURL() === blankCanvas.toDataURL()) {
-            alert("Please provide your digital signature before submitting!");
-            if(submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
-            }
-            return;
-          }
-          dataObject.DIGITAL_SIGN_FILE = canvas.toDataURL('image/png');
-        } else {
-          dataObject.DIGITAL_SIGN_FILE = '';
-        }
+  let blankCanvas = document.createElement('canvas');
+  blankCanvas.width = canvas.width;
+  blankCanvas.height = canvas.height;
+
+  const isBlank = canvas.toDataURL() === blankCanvas.toDataURL();
+  const alertBox = document.getElementById("empAlertBox");
+  const isExistingEmployee = alertBox && alertBox.style.display !== "none";
+
+  if (isBlank && !isExistingEmployee) {
+    alert("Please provide your digital signature before submitting!");
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+    }
+    return;
+  }
+
+  dataObject.DIGITAL_SIGN_FILE = (!isBlank && isSignUpdated) ? canvas.toDataURL('image/png') : '';
+} else {
+  dataObject.DIGITAL_SIGN_FILE = '';
+}
 
         fetch(SCRIPT_URL, {
           method: 'POST',
