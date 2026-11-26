@@ -99,9 +99,10 @@
     .submit-btn:hover { background: #218838; }
     .print-btn { background: #007bff; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
     .print-btn:hover { background: #0056b3; }
-.doc-btn { background: #ff9800; color: #fff; border: none; padding: 12px; font-size: 15px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
+    .doc-btn { background: #ff9800; color: #fff; border: none; padding: 12px; font-size: 15px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
     .doc-btn:hover:not(:disabled) { background: #e68900; }
     .doc-btn:disabled { background: #cccccc; color: #666666; cursor: not-allowed; opacity: 0.7; }
+
     /* CROP MODAL STYLING */
     #cropModal {
       display: none;
@@ -160,8 +161,8 @@
   <div class="page-body">
     <h2>PASTELA CARE PRIVATE LIMITED</h2>
     <h4>EMPLOYEE REGISTRATION FORM</h4>
-<!-- એલર્ટ નોટિફિકેશન બોક્સ -->
-<div id="empAlertBox" style="display:none; padding: 15px; margin: 15px 0; border-radius: 6px; font-weight: bold; font-size: 14px; text-align: center;"></div>
+    <!-- એલર્ટ નોટિફિકેશન બોક્સ -->
+    <div id="empAlertBox" style="display:none; padding: 15px; margin: 15px 0; border-radius: 6px; font-weight: bold; font-size: 14px; text-align: center;"></div>
     <form id="employeeForm">
 
       <!-- TOP SECTION: UNIQUE ID & STATUS -->
@@ -180,7 +181,6 @@
         </div>
       </div>
 
-      <!-- 1. UPLOADS & CAPTURES -->
       <!-- 1. UPLOADS & CAPTURES -->
       <div class="section-title">1. UPLOADS & CAPTURES (PHOTOS, THUMB & DOCUMENTS)</div>
       <div class="form-grid">
@@ -238,6 +238,7 @@
         </div>
 
       </div>
+
       <!-- 2. STAFF GENERAL DETAILS -->
       <div class="section-title">2. STAFF GENERAL DETAILS</div>
       <div class="form-grid">
@@ -412,36 +413,33 @@
         <div style="margin-top:10px; font-weight:bold; font-size:12px; color:#102C57;">RELATIVE INFORMATION (UP TO 4 RELATIVES):</div>
         
         <div class="relative-block">
-         <!-- RELATIVE 1 -->
-        <div class="relative-block">
-          <div class="relative-title">RELATIVE 1</div>
-          <div class="form-group"><label>NAME</label><input type="text" name="REL_1_NAME"></div>
-          <div class="form-group"><label>RELATION</label><input type="text" name="REL_1_RELATION"></div>
-          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_1_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
-        </div>
+          <div class="relative-block">
+            <div class="relative-title">RELATIVE 1</div>
+            <div class="form-group"><label>NAME</label><input type="text" name="REL_1_NAME"></div>
+            <div class="form-group"><label>RELATION</label><input type="text" name="REL_1_RELATION"></div>
+            <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_1_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          </div>
 
-        <!-- RELATIVE 2 -->
-        <div class="relative-block">
-          <div class="relative-title">RELATIVE 2</div>
-          <div class="form-group"><label>NAME</label><input type="text" name="REL_2_NAME"></div>
-          <div class="form-group"><label>RELATION</label><input type="text" name="REL_2_RELATION"></div>
-          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_2_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
-        </div>
+          <div class="relative-block">
+            <div class="relative-title">RELATIVE 2</div>
+            <div class="form-group"><label>NAME</label><input type="text" name="REL_2_NAME"></div>
+            <div class="form-group"><label>RELATION</label><input type="text" name="REL_2_RELATION"></div>
+            <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_2_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          </div>
 
-        <!-- RELATIVE 3 -->
-        <div class="relative-block">
-          <div class="relative-title">RELATIVE 3</div>
-          <div class="form-group"><label>NAME</label><input type="text" name="REL_3_NAME"></div>
-          <div class="form-group"><label>RELATION</label><input type="text" name="REL_3_RELATION"></div>
-          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_3_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
-        </div>
+          <div class="relative-block">
+            <div class="relative-title">RELATIVE 3</div>
+            <div class="form-group"><label>NAME</label><input type="text" name="REL_3_NAME"></div>
+            <div class="form-group"><label>RELATION</label><input type="text" name="REL_3_RELATION"></div>
+            <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_3_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          </div>
 
-        <!-- RELATIVE 4 -->
-        <div class="relative-block">
-          <div class="relative-title">RELATIVE 4</div>
-          <div class="form-group"><label>NAME</label><input type="text" name="REL_4_NAME"></div>
-          <div class="form-group"><label>RELATION</label><input type="text" name="REL_4_RELATION"></div>
-          <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_4_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          <div class="relative-block">
+            <div class="relative-title">RELATIVE 4</div>
+            <div class="form-group"><label>NAME</label><input type="text" name="REL_4_NAME"></div>
+            <div class="form-group"><label>RELATION</label><input type="text" name="REL_4_RELATION"></div>
+            <div class="form-group"><label>MOBILE (10 DIGITS)</label><input type="tel" name="REL_4_MOBILE" pattern="[0-9]{10}" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+          </div>
         </div>
       </div>
 
@@ -612,10 +610,11 @@
     <button type="button" class="crop-cancel-btn" onclick="closeCropModal()">CANCEL</button>
   </div>
 </div>
+
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
 
-  document.getElementById('v_unique_id').value = 'AUTO GENERATED';;
+  document.getElementById('v_unique_id').value = 'AUTO GENERATED';
 
   setInterval(() => {
     const now = new Date();
@@ -871,7 +870,7 @@
 
     const GENDERVal = parsedData['GENDER'];
     if (GENDERVal) {
-      const el = document.querySelector('select[name="GENDER"]') || document.querySelector('select[name="GENDER"]') || document.getElementById('GENDER');
+      const el = document.querySelector('select[name="GENDER"]') || document.getElementById('GENDER');
       if (el) el.value = GENDERVal;
     }
 
@@ -893,7 +892,7 @@
       }
     }
 
-    const ADHARVal = parsedData['ADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
+    const ADHARVal = parsedData['ADHAR NUMBER'];
     if (ADHARVal && ADHARVal !== 'NOT AVAILABLE') {
       const el = document.querySelector('input[name="ADHAR_NUMBER"]') || document.getElementById('ADHAR_number');
       if (el) el.value = ADHARVal;
@@ -916,7 +915,7 @@
       if (el) el.value = addressVal;
     }
 
-    const ADHARValFinal = parsedData['ADHAR NUMBER'] || parsedData['ADHAR NUMBER'];
+    const ADHARValFinal = parsedData['ADHAR NUMBER'];
     if (ADHARValFinal && ADHARValFinal !== 'NOT AVAILABLE') {
       checkExistingEmployee(ADHARValFinal);
     }
@@ -1014,11 +1013,89 @@
     }
   });
 
+  async function submitDocumentsOnly() {
+    const docBtn = document.getElementById("updateDocsOnlyBtn");
+    const adharEl = document.getElementById("ADHAR_number") || document.querySelector('input[name="ADHAR_NUMBER"]');
+    const uidEl = document.getElementById("v_unique_id") || document.querySelector('input[name="UNIQUE_ID"]');
+    const nameEl = document.getElementById("full_name") || document.querySelector('input[name="FULL_NAME"]');
+
+    const cleanAdhar = ((adharEl && adharEl.value) || "").replace(/\s+/g, "").trim();
+    const uniqueId = ((uidEl && uidEl.value) || "").trim();
+    const fullName = ((nameEl && nameEl.value) || "").trim();
+
+    if (cleanAdhar.length !== 12) {
+      alert("માન્ય 12 અંકનો આધાર નંબર હોવો જરૂરી છે!");
+      return;
+    }
+
+    const getDocBase64 = (inputId) => new Promise((resolve) => {
+      const el = document.getElementById(inputId);
+      if (!el) return resolve("");
+      if (el.dataset.croppedBase64) return resolve(el.dataset.croppedBase64);
+      const file = el.files && el.files[0];
+      if (!file || file.size === 0) return resolve("");
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => resolve("");
+      reader.readAsDataURL(file);
+    });
+
+    const payload = {
+      action: "update_documents_only",
+      ADHAR_NUMBER: cleanAdhar,
+      UNIQUE_ID: uniqueId,
+      FULL_NAME: fullName,
+      ADHAR_FRONT_FILE: await getDocBase64("adhar_front_file"),
+      ADHAR_BACK_FILE: await getDocBase64("adhar_back_file"),
+      PAN_PIC_FILE: await getDocBase64("pan_file"),
+      LIVE_PHOTO_FILE: await getDocBase64("live_file"),
+      THUMB_LEFT_FILE: await getDocBase64("thumb_left_file"),
+      THUMB_RIGHT_FILE: await getDocBase64("thumb_right_file")
+    };
+
+    if (canvas) {
+      const blankCanvas = document.createElement("canvas");
+      blankCanvas.width = canvas.width;
+      blankCanvas.height = canvas.height;
+      if (canvas.toDataURL() !== blankCanvas.toDataURL()) {
+        payload.DIGITAL_SIGN_FILE = canvas.toDataURL("image/png");
+      }
+    }
+
+    if (docBtn) {
+      docBtn.disabled = true;
+      docBtn.innerText = "UPDATING DOCUMENTS...";
+    }
+
+    try {
+      const resp = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+      const res = await resp.json();
+      if (res.status === "SUCCESS") {
+        alert("ડોક્યુમેન્ટ્સ સફળતાપૂર્વક અપડેટ થઈ ગયા!");
+        await checkExistingEmployee(cleanAdhar);
+      } else {
+        alert("Error: " + (res.message || "Update failed"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Documents update failed!");
+    } finally {
+      if (docBtn) {
+        docBtn.innerText = "SUBMIT/UPDATE DOCUMENTS ONLY";
+        docBtn.disabled = false;
+      }
+    }
+  }
+
   async function checkExistingEmployee(ADHARNum) {
     const cleanADHAR = (ADHARNum || "").replace(/\s+/g, "").trim();
     if (cleanADHAR.length !== 12) return;
 
     const alertBox = document.getElementById("empAlertBox");
+    const docBtn = document.getElementById("updateDocsOnlyBtn");
     if (!alertBox) return;
 
     alertBox.style.display = "block";
@@ -1036,6 +1113,7 @@
 
       if (res.status === "FOUND" && res.record) {
         const rec = res.record;
+        if (docBtn) docBtn.disabled = false;
         
         // ૧. તમામ ટેક્સ્ટ, ડ્રોપડાઉન અને રિલેટિવ્સના ફિલ્ડ્સ ઓટો-ફિલ કરો
         const fields = [
@@ -1062,7 +1140,8 @@
             el.value = rec[key];
           }
         });
-// 📅 DOB અને AGE / BIRTH YEAR માટે સ્માર્ટ લોજિક
+
+        // 📅 DOB અને AGE / BIRTH YEAR માટે સ્માર્ટ લોજિક
         const dobEl = document.getElementById("v_dob") || document.querySelector('[name="DOB"]');
         const ageEl = document.getElementById("v_age") || document.querySelector('[name="AGE"]');
 
@@ -1086,36 +1165,31 @@
               finalDob = `${yyyy}-${monthMap[monKey]}-${dd}`;
             }
           }
-          // જો તારીખ YYYY-MM-DD કે ISO ફોર્મેટમાં હોય (દા.ત. 1991-01-01)
           else if (/^\d{4}-\d{2}-\d{2}/.test(cleanDob)) {
             finalDob = cleanDob.slice(0, 10);
           }
-          // જો તારીખ DD/MM/YYYY કે DD-MM-YYYY ફોર્મેટમાં હોય
           else if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(cleanDob)) {
             const sep = cleanDob.includes("/") ? "/" : "-";
             const parts = cleanDob.split(sep);
             finalDob = `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
           }
-          // જો માત્ર 4 અંકનું જન્મ વર્ષ (Year) હોય (દા.ત. 1991)
           else if (/^\d{4}$/.test(cleanDob)) {
             finalDob = `${cleanDob}-01-01`;
           }
         }
         
-        // જો DOB ન મળે પણ AGE (ઉંમર) હોય, તો 1-January ની તારીખ બનાવો
         const ageNum = parseInt((ageEl && ageEl.value) || rec.AGE || "", 10);
         if (!finalDob && !isNaN(ageNum) && ageNum > 0) {
           const birthYear = new Date().getFullYear() - ageNum;
           finalDob = `${birthYear}-01-01`;
         }
 
-        // DOB બોક્સમાં વેલ્યુ સેટ કરો
         if (dobEl && finalDob) {
           dobEl.value = finalDob;
         }
+
         // ૨. ચેકબોક્સ ઓટો-ટિક કરવા માટે (Languages & Skills)
         ["LANGUAGES_KNOWN", "KNOWN_SKILLS"].forEach(key => {
-          // પહેલા બધા અનચેક કરી દો
           document.querySelectorAll(`input[name="${key}"]`).forEach(chk => chk.checked = false);
           
           if (rec[key]) {
@@ -1127,51 +1201,53 @@
             });
           }
         });
-    // ૩. અગાઉ અપલોડ કરેલી ફાઇલોના પ્રીવ્યુ અને ફાઇલ ડેટા ઓટો-સેટ કરવા માટે
-    if (rec.docBase64s) {
-      const docMap = {
-        "adhar_front_file": rec.docBase64s["ADHAR_FRONT_URL"],
-        "adhar_back_file": rec.docBase64s["ADHAR_BACK_URL"],
-        "pan_file": rec.docBase64s["PAN_CARD_URL"],
-        "live_file": rec.docBase64s["LIVE_PHOTO_URL"],
-        "thumb_left_file": rec.docBase64s["LEFT_THUMB_URL"],
-        "thumb_right_file": rec.docBase64s["RIGHT_THUMB_URL"]
-      };
 
-      const previewMap = {
-        "adhar_front_file": "adhar_front_preview",
-        "adhar_back_file": "adhar_back_preview",
-        "pan_file": "pan_preview",
-        "live_file": "live_preview",
-        "thumb_left_file": "thumb_left_preview",
-        "thumb_right_file": "thumb_right_preview"
-      };
+        // ૩. અગાઉ અપલોડ કરેલી ફાઇલોના પ્રીવ્યુ અને ફાઇલ ડેટા ઓટો-સેટ કરવા માટે
+        if (rec.docBase64s) {
+          const docMap = {
+            "adhar_front_file": rec.docBase64s["ADHAR_FRONT_URL"],
+            "adhar_back_file": rec.docBase64s["ADHAR_BACK_URL"],
+            "pan_file": rec.docBase64s["PAN_CARD_URL"],
+            "live_file": rec.docBase64s["LIVE_PHOTO_URL"],
+            "thumb_left_file": rec.docBase64s["LEFT_THUMB_URL"],
+            "thumb_right_file": rec.docBase64s["RIGHT_THUMB_URL"]
+          };
 
-      Object.keys(docMap).forEach(inputId => {
-        const b64Data = docMap[inputId];
-        const inputEl = document.getElementById(inputId);
-        const previewId = previewMap[inputId];
-        const imgEl = document.getElementById(previewId);
+          const previewMap = {
+            "adhar_front_file": "adhar_front_preview",
+            "adhar_back_file": "adhar_back_preview",
+            "pan_file": "pan_preview",
+            "live_file": "live_preview",
+            "thumb_left_file": "thumb_left_preview",
+            "thumb_right_file": "thumb_right_preview"
+          };
 
-        if (b64Data) {
-          const formattedB64 = b64Data.replace("base64;", "base64,");
-          if (inputEl) {
-            inputEl.dataset.croppedBase64 = formattedB64; // 👉 આનાથી પાસપોર્ટ અને અંગૂઠા ડ્રાઈવમાં સેવ થઈ જશે
-          }
-          if (imgEl) {
-            imgEl.src = formattedB64;
-            imgEl.style.display = "block";
-          }
-        } else {
-          if (inputEl) delete inputEl.dataset.croppedBase64;
-          if (imgEl) {
-            imgEl.style.display = "none";
-            imgEl.src = "";
-          }
+          Object.keys(docMap).forEach(inputId => {
+            const b64Data = docMap[inputId];
+            const inputEl = document.getElementById(inputId);
+            const previewId = previewMap[inputId];
+            const imgEl = document.getElementById(previewId);
+
+            if (b64Data) {
+              const formattedB64 = b64Data.replace("base64;", "base64,");
+              if (inputEl) {
+                inputEl.dataset.croppedBase64 = formattedB64;
+              }
+              if (imgEl) {
+                imgEl.src = formattedB64;
+                imgEl.style.display = "block";
+              }
+            } else {
+              if (inputEl) delete inputEl.dataset.croppedBase64;
+              if (imgEl) {
+                imgEl.style.display = "none";
+                imgEl.src = "";
+              }
+            }
+          });
         }
-      });
-    }
-        // ૩. બ્લેકલિસ્ટેડ અથવા સક્સેસ એલર્ટ મેસેજ
+
+        // ૪. બ્લેકલિસ્ટેડ અથવા સક્સેસ એલર્ટ મેસેજ
         const statusStr = String(rec.STATUS || "").toUpperCase();
         if (statusStr.includes("BLACK")) {
           alertBox.style.backgroundColor = "#ffebee";
@@ -1184,7 +1260,8 @@
           alertBox.style.border = "2px solid #2e7d32";
           alertBox.innerHTML = `✅ આ કર્મચારી (${rec.FULL_NAME} - ${rec.UNIQUE_ID}) પહેલેથી સિસ્ટમમાં રજીસ્ટર (ALREADY EXISTING) છે.<br><span style="font-size:12px; font-weight:normal;">તેમની વિગતો ફોર્મમાં ભરાઈ ગઈ છે. કોઈ ફેરફાર કરવો હોય તો કરીને Save કરો, એટલે Google Sheet માં આ જ રેકોર્ડ અપડેટ થઈ જશે.</span>`;
         }
-     } else {
+      } else {
+        if (docBtn) docBtn.disabled = true;
         alertBox.style.display = "none";
         const uidEl = document.getElementById("v_unique_id") || document.querySelector('[name="UNIQUE_ID"]');
         if (uidEl && res.nextUniqueId) {
@@ -1192,11 +1269,12 @@
         }
       }
     } catch (err) {
+      if (docBtn) docBtn.disabled = true;
       console.error("ADHAR check error:", err);
       alertBox.style.display = "none";
     }
   }
 </script>
-  
-  </body>
-  </html>
+
+</body>
+</html>
