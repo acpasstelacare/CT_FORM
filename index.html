@@ -1020,12 +1020,20 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false, lastX = 0, lastY = 0;
       fillField(['input[name="PAN_NUMBER"]'], panMatch[0]);
     }
 
-    // 7. ADDRESS (single-line + multi-line support)
+    // 7. ADDRESS
     let addressVal = parsedData['ADDRESS'] || parsedData['FULL ADDRESS'] || '';
     if (!addressVal) {
-      const addrBlockMatch = upperText.match(/(?:^|\n)\s*(?:[0-9]+[\).\-\s]+)?(?:\*+)?\s*(?:ADDRESS|FULL ADDRESS)\s*(?:\*+)?\s*[:\-]\s*([\s\S]*?)(?=(?:\n\s*(?:[0-9]+[\).\-\s]+)?(?:\*+)?\s*(?:NAME|FULL NAME|DATE OF BIRTH|DOB|GENDER|MOBILE|ADHAR|AADHAR|PAN)\s*(?:\*+)?\s*[:\-]|$)/i);
-      if (addrBlockMatch && addrBlockMatch[1]) {
-        addressVal = addrBlockMatch[1].replace(/\*+/g, '').replace(/\s*\n+\s*/g, ', ').trim();
+      const addrIdx = lines.findIndex(l => /^(?:ADDRESS|FULL ADDRESS)\b/.test(l.replace(/\*/g, '').trim()));
+      if (addrIdx !== -1) {
+        const firstLine = lines[addrIdx].replace(/\*/g, '').replace(/^(?:ADDRESS|FULL ADDRESS)\s*[:\-]\s*/i, '').trim();
+        const extraLines = [];
+        for (let i = addrIdx + 1; i < lines.length; i++) {
+          const l = lines[i].replace(/\*/g, '').replace(/^[0-9]+[\).\-\s]+/, '').trim();
+          if (!l) continue;
+          if (/^(NAME|FULL NAME|DATE OF BIRTH|DOB|GENDER|MOBILE|ADHAR|AADHAR|PAN)\s*[:\-]/i.test(l)) break;
+          extraLines.push(l);
+        }
+        addressVal = [firstLine, ...extraLines].filter(Boolean).join(', ');
       }
     }
     if (addressVal && addressVal !== 'NOT AVAILABLE' && addressVal !== 'N/A') {
