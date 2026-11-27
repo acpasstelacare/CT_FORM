@@ -1020,7 +1020,7 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false, lastX = 0, lastY = 0;
       fillField(['input[name="PAN_NUMBER"]'], panMatch[0]);
     }
 
-    // 7. ADDRESS
+   // 7. ADDRESS
     let addressVal = parsedData['ADDRESS'] || parsedData['FULL ADDRESS'] || '';
     if (!addressVal) {
       const addrIdx = lines.findIndex(l => /^(?:ADDRESS|FULL ADDRESS)\b/.test(l.replace(/\*/g, '').trim()));
