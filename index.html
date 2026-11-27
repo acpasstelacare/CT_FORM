@@ -722,62 +722,58 @@
       cropper = null;
     }
   }
-
+///////////////
 let canvas, ctx, isDrawing = false, isSignUpdated = false;
 
   window.addEventListener('DOMContentLoaded', () => {
     canvas = document.getElementById('sigCanvas');
-    if (canvas) {
-      ctx = canvas.getContext('2d');
-      let rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width || 400;
-      canvas.height = 120;
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
 
-      canvas.addEventListener('mousedown', (e) => {
-        isDrawing = true;
-        isSignUpdated = true;
-        ctx.beginPath();
-        let r = canvas.getBoundingClientRect();
-        ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
-      });
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width || 400;
+    canvas.height = rect.height || 120;
 
-      canvas.addEventListener('mousemove', (e) => {
-        if (!isDrawing) return;
-        let r = canvas.getBoundingClientRect();
-        ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      });
-
-      window.addEventListener('mouseup', () => {
-        isDrawing = false;
-      });
-
-      canvas.addEventListener('touchstart', (e) => {
-        if (!e.touches || !e.touches[0]) return;
-        isDrawing = true;
-        isSignUpdated = true;
-        ctx.beginPath();
-        let r = canvas.getBoundingClientRect();
-        ctx.moveTo(e.touches[0].clientX - r.left, e.touches[0].clientY - r.top);
-        e.preventDefault();
-      }, { passive: false });
-
-      canvas.addEventListener('touchmove', (e) => {
-        if (!isDrawing || !e.touches || !e.touches[0]) return;
-        let r = canvas.getBoundingClientRect();
-        ctx.lineTo(e.touches[0].clientX - r.left, e.touches[0].clientY - r.top);
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        e.preventDefault();
-      }, { passive: false });
-
-      window.addEventListener('touchend', () => {
-        isDrawing = false;
-      });
+    function getPos(e) {
+      const r = canvas.getBoundingClientRect();
+      const pt = (e.touches && e.touches[0]) ? e.touches[0] : e;
+      return {
+        x: pt.clientX - r.left,
+        y: pt.clientY - r.top
+      };
     }
+
+    function start(e) {
+      isDrawing = true;
+      isSignUpdated = true;
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function move(e) {
+      if (!isDrawing) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function end() {
+      isDrawing = false;
+    }
+
+    canvas.addEventListener('mousedown', start);
+    canvas.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', end);
+
+    canvas.addEventListener('touchstart', start, { passive: false });
+    canvas.addEventListener('touchmove', move, { passive: false });
+    window.addEventListener('touchend', end);
   });
 
   function clearCanvas() {
@@ -786,7 +782,7 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
     }
     isSignUpdated = false;
   }
-
+//////////////
   async function scanAllWithAI() {
     const frontInput = document.getElementById('adhar_front_file');
     const backInput = document.getElementById('adhar_back_file');
