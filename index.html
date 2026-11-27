@@ -939,10 +939,16 @@ function clearCanvas() {
       fillField(['input[name="PAN_NUMBER"]'], panMatch[0]);
     }
 
-    // 7. ADDRESS
-    const addressVal = parsedData['ADDRESS'] || parsedData['FULL ADDRESS'];
-    if (addressVal) {
-      fillField(['input[name="ADDRESS"]', '#address'], addressVal);
+    // 7. ADDRESS (single-line + multi-line support)
+    let addressVal = parsedData['ADDRESS'] || parsedData['FULL ADDRESS'] || '';
+    if (!addressVal) {
+      const addrBlockMatch = upperText.match(/(?:^|\n)\s*(?:[0-9]+[\).\-\s]+)?(?:\*+)?\s*(?:ADDRESS|FULL ADDRESS)\s*(?:\*+)?\s*[:\-]\s*([\s\S]*?)(?=(?:\n\s*(?:[0-9]+[\).\-\s]+)?(?:\*+)?\s*(?:NAME|FULL NAME|DATE OF BIRTH|DOB|GENDER|MOBILE|ADHAR|AADHAR|PAN)\s*(?:\*+)?\s*[:\-]|$)/i);
+      if (addrBlockMatch && addrBlockMatch[1]) {
+        addressVal = addrBlockMatch[1].replace(/\*+/g, '').replace(/\s*\n+\s*/g, ', ').trim();
+      }
+    }
+    if (addressVal && addressVal !== 'NOT AVAILABLE' && addressVal !== 'N/A') {
+      fillField(['input[name="ADDRESS"]', 'textarea[name="ADDRESS"]', '#address'], addressVal);
     }
 
     // 8. EXISTING RECORD CHECK
