@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Passtelacare - Employee Registration Form</title>
-  
+
   <!-- Cropper.js Library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
@@ -13,7 +13,7 @@
     @page { size: A4; margin: 0; }
     * { box-sizing: border-box; font-family: Arial, sans-serif; text-transform: uppercase; }
     body { background: #555; margin: 0; padding: 10px; color: #000; }
-    
+
     .page {
       width: 100%;
       max-width: 794px;
@@ -33,23 +33,23 @@
     .page-body { padding: 15px 20px; flex-grow: 1; }
     h2 { color: #102C57; text-align: center; margin: 5px 0 2px 0; font-size: 18px; font-weight: bold; }
     h4 { color: #35598E; text-align: center; margin: 0 0 15px 0; font-size: 13px; font-weight: bold; }
-    
+
     .section-title { background: #102C57; color: #fff; padding: 8px 12px; font-weight: bold; border-radius: 4px; margin-top: 15px; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; }
-    
+
     .form-grid { display: flex; flex-direction: column; gap: 12px; }
     .form-group { display: flex; flex-direction: column; width: 100%; }
-    
+
     label { font-weight: bold; font-size: 12px; margin-bottom: 4px; color: #102C57; }
-    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { 
-      padding: 10px; 
-      border: 1px solid #555; 
-      border-radius: 4px; 
-      font-size: 14px; 
-      width: 100%; 
+    input[type="text"], input[type="tel"], input[type="date"], input[type="number"], select, textarea {
+      padding: 10px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 100%;
       text-transform: uppercase;
     }
     input:focus, select:focus, textarea:focus { border-color: #102C57; outline: none; }
-    
+
     .checkbox-list {
       display: flex;
       flex-direction: column;
@@ -99,9 +99,6 @@
     .submit-btn:hover { background: #218838; }
     .print-btn { background: #007bff; color: #fff; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
     .print-btn:hover { background: #0056b3; }
-    .doc-btn { background: #ff9800; color: #fff; border: none; padding: 12px; font-size: 15px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1; transition: 0.3s; }
-    .doc-btn:hover:not(:disabled) { background: #e68900; }
-    .doc-btn:disabled { background: #cccccc; color: #666666; cursor: not-allowed; opacity: 0.7; }
 
     /* CROP MODAL STYLING */
     #cropModal {
@@ -153,7 +150,6 @@
 <body>
 
 <div class="page">
-  <!-- HEADER CONTAINER -->
   <div class="header-img-container">
     <img src="./NEWHEADER.png" alt="Header">
   </div>
@@ -161,10 +157,9 @@
   <div class="page-body">
     <h2>PASTELA CARE PRIVATE LIMITED</h2>
     <h4>EMPLOYEE REGISTRATION FORM</h4>
-    <!-- એલર્ટ નોટિફિકેશન બોક્સ -->
     <div id="empAlertBox" style="display:none; padding: 15px; margin: 15px 0; border-radius: 6px; font-weight: bold; font-size: 14px; text-align: center;"></div>
-    <form id="employeeForm">
 
+    <form id="employeeForm">
       <!-- TOP SECTION: UNIQUE ID & STATUS -->
       <div class="section-title">TOP HEADER DETAILS</div>
       <div class="form-grid">
@@ -184,59 +179,49 @@
       <!-- 1. UPLOADS & CAPTURES -->
       <div class="section-title">1. UPLOADS & CAPTURES (PHOTOS, THUMB & DOCUMENTS)</div>
       <div class="form-grid">
-        
-        <!-- ૧. આધાર ફ્રન્ટ સાઈડ -->
         <div class="form-group">
           <label>ADHAR CARD - FRONT SIDE</label>
           <input type="file" accept="image/*" capture="environment" id="adhar_front_file" onchange="previewImage(event, 'adhar_front_preview')">
           <div class="preview-container"><img id="adhar_front_preview" class="preview-img" alt="Preview"></div>
         </div>
 
-        <!-- ૨. આધાર બેક સાઈડ -->
         <div class="form-group">
           <label>ADHAR CARD - BACK SIDE</label>
           <input type="file" accept="image/*" capture="environment" id="adhar_back_file" onchange="previewImage(event, 'adhar_back_preview')">
           <div class="preview-container"><img id="adhar_back_preview" class="preview-img" alt="Preview"></div>
         </div>
 
-        <!-- ૩. પાન કાર્ડ ફોટો -->
         <div class="form-group">
           <label>PAN CARD PHOTO</label>
           <input type="file" accept="image/*" capture="environment" id="pan_file" onchange="previewImage(event, 'pan_preview')">
           <div class="preview-container"><img id="pan_preview" class="preview-img" alt="Preview"></div>
         </div>
 
-        <!-- ૪ & ૫. AI સ્કેન બટન અને કાચો ડેટા (Raw Data Box) -->
         <div class="form-group" style="background: #f4f6f9; padding: 12px; border-radius: 6px; border: 1px dashed #102C57;">
-          <button type="button" onclick="scanAllWithAI()" style="background: #1a73e8; color: #fff; border: none; padding: 12px 16px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 13px; width: 100%;">🤖 AI થી આધાર અને પાન સ્કેન કરો અને ઓટો-ફિલ કરો</button>
-          
+          <button type="button" onclick="scanAllWithAI()" style="background: #1a73e8; color: #fff; border: none; padding: 12px 16px; font-weight: bold; border-radius: 4px; cursor: pointer; font-size: 13px; width: 100%;">AI થી આધાર અને પાન સ્કેન કરો અને ઓટો-ફિલ કરો</button>
           <div style="margin-top: 10px;">
             <label style="font-size: 11px; color: #555;">AI સ્કેન કરેલો કાચો ડેટા (કૉપિ કરવા માટે):</label>
             <textarea id="rawAadhaarText" rows="4" placeholder="AI સ્કેન થયા પછી ડેટા અહીં દેખાશે..." style="width:100%; font-size:13px; font-family:monospace; text-transform:uppercase; background:#fff; padding:6px; border:1px solid #ccc; border-radius:4px;"></textarea>
           </div>
         </div>
 
-        <!-- ૬. પાસપોર્ટ સાઈઝ લાઇવ ફોટો -->
         <div class="form-group">
           <label>PASSPORT SIZE LIVE PHOTO</label>
           <input type="file" accept="image/*" capture="user" id="live_file" onchange="previewImage(event, 'live_preview')">
           <div class="preview-container"><img id="live_preview" class="preview-img" alt="Preview"></div>
         </div>
 
-        <!-- ૭. ડાબો અંગૂઠો -->
         <div class="form-group">
           <label>LEFT THUMB IMPRESSION</label>
           <input type="file" accept="image/*" capture="environment" id="thumb_left_file" onchange="previewImage(event, 'thumb_left_preview')">
           <div class="preview-container"><img id="thumb_left_preview" class="preview-img" alt="Preview"></div>
         </div>
 
-        <!-- ૮. જમણો અંગૂઠો -->
         <div class="form-group">
           <label>RIGHT THUMB IMPRESSION</label>
           <input type="file" accept="image/*" capture="environment" id="thumb_right_file" onchange="previewImage(event, 'thumb_right_preview')">
           <div class="preview-container"><img id="thumb_right_preview" class="preview-img" alt="Preview"></div>
         </div>
-
       </div>
 
       <!-- 2. STAFF GENERAL DETAILS -->
@@ -411,7 +396,7 @@
         </div>
 
         <div style="margin-top:10px; font-weight:bold; font-size:12px; color:#102C57;">RELATIVE INFORMATION (UP TO 4 RELATIVES):</div>
-        
+
         <div class="relative-block">
           <div class="relative-block">
             <div class="relative-title">RELATIVE 1</div>
@@ -477,8 +462,7 @@
             <option value="NO">NO</option>
           </select>
         </div>
-        
-        <!-- LANGUAGES KNOWN -->
+
         <div class="form-group">
           <label>LANGUAGES KNOWN (SELECT ALL THAT APPLY)</label>
           <div class="checkbox-list">
@@ -502,8 +486,6 @@
       <!-- 6. SKILL ASSESSMENT & PAST EXPERIENCE -->
       <div class="section-title">6. SKILL ASSESSMENT & PAST EXPERIENCE</div>
       <div class="form-grid">
-        
-        <!-- KNOWN SKILLS -->
         <div class="form-group">
           <label>KNOWN SKILLS (SELECT ALL THAT APPLY)</label>
           <div class="checkbox-list">
@@ -586,13 +568,12 @@
       </div>
 
       <div class="btn-container">
-  <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
-  <button type="button" class="print-btn" onclick="window.print()">PRINT / SAVE AS PDF</button>
-</div>
+        <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
+        <button type="button" class="print-btn" onclick="window.print()">PRINT / SAVE AS PDF</button>
+      </div>
     </form>
   </div>
 
-  <!-- FOOTER CONTAINER -->
   <div class="footer-img-container">
     <img src="./FOOTER.png" alt="Footer">
   </div>
@@ -611,7 +592,7 @@
 </div>
 
 <script>
-  const SCRIPT_URL = '[https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec](https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec)';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
 
   document.getElementById('v_unique_id').value = 'AUTO GENERATED';
 
@@ -622,11 +603,9 @@
   }, 1000);
 
   function calculateAgeFromDOB() {
-    const dobEl = document.getElementById('v_dob');
-    const dobVal = dobEl ? dobEl.value : '';
+    const dobVal = document.getElementById('v_dob').value;
     if (dobVal) {
       const birthDate = new Date(dobVal);
-      if (isNaN(birthDate.getTime())) return;
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
@@ -634,14 +613,13 @@
         age--;
       }
       const ageEl = document.getElementById('v_age');
-      if (ageEl && age >= 0) ageEl.value = age;
+      if (ageEl) ageEl.value = age;
     }
   }
 
   function calculateDOBFromAge() {
-    const ageEl = document.getElementById('v_age');
-    const ageVal = ageEl ? ageEl.value : '';
-    if (ageVal && parseInt(ageVal, 10) > 0) {
+    const ageVal = document.getElementById('v_age').value;
+    if (ageVal && ageVal > 0) {
       const today = new Date();
       const birthYear = today.getFullYear() - parseInt(ageVal, 10);
       const approxDOB = birthYear + '-01-01';
@@ -726,6 +704,7 @@
     }
   }
 
+  /* DIGITAL SIGNATURE CANVAS LOGIC */
   let canvas, ctx, isDrawing = false, isSignUpdated = false;
 
   window.addEventListener('DOMContentLoaded', () => {
@@ -832,15 +811,14 @@
       });
 
       const rawTextResponse = await response.text();
-console.log("Apps Script Response:", rawTextResponse);
+      let result;
+      try {
+        result = JSON.parse(rawTextResponse);
+      } catch (e) {
+        alert("Apps Script એ HTML મોકલ્યું છે. Web App access ('Anyone') અને Deployment ચેક કરો.");
+        return;
+      }
 
-let result;
-try {
-  result = JSON.parse(rawTextResponse);
-} catch (e) {
-  alert("Apps Script એ HTML મોકલ્યું છે. Console (F12) માં response જુઓ અથવા Web App access ('Anyone') ચેક કરો.");
-  return;
-}
       const textBox = document.getElementById('rawAadhaarText');
       if (textBox) {
         textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
@@ -866,103 +844,103 @@ try {
       return;
     }
 
-    const upperText = rawText.toUpperCase();
-    const lines = upperText.split('\n');
+    const lines = rawText.split('\n');
     let parsedData = {};
 
     lines.forEach(line => {
-      const cleanLine = line.replace(/\*/g, '').replace(/^[0-9]+[\).\-\s]+/, '').trim();
-      const match = cleanLine.match(/^([A-Z\s\/]+?)\s*[:\-]\s*(.+)$/);
-      if (match) {
-        const key = match[1].trim().replace(/\s+/g, ' ');
-        const val = match[2].trim();
-        if (val && val !== 'NOT AVAILABLE' && val !== 'N/A' && val !== '-') {
+      const cleanLine = line.replace(/\*/g, '').trim();
+      const parts = cleanLine.split(':');
+      if (parts.length >= 2) {
+        const key = parts[0].trim().toUpperCase();
+        const val = parts.slice(1).join(':').trim();
+        if (val) {
           parsedData[key] = val;
         }
       }
     });
 
-    function setInputValue(selectors, value) {
-      if (!value) return null;
-      for (const sel of selectors) {
-        const el = document.querySelector(sel);
-        if (el) {
-          el.value = value;
-          el.dispatchEvent(new Event('input', { bubbles: true }));
-          el.dispatchEvent(new Event('change', { bubbles: true }));
-          return el;
-        }
+    const fullNameVal = parsedData['NAME'] || parsedData['FULL NAME'];
+    if (fullNameVal && fullNameVal !== 'NOT AVAILABLE') {
+      const el = document.querySelector('input[name="FULL_NAME"]') || document.getElementById('full_name');
+      if (el) {
+        el.value = fullNameVal;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
       }
-      return null;
     }
 
-    const fullNameVal = parsedData['NAME'] || parsedData['FULL NAME'] || parsedData['APPLICANT NAME'];
-    if (fullNameVal) {
-      setInputValue(['input[name="FULL_NAME"]', '#full_name'], fullNameVal);
-    }
-
-    const mobileVal = parsedData['MOBILE NUMBER'] || parsedData['MOBILE'] || parsedData['PHONE NUMBER'];
-    if (mobileVal) {
+    const mobileVal = parsedData['MOBILE NUMBER'] || parsedData['MOBILE'];
+    if (mobileVal && mobileVal !== 'NOT AVAILABLE') {
       const cleanMob = mobileVal.replace(/[^0-9]/g, '').slice(-10);
-      if (cleanMob.length === 10) {
-        setInputValue(['input[name="MOBILE"]', '#mobile_number'], cleanMob);
+      const el = document.querySelector('input[name="MOBILE"]') || document.getElementById('mobile_number');
+      if (el && cleanMob) {
+        el.value = cleanMob;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
       }
     }
 
-    const genderRaw = parsedData['GENDER'] || parsedData['SEX'] || '';
-    let genderVal = '';
-    if (genderRaw.includes('FEMALE') || /\bF\b/.test(genderRaw)) {
-      genderVal = 'FEMALE';
-    } else if (genderRaw.includes('MALE') || /\bM\b/.test(genderRaw)) {
-      genderVal = 'MALE';
+    const genderRaw = (parsedData['GENDER'] || '').toUpperCase();
+    let GENDERVal = '';
+    if (genderRaw.includes('FEMALE')) GENDERVal = 'FEMALE';
+    else if (genderRaw.includes('MALE')) GENDERVal = 'MALE';
+    const genderEl = document.querySelector('select[name="GENDER"]') || document.getElementById('GENDER');
+    if (genderEl && GENDERVal) {
+      genderEl.value = GENDERVal;
+      genderEl.dispatchEvent(new Event('change', { bubbles: true }));
     }
-    if (genderVal) {
-      setInputValue(['select[name="GENDER"]', '#GENDER'], genderVal);
-    }
 
-    const dobVal = parsedData['DATE OF BIRTH'] || parsedData['DOB'] || parsedData['BIRTH DATE'];
-    if (dobVal) {
-      let dobStr = '';
-      const dmyMatch = dobVal.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
-      const ymdMatch = dobVal.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-      const yrMatch = dobVal.match(/\b(19\d{2}|20\d{2})\b/);
-
-      if (ymdMatch) {
-        dobStr = `${ymdMatch[1]}-${ymdMatch[2].padStart(2, '0')}-${ymdMatch[3].padStart(2, '0')}`;
-      } else if (dmyMatch) {
-        dobStr = `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
-      } else if (yrMatch) {
-        dobStr = `${yrMatch[1]}-01-01`;
-      }
-
-      if (dobStr) {
-        const dobEl = setInputValue(['#v_dob', 'input[name="DOB"]'], dobStr);
-        if (dobEl) {
-          calculateAgeFromDOB();
+    const dobVal = parsedData['DATE OF BIRTH'] || parsedData['DOB'];
+    if (dobVal && dobVal !== 'NOT AVAILABLE') {
+      let dobStr = dobVal;
+      if (dobStr.includes('/')) {
+        const parts = dobStr.split('/');
+        if (parts.length === 3) {
+          dobStr = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
         }
       }
+      const dobEl = document.getElementById('v_dob') || document.querySelector('input[name="DOB"]');
+      if (dobEl) {
+        dobEl.value = dobStr;
+        dobEl.dispatchEvent(new Event('change', { bubbles: true }));
+        calculateAgeFromDOB();
+      }
     }
 
-    const idRaw = parsedData['ADHAR NUMBER'] || parsedData['AADHAR NUMBER'] || parsedData['AADHAAR NUMBER'] || parsedData['ADHAR'] || '';
-    const idMatch = (idRaw || upperText).match(/\b(\d{4}\s?\d{4}\s?\d{4})\b/);
-    const cleanId = idMatch ? idMatch[1].replace(/\s+/g, '') : '';
-    if (cleanId.length === 12) {
-      setInputValue(['input[name="ADHAR_NUMBER"]', '#ADHAR_number'], cleanId);
+    const idRaw = parsedData['ADHAR NUMBER'] || parsedData['AADHAR NUMBER'] || parsedData['AADHAAR NUMBER'] || '';
+    const idMatch = (idRaw || rawText).match(/\b(\d{4}\s?\d{4}\s?\d{4})\b/);
+    const ADHARVal = idMatch ? idMatch[1].replace(/\s+/g, '') : '';
+    if (ADHARVal && ADHARVal !== 'NOT AVAILABLE') {
+      const el = document.querySelector('input[name="ADHAR_NUMBER"]') || document.getElementById('ADHAR_number');
+      if (el) {
+        el.value = ADHARVal;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+      }
     }
 
-    const panRaw = parsedData['PAN NUMBER'] || parsedData['PAN'] || '';
-    const panMatch = (panRaw + ' ' + upperText).match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
-    if (panMatch && panMatch[0]) {
-      setInputValue(['input[name="PAN_NUMBER"]'], panMatch[0]);
+    const panVal = parsedData['PAN NUMBER'] || parsedData['PAN'];
+    const panField = document.querySelector('input[name="PAN_NUMBER"]');
+    if (panVal && panVal !== 'NOT AVAILABLE' && panField) {
+      const m = panVal.match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/i);
+      panField.value = m ? m[0].toUpperCase() : panVal;
+      panField.dispatchEvent(new Event('input', { bubbles: true }));
+    } else {
+      const panMatch = rawText.match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
+      if (panMatch && panMatch[0] && panField) {
+        panField.value = panMatch[0];
+        panField.dispatchEvent(new Event('input', { bubbles: true }));
+      }
     }
 
-    const addressVal = parsedData['ADDRESS'] || parsedData['FULL ADDRESS'];
-    if (addressVal) {
-      setInputValue(['input[name="ADDRESS"]', '#address'], addressVal);
+    const addressVal = parsedData['ADDRESS'];
+    if (addressVal && addressVal !== 'NOT AVAILABLE') {
+      const el = document.querySelector('input[name="ADDRESS"]') || document.getElementById('address');
+      if (el) {
+        el.value = addressVal;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+      }
     }
 
-    if (cleanId.length === 12 && typeof checkExistingEmployee === 'function') {
-      checkExistingEmployee(cleanId);
+    if (ADHARVal && ADHARVal.length === 12 && typeof checkExistingEmployee === 'function') {
+      checkExistingEmployee(ADHARVal);
     }
   }
 
@@ -1063,96 +1041,18 @@ try {
     }
   });
 
-  async function submitDocumentsOnly() {
-    const docBtn = document.getElementById("updateDocsOnlyBtn");
-    const adharEl = document.getElementById("ADHAR_number") || document.querySelector('input[name="ADHAR_NUMBER"]');
-    const uidEl = document.getElementById("v_unique_id") || document.querySelector('input[name="UNIQUE_ID"]');
-    const nameEl = document.getElementById("full_name") || document.querySelector('input[name="FULL_NAME"]');
-
-    const cleanAdhar = ((adharEl && adharEl.value) || "").replace(/\s+/g, "").trim();
-    const uniqueId = ((uidEl && uidEl.value) || "").trim();
-    const fullName = ((nameEl && nameEl.value) || "").trim();
-
-    if (cleanAdhar.length !== 12) {
-      alert("માન્ય 12 અંકનો આધાર નંબર હોવો જરૂરી છે!");
-      return;
-    }
-
-    const getDocBase64 = (inputId) => new Promise((resolve) => {
-      const el = document.getElementById(inputId);
-      if (!el) return resolve("");
-      if (el.dataset.croppedBase64) return resolve(el.dataset.croppedBase64);
-      const file = el.files && el.files[0];
-      if (!file || file.size === 0) return resolve("");
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = () => resolve("");
-      reader.readAsDataURL(file);
-    });
-
-    const payload = {
-      action: "update_documents_only",
-      ADHAR_NUMBER: cleanAdhar,
-      UNIQUE_ID: uniqueId,
-      FULL_NAME: fullName,
-      ADHAR_FRONT_FILE: await getDocBase64("adhar_front_file"),
-      ADHAR_BACK_FILE: await getDocBase64("adhar_back_file"),
-      PAN_PIC_FILE: await getDocBase64("pan_file"),
-      LIVE_PHOTO_FILE: await getDocBase64("live_file"),
-      THUMB_LEFT_FILE: await getDocBase64("thumb_left_file"),
-      THUMB_RIGHT_FILE: await getDocBase64("thumb_right_file")
-    };
-
-    if (canvas) {
-      const blankCanvas = document.createElement("canvas");
-      blankCanvas.width = canvas.width;
-      blankCanvas.height = canvas.height;
-      if (isSignUpdated && canvas.toDataURL() !== blankCanvas.toDataURL()) {
-        payload.DIGITAL_SIGN_FILE = canvas.toDataURL("image/png");
-      }
-    }
-
-    if (docBtn) {
-      docBtn.disabled = true;
-      docBtn.innerText = "UPDATING DOCUMENTS...";
-    }
-
-    try {
-      const resp = await fetch(SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify(payload)
-      });
-      const res = await resp.json();
-      if (res.status === "SUCCESS") {
-        alert("ડોક્યુમેન્ટ્સ સફળતાપૂર્વક અપડેટ થઈ ગયા!");
-        await checkExistingEmployee(cleanAdhar);
-      } else {
-        alert("Error: " + (res.message || "Update failed"));
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Documents update failed!");
-    } finally {
-      if (docBtn) {
-        docBtn.innerText = "SUBMIT/UPDATE DOCUMENTS ONLY";
-        docBtn.disabled = false;
-      }
-    }
-  }
-
   async function checkExistingEmployee(ADHARNum) {
     const cleanADHAR = (ADHARNum || "").replace(/\s+/g, "").trim();
     if (cleanADHAR.length !== 12) return;
 
     const alertBox = document.getElementById("empAlertBox");
-    const docBtn = document.getElementById("updateDocsOnlyBtn");
     if (!alertBox) return;
 
     alertBox.style.display = "block";
     alertBox.style.backgroundColor = "#eef3fc";
     alertBox.style.color = "#073e91";
     alertBox.style.border = "1px solid #073e91";
-    alertBox.innerHTML = "🔍 Google Sheet માં આધાર નંબર ચેક થઈ રહ્યો છે...";
+    alertBox.innerHTML = "Google Sheet માં આધાર નંબર ચેક થઈ રહ્યો છે...";
 
     try {
       const response = await fetch(SCRIPT_URL, {
@@ -1163,8 +1063,6 @@ try {
 
       if (res.status === "FOUND" && res.record) {
         const rec = res.record;
-        if (docBtn) docBtn.disabled = false;
-
         const fields = [
           "UNIQUE_ID", "STATUS", "DESIGNATION", "FULL_NAME", "MOBILE", "PAN_NUMBER",
           "GENDER", "DOB", "AGE", "ADDRESS", "AREA", "CITY", "EMP_TYPE", "EXPERIENCE",
@@ -1184,59 +1082,20 @@ try {
           const el = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
           if (el && rec[key] !== undefined && rec[key] !== "") {
             el.value = rec[key];
-            el.dispatchEvent(new Event('change', { bubbles: true }));
           }
         });
 
         const dobEl = document.getElementById("v_dob") || document.querySelector('[name="DOB"]');
-        const ageEl = document.getElementById("v_age") || document.querySelector('[name="AGE"]');
-
-        let rawDob = rec.DOB ? String(rec.DOB).trim() : "";
-        let finalDob = "";
-
-        const monthMap = {
-          JAN: "01", FEB: "02", MAR: "03", APR: "04", MAY: "05", JUN: "06",
-          JUL: "07", AUG: "08", SEP: "09", OCT: "10", NOV: "11", DEC: "12"
-        };
-
-        if (rawDob) {
-          const cleanDob = rawDob.replace(/\s+/g, " ").replace(/\s*-\s*/g, "-").trim();
-          const dmyTextMatch = cleanDob.match(/^(\d{1,2})[\s\-]([A-Za-z]{3,})[\s\-](\d{4})$/);
-
-          if (dmyTextMatch) {
-            const dd = dmyTextMatch[1].padStart(2, "0");
-            const monKey = dmyTextMatch[2].slice(0, 3).toUpperCase();
-            const yyyy = dmyTextMatch[3];
-            if (monthMap[monKey]) {
-              finalDob = `${yyyy}-${monthMap[monKey]}-${dd}`;
-            }
-          } else if (/^\d{4}-\d{2}-\d{2}/.test(cleanDob)) {
-            finalDob = cleanDob.slice(0, 10);
-          } else if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(cleanDob)) {
-            const sep = cleanDob.includes("/") ? "/" : "-";
-            const parts = cleanDob.split(sep);
-            finalDob = `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
-          } else if (/^\d{4}$/.test(cleanDob)) {
-            finalDob = `${cleanDob}-01-01`;
+        if (dobEl && rec.DOB) {
+          const rawDob = String(rec.DOB).trim();
+          if (/^\d{4}-\d{2}-\d{2}/.test(rawDob)) {
+            dobEl.value = rawDob.slice(0, 10);
+            calculateAgeFromDOB();
           }
-        }
-
-        const ageNum = parseInt((ageEl && ageEl.value) || rec.AGE || "", 10);
-        if (!finalDob && !isNaN(ageNum) && ageNum > 0) {
-          const birthYear = new Date().getFullYear() - ageNum;
-          finalDob = `${birthYear}-01-01`;
-        }
-
-        if (dobEl && finalDob) {
-          dobEl.value = finalDob;
-          calculateAgeFromDOB();
-        } else if (ageEl && rec.AGE !== undefined && rec.AGE !== "") {
-          ageEl.value = rec.AGE;
         }
 
         ["LANGUAGES_KNOWN", "KNOWN_SKILLS"].forEach(key => {
           document.querySelectorAll(`input[name="${key}"]`).forEach(chk => chk.checked = false);
-
           if (rec[key]) {
             const savedVals = String(rec[key]).split(",").map(v => v.trim().toUpperCase());
             document.querySelectorAll(`input[name="${key}"]`).forEach(chk => {
@@ -1247,76 +1106,19 @@ try {
           }
         });
 
-        toggleOtherInput('lang_other_chk', 'lang_other_input');
-        if (rec.LANGUAGES_KNOWN_OTHER) {
-          const langOtherEl = document.getElementById('lang_other_input');
-          if (langOtherEl) langOtherEl.value = rec.LANGUAGES_KNOWN_OTHER;
-        }
-
-        toggleOtherInput('skill_other_chk', 'skill_other_input');
-        if (rec.KNOWN_SKILLS_OTHER) {
-          const skillOtherEl = document.getElementById('skill_other_input');
-          if (skillOtherEl) skillOtherEl.value = rec.KNOWN_SKILLS_OTHER;
-        }
-
-        if (rec.docBase64s) {
-          const docMap = {
-            "adhar_front_file": rec.docBase64s["ADHAR_FRONT_URL"],
-            "adhar_back_file": rec.docBase64s["ADHAR_BACK_URL"],
-            "pan_file": rec.docBase64s["PAN_CARD_URL"],
-            "live_file": rec.docBase64s["LIVE_PHOTO_URL"],
-            "thumb_left_file": rec.docBase64s["LEFT_THUMB_URL"],
-            "thumb_right_file": rec.docBase64s["RIGHT_THUMB_URL"]
-          };
-
-          const previewMap = {
-            "adhar_front_file": "adhar_front_preview",
-            "adhar_back_file": "adhar_back_preview",
-            "pan_file": "pan_preview",
-            "live_file": "live_preview",
-            "thumb_left_file": "thumb_left_preview",
-            "thumb_right_file": "thumb_right_preview"
-          };
-
-          Object.keys(docMap).forEach(inputId => {
-            const b64Data = docMap[inputId];
-            const inputEl = document.getElementById(inputId);
-            const previewId = previewMap[inputId];
-            const imgEl = document.getElementById(previewId);
-
-            if (b64Data) {
-              const formattedB64 = b64Data.replace("base64;", "base64,");
-              if (inputEl) {
-                inputEl.dataset.croppedBase64 = formattedB64;
-              }
-              if (imgEl) {
-                imgEl.src = formattedB64;
-                imgEl.style.display = "block";
-              }
-            } else {
-              if (inputEl) delete inputEl.dataset.croppedBase64;
-              if (imgEl) {
-                imgEl.style.display = "none";
-                imgEl.src = "";
-              }
-            }
-          });
-        }
-
         const statusStr = String(rec.STATUS || "").toUpperCase();
         if (statusStr.includes("BLACK")) {
           alertBox.style.backgroundColor = "#ffebee";
           alertBox.style.color = "#c62828";
           alertBox.style.border = "2px solid #c62828";
-          alertBox.innerHTML = `🚨 ચેતવણી (ALERT): આ કર્મચારી (${rec.FULL_NAME}) BLACK LISTED છે! 🚨<br><span style="font-size:12px; font-weight:normal;">જૂનો ડેટા ફોર્મમાં ભરાઈ ગયો છે. આગળ વધતા પહેલા મેનેજમેન્ટની મંજૂરી લો.</span>`;
+          alertBox.innerHTML = `ચેતવણી: આ કર્મચારી (${rec.FULL_NAME}) BLACK LISTED છે!`;
         } else {
           alertBox.style.backgroundColor = "#e8f5e9";
           alertBox.style.color = "#2e7d32";
           alertBox.style.border = "2px solid #2e7d32";
-          alertBox.innerHTML = `✅ આ કર્મચારી (${rec.FULL_NAME} - ${rec.UNIQUE_ID}) પહેલેથી સિસ્ટમમાં રજીસ્ટર (ALREADY EXISTING) છે.<br><span style="font-size:12px; font-weight:normal;">તેમની વિગતો ફોર્મમાં ભરાઈ ગઈ છે. કોઈ ફેરફાર કરવો હોય તો કરીને Save કરો, એટલે Google Sheet માં આ જ રેકોર્ડ અપડેટ થઈ જશે.</span>`;
+          alertBox.innerHTML = `આ કર્મચારી (${rec.FULL_NAME} - ${rec.UNIQUE_ID}) પહેલેથી સિસ્ટમમાં રજીસ્ટર છે.`;
         }
       } else {
-        if (docBtn) docBtn.disabled = true;
         alertBox.style.display = "none";
         const uidEl = document.getElementById("v_unique_id") || document.querySelector('[name="UNIQUE_ID"]');
         if (uidEl && res.nextUniqueId) {
@@ -1324,13 +1126,13 @@ try {
         }
       }
     } catch (err) {
-      if (docBtn) docBtn.disabled = true;
       console.error("ADHAR check error:", err);
       alertBox.style.display = "none";
     }
   }
 </script>
 
-
 </body>
 </html>
+
+છે?
