@@ -611,20 +611,22 @@
 </div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
+  const SCRIPT_URL = '[https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec](https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec)';
 
   document.getElementById('v_unique_id').value = 'AUTO GENERATED';
 
   setInterval(() => {
     const now = new Date();
     const tsEl = document.getElementById('v_timestamp');
-    if(tsEl) tsEl.value = now.toLocaleString().toUpperCase();
+    if (tsEl) tsEl.value = now.toLocaleString().toUpperCase();
   }, 1000);
 
   function calculateAgeFromDOB() {
-    const dobVal = document.getElementById('v_dob').value;
+    const dobEl = document.getElementById('v_dob');
+    const dobVal = dobEl ? dobEl.value : '';
     if (dobVal) {
       const birthDate = new Date(dobVal);
+      if (isNaN(birthDate.getTime())) return;
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
@@ -632,18 +634,19 @@
         age--;
       }
       const ageEl = document.getElementById('v_age');
-      if(ageEl) ageEl.value = age;
+      if (ageEl && age >= 0) ageEl.value = age;
     }
   }
 
   function calculateDOBFromAge() {
-    const ageVal = document.getElementById('v_age').value;
-    if (ageVal && ageVal > 0) {
+    const ageEl = document.getElementById('v_age');
+    const ageVal = ageEl ? ageEl.value : '';
+    if (ageVal && parseInt(ageVal, 10) > 0) {
       const today = new Date();
-      const birthYear = today.getFullYear() - parseInt(ageVal);
+      const birthYear = today.getFullYear() - parseInt(ageVal, 10);
       const approxDOB = birthYear + '-01-01';
       const dobEl = document.getElementById('v_dob');
-      if(dobEl) dobEl.value = approxDOB;
+      if (dobEl) dobEl.value = approxDOB;
     }
   }
 
@@ -697,17 +700,17 @@
 
   function confirmCrop() {
     if (cropper) {
-      const canvas = cropper.getCroppedCanvas({
+      const croppedCanvas = cropper.getCroppedCanvas({
         maxWidth: 1000,
         maxHeight: 1000,
       });
-      const croppedDataUrl = canvas.toDataURL('image/png');
+      const croppedDataUrl = croppedCanvas.toDataURL('image/png');
       const previewImg = document.getElementById(currentPreviewId);
-      if(previewImg) {
+      if (previewImg) {
         previewImg.src = croppedDataUrl;
         previewImg.style.display = 'block';
       }
-      if(currentFileInput) {
+      if (currentFileInput) {
         currentFileInput.dataset.croppedBase64 = croppedDataUrl;
       }
       closeCropModal();
@@ -716,14 +719,14 @@
 
   function closeCropModal() {
     const modal = document.getElementById('cropModal');
-    if(modal) modal.style.display = 'none';
+    if (modal) modal.style.display = 'none';
     if (cropper) {
       cropper.destroy();
       cropper = null;
     }
   }
-///////////////
-let canvas, ctx, isDrawing = false, isSignUpdated = false;
+
+  let canvas, ctx, isDrawing = false, isSignUpdated = false;
 
   window.addEventListener('DOMContentLoaded', () => {
     canvas = document.getElementById('sigCanvas');
@@ -782,16 +785,12 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
     }
     isSignUpdated = false;
   }
-//////////////
+
   async function scanAllWithAI() {
     const frontInput = document.getElementById('adhar_front_file');
     const backInput = document.getElementById('adhar_back_file');
     const panInput = document.getElementById('pan_file');
-    
-    let frontBase64 = '';
-    let backBase64 = '';
-    let panBase64 = '';
-    
+
     async function getBase64(inputEl) {
       if (!inputEl) return '';
       if (inputEl.dataset.croppedBase64) {
@@ -810,9 +809,9 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
       return '';
     }
 
-    frontBase64 = await getBase64(frontInput);
-    backBase64 = await getBase64(backInput);
-    panBase64 = await getBase64(panInput);
+    const frontBase64 = await getBase64(frontInput);
+    const backBase64 = await getBase64(backInput);
+    const panBase64 = await getBase64(panInput);
 
     if (!frontBase64 && !backBase64 && !panBase64) {
       alert("કૃપા કરીને ઓછામાં ઓછું આધાર અથવા પાન કાર્ડનો ફોટો અપલોડ કરો!");
@@ -824,11 +823,11 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
     try {
       const response = await fetch(SCRIPT_URL, {
         method: "POST",
-        body: JSON.stringify({ 
-          action: "scan_all", 
-          frontImage: frontBase64, 
+        body: JSON.stringify({
+          action: "scan_all",
+          frontImage: frontBase64,
           backImage: backBase64,
-          panImage: panBase64 
+          panImage: panBase64
         })
       });
 
@@ -836,9 +835,10 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
       const textBox = document.getElementById('rawAadhaarText');
       if (textBox) {
         textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
-        if (result && result.text) {
-          parseAndAutofillAll(result.text);
-        }
+      }
+
+      if (result && result.text) {
+        parseAndAutofillAll(result.text);
       }
 
       if (result && result.status === "SUCCESS") {
@@ -853,7 +853,7 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
   }
 
   function parseAndAutofillAll(rawText) {
-  if (!rawText || rawText.includes("NO TEXT FOUND") || rawText.includes("API RAW RESPONSE") || rawText.includes("SCRIPT ERROR")) {
+    if (!rawText || rawText.includes("NO TEXT FOUND") || rawText.includes("API RAW RESPONSE") || rawText.includes("SCRIPT ERROR")) {
       return;
     }
 
@@ -887,13 +887,11 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
       return null;
     }
 
-    // 1. FULL NAME
     const fullNameVal = parsedData['NAME'] || parsedData['FULL NAME'] || parsedData['APPLICANT NAME'];
     if (fullNameVal) {
       setInputValue(['input[name="FULL_NAME"]', '#full_name'], fullNameVal);
     }
 
-    // 2. MOBILE NUMBER
     const mobileVal = parsedData['MOBILE NUMBER'] || parsedData['MOBILE'] || parsedData['PHONE NUMBER'];
     if (mobileVal) {
       const cleanMob = mobileVal.replace(/[^0-9]/g, '').slice(-10);
@@ -902,7 +900,6 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
       }
     }
 
-    // 3. GENDER
     const genderRaw = parsedData['GENDER'] || parsedData['SEX'] || '';
     let genderVal = '';
     if (genderRaw.includes('FEMALE') || /\bF\b/.test(genderRaw)) {
@@ -914,7 +911,6 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
       setInputValue(['select[name="GENDER"]', '#GENDER'], genderVal);
     }
 
-    // 4. DATE OF BIRTH
     const dobVal = parsedData['DATE OF BIRTH'] || parsedData['DOB'] || parsedData['BIRTH DATE'];
     if (dobVal) {
       let dobStr = '';
@@ -932,13 +928,12 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
 
       if (dobStr) {
         const dobEl = setInputValue(['#v_dob', 'input[name="DOB"]'], dobStr);
-        if (dobEl && typeof calculateAgeFromDOB === 'function') {
+        if (dobEl) {
           calculateAgeFromDOB();
         }
       }
     }
 
-    // 5. 12-DIGIT ID NUMBER
     const idRaw = parsedData['ADHAR NUMBER'] || parsedData['AADHAR NUMBER'] || parsedData['AADHAAR NUMBER'] || parsedData['ADHAR'] || '';
     const idMatch = (idRaw || upperText).match(/\b(\d{4}\s?\d{4}\s?\d{4})\b/);
     const cleanId = idMatch ? idMatch[1].replace(/\s+/g, '') : '';
@@ -946,39 +941,30 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
       setInputValue(['input[name="ADHAR_NUMBER"]', '#ADHAR_number'], cleanId);
     }
 
-    // 6. PAN NUMBER
     const panRaw = parsedData['PAN NUMBER'] || parsedData['PAN'] || '';
     const panMatch = (panRaw + ' ' + upperText).match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
     if (panMatch && panMatch[0]) {
       setInputValue(['input[name="PAN_NUMBER"]'], panMatch[0]);
     }
 
-    // 7. ADDRESS
     const addressVal = parsedData['ADDRESS'] || parsedData['FULL ADDRESS'];
     if (addressVal) {
       setInputValue(['input[name="ADDRESS"]', '#address'], addressVal);
     }
 
-    // 8. EXISTING RECORD CHECK
     if (cleanId.length === 12 && typeof checkExistingEmployee === 'function') {
       checkExistingEmployee(cleanId);
     }
   }
-```[cite: 1, 2, 10]
-
-### પેસ્ટ કર્યા પછી:
-* **લાઈન 938** (`document.addEventListener('DOMContentLoaded', () => {`) નીચે જ રહેવી જોઈએ — તેને અડશો નહીં[cite: 10].
-* GitHub પર **Commit changes** દબાવો, Live પેજ પર `Ctrl + F5` થી Hard Refresh કરો, અને AI સ્કેન કરીને જુઓ કે ફિલ્ડ્સ auto-fill થાય છે કે નહીં[cite: 1, 10].
-
 
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('employeeForm');
     if (form) {
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
+
         const submitBtn = document.querySelector('.submit-btn');
-        if(submitBtn) {
+        if (submitBtn) {
           submitBtn.disabled = true;
           submitBtn.innerText = "UPLOADING & GENERATING PDF...";
         }
@@ -1020,27 +1006,27 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
         dataObject.THUMB_RIGHT_FILE = await getFinalImageBase64('thumb_right_file');
 
         if (canvas) {
-  let blankCanvas = document.createElement('canvas');
-  blankCanvas.width = canvas.width;
-  blankCanvas.height = canvas.height;
+          const blankCanvas = document.createElement('canvas');
+          blankCanvas.width = canvas.width;
+          blankCanvas.height = canvas.height;
 
-  const isBlank = canvas.toDataURL() === blankCanvas.toDataURL();
-  const alertBox = document.getElementById("empAlertBox");
-  const isExistingEmployee = alertBox && alertBox.style.display !== "none";
+          const isBlank = canvas.toDataURL() === blankCanvas.toDataURL();
+          const alertBox = document.getElementById("empAlertBox");
+          const isExistingEmployee = alertBox && alertBox.style.display !== "none";
 
-  if (isBlank && !isExistingEmployee) {
-    alert("Please provide your digital signature before submitting!");
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
-    }
-    return;
-  }
+          if (isBlank && !isExistingEmployee) {
+            alert("Please provide your digital signature before submitting!");
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
+            }
+            return;
+          }
 
-  dataObject.DIGITAL_SIGN_FILE = (!isBlank && isSignUpdated) ? canvas.toDataURL('image/png') : '';
-} else {
-  dataObject.DIGITAL_SIGN_FILE = '';
-}
+          dataObject.DIGITAL_SIGN_FILE = (!isBlank && isSignUpdated) ? canvas.toDataURL('image/png') : '';
+        } else {
+          dataObject.DIGITAL_SIGN_FILE = '';
+        }
 
         fetch(SCRIPT_URL, {
           method: 'POST',
@@ -1059,7 +1045,7 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
           console.error(err);
         })
         .finally(() => {
-          if(submitBtn) {
+          if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.innerText = "SUBMIT EMPLOYEE DETAILS";
           }
@@ -1109,13 +1095,13 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
     };
 
     if (canvas) {
-  const blankCanvas = document.createElement("canvas");
-  blankCanvas.width = canvas.width;
-  blankCanvas.height = canvas.height;
-  if (isSignUpdated && canvas.toDataURL() !== blankCanvas.toDataURL()) {
-    payload.DIGITAL_SIGN_FILE = canvas.toDataURL("image/png");
-  }
-}
+      const blankCanvas = document.createElement("canvas");
+      blankCanvas.width = canvas.width;
+      blankCanvas.height = canvas.height;
+      if (isSignUpdated && canvas.toDataURL() !== blankCanvas.toDataURL()) {
+        payload.DIGITAL_SIGN_FILE = canvas.toDataURL("image/png");
+      }
+    }
 
     if (docBtn) {
       docBtn.disabled = true;
@@ -1169,23 +1155,19 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
       if (res.status === "FOUND" && res.record) {
         const rec = res.record;
         if (docBtn) docBtn.disabled = false;
-        
-        // ૧. તમામ ટેક્સ્ટ, ડ્રોપડાઉન અને રિલેટિવ્સના ફિલ્ડ્સ ઓટો-ફિલ કરો
+
         const fields = [
-          "UNIQUE_ID", "STATUS", "DESIGNATION", "FULL_NAME", "MOBILE", "PAN_NUMBER", 
-          "GENDER", "DOB", "AGE", "ADDRESS", "AREA", "CITY", "EMP_TYPE", "EXPERIENCE", 
-          "PREFERRED_SHIFT", "EDUCATION", "RELIGION", "CAST", "MARITAL_STATUS", 
-          "REFERENCE_BY", "TRANSPORTATION", "FATHER_NAME", "FATHER_AGE", "FATHER_CONTACT", 
-          "MOTHER_NAME", "MOTHER_AGE", "MOTHER_CONTACT", "PARENTS_ADDRESS", 
-          
-          // Relatives Fields
+          "UNIQUE_ID", "STATUS", "DESIGNATION", "FULL_NAME", "MOBILE", "PAN_NUMBER",
+          "GENDER", "DOB", "AGE", "ADDRESS", "AREA", "CITY", "EMP_TYPE", "EXPERIENCE",
+          "PREFERRED_SHIFT", "EDUCATION", "RELIGION", "CAST", "MARITAL_STATUS",
+          "REFERENCE_BY", "TRANSPORTATION", "FATHER_NAME", "FATHER_AGE", "FATHER_CONTACT",
+          "MOTHER_NAME", "MOTHER_AGE", "MOTHER_CONTACT", "PARENTS_ADDRESS",
           "REL_1_NAME", "REL_1_RELATION", "REL_1_MOBILE",
           "REL_2_NAME", "REL_2_RELATION", "REL_2_MOBILE",
           "REL_3_NAME", "REL_3_RELATION", "REL_3_MOBILE",
           "REL_4_NAME", "REL_4_RELATION", "REL_4_MOBILE",
-
-          "MEAL_PREFERENCE", "COVID_VACCINATED", "WORK_NON_VEG", "HAVE_SMARTPHONE", 
-          "LANGUAGES_KNOWN_OTHER", "KNOWN_SKILLS_OTHER", "PAST_EXPERIENCE", 
+          "MEAL_PREFERENCE", "COVID_VACCINATED", "WORK_NON_VEG", "HAVE_SMARTPHONE",
+          "LANGUAGES_KNOWN_OTHER", "KNOWN_SKILLS_OTHER", "PAST_EXPERIENCE",
           "BENEFICIARY_NAME", "BANK_NAME", "ACCOUNT_NUMBER", "IFSC_CODE"
         ];
 
@@ -1193,10 +1175,10 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
           const el = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
           if (el && rec[key] !== undefined && rec[key] !== "") {
             el.value = rec[key];
+            el.dispatchEvent(new Event('change', { bubbles: true }));
           }
         });
 
-        // 📅 DOB અને AGE / BIRTH YEAR માટે સ્માર્ટ લોજિક
         const dobEl = document.getElementById("v_dob") || document.querySelector('[name="DOB"]');
         const ageEl = document.getElementById("v_age") || document.querySelector('[name="AGE"]');
 
@@ -1219,20 +1201,17 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
             if (monthMap[monKey]) {
               finalDob = `${yyyy}-${monthMap[monKey]}-${dd}`;
             }
-          }
-          else if (/^\d{4}-\d{2}-\d{2}/.test(cleanDob)) {
+          } else if (/^\d{4}-\d{2}-\d{2}/.test(cleanDob)) {
             finalDob = cleanDob.slice(0, 10);
-          }
-          else if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(cleanDob)) {
+          } else if (/^\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4}$/.test(cleanDob)) {
             const sep = cleanDob.includes("/") ? "/" : "-";
             const parts = cleanDob.split(sep);
             finalDob = `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
-          }
-          else if (/^\d{4}$/.test(cleanDob)) {
+          } else if (/^\d{4}$/.test(cleanDob)) {
             finalDob = `${cleanDob}-01-01`;
           }
         }
-        
+
         const ageNum = parseInt((ageEl && ageEl.value) || rec.AGE || "", 10);
         if (!finalDob && !isNaN(ageNum) && ageNum > 0) {
           const birthYear = new Date().getFullYear() - ageNum;
@@ -1241,12 +1220,14 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
 
         if (dobEl && finalDob) {
           dobEl.value = finalDob;
+          calculateAgeFromDOB();
+        } else if (ageEl && rec.AGE !== undefined && rec.AGE !== "") {
+          ageEl.value = rec.AGE;
         }
 
-        // ૨. ચેકબોક્સ ઓટો-ટિક કરવા માટે (Languages & Skills)
         ["LANGUAGES_KNOWN", "KNOWN_SKILLS"].forEach(key => {
           document.querySelectorAll(`input[name="${key}"]`).forEach(chk => chk.checked = false);
-          
+
           if (rec[key]) {
             const savedVals = String(rec[key]).split(",").map(v => v.trim().toUpperCase());
             document.querySelectorAll(`input[name="${key}"]`).forEach(chk => {
@@ -1257,7 +1238,18 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
           }
         });
 
-        // ૩. અગાઉ અપલોડ કરેલી ફાઇલોના પ્રીવ્યુ અને ફાઇલ ડેટા ઓટો-સેટ કરવા માટે
+        toggleOtherInput('lang_other_chk', 'lang_other_input');
+        if (rec.LANGUAGES_KNOWN_OTHER) {
+          const langOtherEl = document.getElementById('lang_other_input');
+          if (langOtherEl) langOtherEl.value = rec.LANGUAGES_KNOWN_OTHER;
+        }
+
+        toggleOtherInput('skill_other_chk', 'skill_other_input');
+        if (rec.KNOWN_SKILLS_OTHER) {
+          const skillOtherEl = document.getElementById('skill_other_input');
+          if (skillOtherEl) skillOtherEl.value = rec.KNOWN_SKILLS_OTHER;
+        }
+
         if (rec.docBase64s) {
           const docMap = {
             "adhar_front_file": rec.docBase64s["ADHAR_FRONT_URL"],
@@ -1302,7 +1294,6 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
           });
         }
 
-        // ૪. બ્લેકલિસ્ટેડ અથવા સક્સેસ એલર્ટ મેસેજ
         const statusStr = String(rec.STATUS || "").toUpperCase();
         if (statusStr.includes("BLACK")) {
           alertBox.style.backgroundColor = "#ffebee";
@@ -1330,6 +1321,7 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false;
     }
   }
 </script>
+
 
 </body>
 </html>
