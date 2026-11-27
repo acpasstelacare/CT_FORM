@@ -840,85 +840,114 @@ function clearCanvas() {
   }
 
   function parseAndAutofillAll(rawText) {
-    if (!rawText || rawText.includes("NO TEXT FOUND") || rawText.includes("API RAW RESPONSE") || rawText.includes("SCRIPT ERROR")) {
+   if (!rawText || rawText.includes("NO TEXT FOUND") || rawText.includes("API RAW RESPONSE") || rawText.includes("SCRIPT ERROR")) {
       return;
     }
 
-    const lines = rawText.split('\n');
+    const upperText = rawText.toUpperCase();
+    const lines = upperText.split('\n');
     let parsedData = {};
-    
+
     lines.forEach(line => {
-      const cleanLine = line.replace(/\*/g, '').trim();
-      const parts = cleanLine.split(':');
-      if (parts.length >= 2) {
-        const key = parts[0].trim();
-        const val = parts.slice(1).join(':').trim();
-        parsedData[key] = val;
+      const cleanLine = line.replace(/\*/g, '').replace(/^[0-9]+[\).\-\s]+/, '').trim();
+      const match = cleanLine.match(/^([A-Z0-9\s\/_-]+?)\s*[:\-]\s*(.+)$/);
+      if (match) {
+        const key = match[1].trim().replace(/[\s_-]+/g, ' ');
+        const val = match[2].trim();
+        if (val && val !== 'NOT AVAILABLE' && val !== 'N/A' && val !== '-') {
+          parsedData[key] = val;
+        }
       }
     });
 
-    const fullNameVal = parsedData['NAME'];
-    if (fullNameVal && fullNameVal !== 'NOT AVAILABLE') {
-      const el = document.querySelector('input[name="FULL_NAME"]') || document.getElementById('full_name');
-      if (el) el.value = fullNameVal;
-    }
-
-    const mobileVal = parsedData['MOBILE NUMBER'];
-    if (mobileVal && mobileVal !== 'NOT AVAILABLE') {
-      const el = document.querySelector('input[name="MOBILE"]') || document.getElementById('mobile_number');
-      if (el) el.value = mobileVal;
-    }
-
-    const GENDERVal = parsedData['GENDER'];
-    if (GENDERVal) {
-      const el = document.querySelector('select[name="GENDER"]') || document.getElementById('GENDER');
-      if (el) el.value = GENDERVal;
-    }
-
-    const dobVal = parsedData['DATE OF BIRTH'];
-    if (dobVal) {
-      let dobStr = dobVal;
-      if (dobStr.includes('/')) {
-        const parts = dobStr.split('/');
-        if (parts.length === 3) {
-          dobStr = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    function fillField(selectors, value, eventNames = ['input', 'change']) {
+      if (!value) return null;
+      for (const sel of selectors) {
+        const el = document.querySelector(sel);
+        if (el) {
+          el.value = value;
+          eventNames.forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true })));
+          return el;
         }
       }
-      const el = document.getElementById('v_dob') || document.querySelector('input[name="DOB"]');
-      if (el) {
-        el.value = dobStr;
-        if (typeof calculateAgeFromDOB === 'function') {
+      return null;
+    }
+
+    // 1. FULL NAME
+    const fullNameVal = parsedData['NAME'] || parsedData['FULL NAME'] || parsedData['APPLICANT NAME'];
+    if (fullNameVal) {
+      fillField(['input[name="FULL_NAME"]', '#full_name'], fullNameVal);
+    }
+
+    // 2. MOBILE NUMBER
+    const mobileVal = parsedData['MOBILE NUMBER'] || parsedData['MOBILE'] || parsedData['PHONE NUMBER'];
+    if (mobileVal) {
+      const cleanMob = mobileVal.replace(/[^0-9]/g, '').slice(-10);
+      if (cleanMob.length === 10) {
+        fillField(['input[name="MOBILE"]', '#mobile_number'], cleanMob);
+      }
+    }
+
+    // 3. GENDER
+    const genderRaw = parsedData['GENDER'] || parsedData['SEX'] || '';
+    let genderVal = '';
+    if (genderRaw.includes('FEMALE') || /\bF\b/.test(genderRaw)) {
+      genderVal = 'FEMALE';
+    } else if (genderRaw.includes('MALE') || /\bM\b/.test(genderRaw)) {
+      genderVal = 'MALE';
+    }
+    if (genderVal) {
+      fillField(['select[name="GENDER"]', '#GENDER'], genderVal, ['change']);
+    }
+
+    // 4. DATE OF BIRTH
+    const dobVal = parsedData['DATE OF BIRTH'] || parsedData['DOB'] || parsedData['BIRTH DATE'];
+    if (dobVal) {
+      let dobStr = '';
+      const dmyMatch = dobVal.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+      const ymdMatch = dobVal.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+      const yrMatch = dobVal.match(/\b(19\d{2}|20\d{2})\b/);
+
+      if (ymdMatch) {
+        dobStr = `${ymdMatch[1]}-${ymdMatch[2].padStart(2, '0')}-${ymdMatch[3].padStart(2, '0')}`;
+      } else if (dmyMatch) {
+        dobStr = `${dmyMatch[3]}-${dmyMatch[2].padStart(2, '0')}-${dmyMatch[1].padStart(2, '0')}`;
+      } else if (yrMatch) {
+        dobStr = `${yrMatch[1]}-01-01`;
+      }
+
+      if (dobStr) {
+        const dobEl = fillField(['#v_dob', 'input[name="DOB"]'], dobStr, ['change']);
+        if (dobEl && typeof calculateAgeFromDOB === 'function') {
           calculateAgeFromDOB();
         }
       }
     }
 
-    const ADHARVal = parsedData['ADHAR NUMBER'];
-    if (ADHARVal && ADHARVal !== 'NOT AVAILABLE') {
-      const el = document.querySelector('input[name="ADHAR_NUMBER"]') || document.getElementById('ADHAR_number');
-      if (el) el.value = ADHARVal;
+    // 5. 12-DIGIT ID NUMBER
+    const idRaw = parsedData['ADHAR NUMBER'] || parsedData['AADHAR NUMBER'] || parsedData['AADHAAR NUMBER'] || parsedData['ADHAR'] || '';
+    const idMatch = (idRaw || upperText).match(/\b(\d{4}\s?\d{4}\s?\d{4})\b/);
+    const cleanId = idMatch ? idMatch[1].replace(/\s+/g, '') : '';
+    if (cleanId.length === 12) {
+      fillField(['input[name="ADHAR_NUMBER"]', '#ADHAR_number'], cleanId);
     }
 
-    const panVal = parsedData['PAN NUMBER'];
-    const panField = document.querySelector('input[name="PAN_NUMBER"]');
-    if (panVal && panVal !== 'NOT AVAILABLE' && panField) {
-      panField.value = panVal;
-    } else {
-      const panMatch = rawText.match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
-      if (panMatch && panMatch[0] && panField) {
-        panField.value = panMatch[0];
-      }
+    // 6. PAN NUMBER
+    const panRaw = parsedData['PAN NUMBER'] || parsedData['PAN'] || '';
+    const panMatch = (panRaw + ' ' + upperText).match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
+    if (panMatch && panMatch[0]) {
+      fillField(['input[name="PAN_NUMBER"]'], panMatch[0]);
     }
 
-    const addressVal = parsedData['ADDRESS'];
-    if (addressVal && addressVal !== 'NOT AVAILABLE') {
-      const el = document.querySelector('input[name="ADDRESS"]') || document.getElementById('address');
-      if (el) el.value = addressVal;
+    // 7. ADDRESS
+    const addressVal = parsedData['ADDRESS'] || parsedData['FULL ADDRESS'];
+    if (addressVal) {
+      fillField(['input[name="ADDRESS"]', '#address'], addressVal);
     }
 
-    const ADHARValFinal = parsedData['ADHAR NUMBER'];
-    if (ADHARValFinal && ADHARValFinal !== 'NOT AVAILABLE') {
-      checkExistingEmployee(ADHARValFinal);
+    // 8. EXISTING RECORD CHECK
+    if (cleanId.length === 12 && typeof checkExistingEmployee === 'function') {
+      checkExistingEmployee(cleanId);
     }
   }
 
