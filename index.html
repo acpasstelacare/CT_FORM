@@ -831,7 +831,16 @@
         })
       });
 
-      const result = await response.json();
+      const rawTextResponse = await response.text();
+console.log("Apps Script Response:", rawTextResponse);
+
+let result;
+try {
+  result = JSON.parse(rawTextResponse);
+} catch (e) {
+  alert("Apps Script એ HTML મોકલ્યું છે. Console (F12) માં response જુઓ અથવા Web App access ('Anyone') ચેક કરો.");
+  return;
+}
       const textBox = document.getElementById('rawAadhaarText');
       if (textBox) {
         textBox.value = (result && result.text) ? result.text : "NO TEXT FOUND";
