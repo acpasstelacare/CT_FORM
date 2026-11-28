@@ -670,7 +670,130 @@
 </div>
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
+window.extraDocsState = {
+  LIGHT_BILL_FILE: "",
+  POLICE_VERIFICATION_FILE: "",
+  EXPERIENCE_CERT_FILE: "",
+  NURSING_DOC_FILE: ""
+};
+window.additionalDocsList = [];
 
+function getCurrentDesignationValue() {
+  var desigEl = document.querySelector('[name="DESIGNATION"], #DESIGNATION, #designation');
+  return desigEl ? String(desigEl.value || "").trim().toUpperCase() : "";
+}
+
+function updateNursingHighlight() {
+  var desig = getCurrentDesignationValue();
+  var isNurse = desig.includes("NURSE") || desig.includes("REGISTERED NURSE");
+  var box = document.getElementById("nursingDocBox");
+  var badge = document.getElementById("nursingBadge");
+  if (!box || !badge) return;
+
+  if (isNurse) {
+    box.style.border = "2px solid #d32f2f";
+    box.style.background = "#fff5f5";
+    badge.textContent = "(FOR NURSE / REGISTERED NURSE)";
+    badge.style.color = "#d32f2f";
+  } else {
+    box.style.border = "1px solid #cbd5e1";
+    box.style.background = "#ffffff";
+    badge.textContent = "(OPTIONAL)";
+    badge.style.color = "#64748b";
+  }
+}
+
+function openOtherDocsModal() {
+  updateNursingHighlight();
+  document.getElementById("otherDocsModal").style.display = "block";
+}
+
+function closeOtherDocsModal() {
+  document.getElementById("otherDocsModal").style.display = "none";
+  updateOtherDocsBadge();
+}
+
+function updateOtherDocsBadge() {
+  var mainCount = Object.values(window.extraDocsState).filter(Boolean).length;
+  var addCount = window.additionalDocsList.filter(function(item) {
+    return item && item.fileBase64;
+  }).length;
+  var badge = document.getElementById("otherDocsCountBadge");
+  if (badge) {
+    badge.textContent = "(" + (mainCount + addCount) + ")";
+  }
+}
+
+function readFileAsBase64(file, callback) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    callback(e.target.result || "");
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleSingleExtraDoc(inputEl, stateKey, statusId) {
+  var statusEl = document.getElementById(statusId);
+  var file = inputEl.files && inputEl.files[0];
+  if (!file) {
+    window.extraDocsState[stateKey] = "";
+    if (statusEl) statusEl.textContent = "";
+    updateOtherDocsBadge();
+    return;
+  }
+
+  readFileAsBase64(file, function(base64Str) {
+    window.extraDocsState[stateKey] = base64Str;
+    if (statusEl) statusEl.textContent = "✓ Selected: " + file.name;
+    updateOtherDocsBadge();
+  });
+}
+
+function addAdditionalDocRow() {
+  var idx = window.additionalDocsList.length;
+  window.additionalDocsList.push({ docName: "", fileBase64: "" });
+
+  var container = document.getElementById("additionalDocsContainer");
+  var row = document.createElement("div");
+  row.id = "addDocRow_" + idx;
+  row.style.cssText = "display:flex; gap:8px; align-items:center; margin-bottom:8px; background:#f8fafc; padding:8px; border-radius:6px; border:1px solid #e2e8f0;";
+
+  row.innerHTML = `
+    <input type="text" placeholder="Document Name (e.g. Marksheet)"
+      oninput="window.additionalDocsList[${idx}].docName = this.value"
+      style="flex:1; padding:7px; border:1px solid #cbd5e1; border-radius:4px; font-size:12px;">
+    <input type="file" accept=".pdf,image/*"
+      onchange="onAdditionalFileChange(this, ${idx})"
+      style="flex:1.3; font-size:12px;">
+    <button type="button" onclick="removeAdditionalDocRow(${idx})"
+      style="background:#ef4444; color:#fff; border:none; border-radius:4px; padding:6px 10px; cursor:pointer; font-weight:bold;">✕</button>
+  `;
+  container.appendChild(row);
+  updateOtherDocsBadge();
+}
+
+function onAdditionalFileChange(inputEl, idx) {
+  var file = inputEl.files && inputEl.files[0];
+  if (!file) {
+    window.additionalDocsList[idx].fileBase64 = "";
+    updateOtherDocsBadge();
+    return;
+  }
+  if (!window.additionalDocsList[idx].docName) {
+    window.additionalDocsList[idx].docName = file.name.replace(/\.[^/.]+$/, "");
+  }
+  readFileAsBase64(file, function(base64Str) {
+    window.additionalDocsList[idx].fileBase64 = base64Str;
+    updateOtherDocsBadge();
+  });
+}
+
+function removeAdditionalDocRow(idx) {
+  window.additionalDocsList[idx] = null;
+  var row = document.getElementById("addDocRow_" + idx);
+  if (row) row.remove();
+  updateOtherDocsBadge();
+}
   document.getElementById('v_unique_id').value = 'AUTO GENERATED';
 
   setInterval(() => {
@@ -1240,7 +1363,10 @@ let canvas, ctx, isDrawing = false, isSignUpdated = false, lastX = 0, lastY = 0;
       THUMB_LEFT_FILE: await getDocBase64("thumb_left_file"),
       THUMB_RIGHT_FILE: await getDocBase64("thumb_right_file")
     };
-
+payload.EXTRA_DOCS = window.extraDocsState;
+payload.ADDITIONAL_DOCS = window.additionalDocsList.filter(function(item) {
+  return item && item.fileBase64;
+});
     if (canvas) {
   const blankCanvas = document.createElement("canvas");
   blankCanvas.width = canvas.width;
