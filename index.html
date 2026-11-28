@@ -660,7 +660,17 @@
       </div>
       <div id="additionalDocsContainer"></div>
     </div>
-
+<div style="border-top:1px dashed #94a3b8; padding-top:14px; margin-top:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+        <strong style="color:#073e91; font-size:13px;">SAVED DOCUMENTS IN DRIVE</strong>
+        <button type="button" id="seeAllDocsBtn" onclick="openEmployeeDriveFolder()" style="background:#073e91; color:#fff; border:none; border-radius:5px; padding:7px 14px; cursor:pointer; font-weight:bold; font-size:12px;">
+          📂 SEE ALL DOCUMENTS
+        </button>
+      </div>
+      <div id="savedDriveDocsContainer" style="font-size:12px; color:#334155; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:10px;">
+        NO SAVED DOCUMENTS LOADED YET.
+      </div>
+    </div>
     <div style="text-align:right; margin-top:18px; border-top:1px solid #e2e8f0; padding-top:12px;">
       <button type="button" onclick="closeOtherDocsModal()" style="padding:9px 18px; background:#073e91; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
         DONE & BACK TO FORM
@@ -703,8 +713,53 @@ function updateNursingHighlight() {
   }
 }
 
+function renderSavedDriveDocs() {
+  var container = document.getElementById("savedDriveDocsContainer");
+  var seeAllBtn = document.getElementById("seeAllDocsBtn");
+  if (!container) return;
+
+  if (seeAllBtn) {
+    seeAllBtn.disabled = !window.loadedDriveFolderUrl;
+    seeAllBtn.style.opacity = window.loadedDriveFolderUrl ? "1" : "0.55";
+    seeAllBtn.style.cursor = window.loadedDriveFolderUrl ? "pointer" : "not-allowed";
+  }
+
+  var docs = Array.isArray(window.loadedDriveDocs) ? window.loadedDriveDocs : [];
+  if (docs.length === 0) {
+    container.innerHTML = `<div style="color:#64748b;">NO SAVED DOCUMENTS FOUND FOR THIS CANDIDATE.</div>`;
+    return;
+  }
+
+  var html = `<div style="display:flex; flex-direction:column; gap:6px;">`;
+  docs.forEach(function(doc, i) {
+    var safeName = String(doc.name || ("DOCUMENT " + (i + 1))).replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    var safeLoc = String(doc.location || "DRIVE").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    var safeUrl = String(doc.url || "");
+    html += `
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; background:#fff; padding:7px 10px; border:1px solid #cbd5e1; border-radius:4px;">
+        <div>
+          <b>${i + 1}. ${safeName}</b>
+          <span style="font-size:11px; color:#073e91; margin-left:6px;">[${safeLoc}]</span>
+        </div>
+        ${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="background:#e8f0fe; color:#073e91; text-decoration:none; padding:4px 9px; border-radius:4px; font-weight:bold; font-size:11px;">OPEN</a>` : `<span style="font-size:11px; color:#94a3b8;">NO LINK</span>`}
+      </div>
+    `;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function openEmployeeDriveFolder() {
+  if (!window.loadedDriveFolderUrl) {
+    alert("આ કર્મચારીનું Google Drive Folder URL ઉપલબ્ધ નથી!");
+    return;
+  }
+  window.open(window.loadedDriveFolderUrl, "_blank", "noopener,noreferrer");
+}
+
 function openOtherDocsModal() {
   updateNursingHighlight();
+  renderSavedDriveDocs();
   document.getElementById("otherDocsModal").style.display = "block";
 }
 
