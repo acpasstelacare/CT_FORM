@@ -587,7 +587,9 @@
 
       <div class="btn-container">
   <button type="submit" class="submit-btn">SUBMIT EMPLOYEE DETAILS</button>
-  <button type="button" class="print-btn" onclick="window.print()">PRINT / SAVE AS PDF</button>
+  <button type="button" id="openOtherDocsBtn" class="print-btn" onclick="openOtherDocsModal()">
+  ATTACH OTHER DOCUMENTS <span id="otherDocsCountBadge">(0)</span>
+</button>
 </div>
     </form>
   </div>
@@ -609,7 +611,63 @@
     <button type="button" class="crop-cancel-btn" onclick="closeCropModal()">CANCEL</button>
   </div>
 </div>
+<!-- ATTACH OTHER DOCUMENTS MODAL -->
+<div id="otherDocsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:9999; overflow-y:auto; padding:20px;">
+  <div style="max-width:740px; margin:20px auto; background:#fff; border-radius:10px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.35); font-family:Arial,sans-serif;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #073e91; padding-bottom:10px; margin-bottom:14px;">
+      <h3 style="margin:0; color:#073e91;">ATTACH OTHER DOCUMENTS</h3>
+      <button type="button" onclick="closeOtherDocsModal()" style="background:#e53935; color:#fff; border:none; border-radius:5px; padding:6px 12px; cursor:pointer; font-weight:bold;">✕ CLOSE</button>
+    </div>
 
+    <p style="font-size:13px; color:#333; margin-top:0; line-height:1.45;">
+      <b>Light Bill</b>, <b>Police Verification</b>, <b>Experience Certificate</b> અને <b>Nursing Document</b> કર્મચારીના મુખ્ય ફોલ્ડરમાં save થશે. વધારાના documents <b>Other Documents</b> sub-folder માં save થશે.
+    </p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+      <div style="border:1px solid #cbd5e1; padding:10px; border-radius:6px;">
+        <label style="font-weight:bold; font-size:12px; display:block; margin-bottom:6px;">LIGHT BILL (PDF / IMAGE)</label>
+        <input type="file" id="lightBillInput" accept=".pdf,image/*" onchange="handleSingleExtraDoc(this, 'LIGHT_BILL_FILE', 'lightBillStatus')">
+        <div id="lightBillStatus" style="font-size:11px; color:#008000; margin-top:4px;"></div>
+      </div>
+
+      <div style="border:1px solid #cbd5e1; padding:10px; border-radius:6px;">
+        <label style="font-weight:bold; font-size:12px; display:block; margin-bottom:6px;">POLICE VERIFICATION (PDF / IMAGE)</label>
+        <input type="file" id="policeVerInput" accept=".pdf,image/*" onchange="handleSingleExtraDoc(this, 'POLICE_VERIFICATION_FILE', 'policeVerStatus')">
+        <div id="policeVerStatus" style="font-size:11px; color:#008000; margin-top:4px;"></div>
+      </div>
+
+      <div style="border:1px solid #cbd5e1; padding:10px; border-radius:6px;">
+        <label style="font-weight:bold; font-size:12px; display:block; margin-bottom:6px;">EXPERIENCE CERTIFICATE (PDF / IMAGE)</label>
+        <input type="file" id="expCertInput" accept=".pdf,image/*" onchange="handleSingleExtraDoc(this, 'EXPERIENCE_CERT_FILE', 'expCertStatus')">
+        <div id="expCertStatus" style="font-size:11px; color:#008000; margin-top:4px;"></div>
+      </div>
+
+      <div id="nursingDocBox" style="border:1px solid #cbd5e1; padding:10px; border-radius:6px;">
+        <label style="font-weight:bold; font-size:12px; display:block; margin-bottom:6px;">
+          NURSING DOCUMENT <span id="nursingBadge" style="color:#073e91;"></span>
+        </label>
+        <input type="file" id="nursingDocInput" accept=".pdf,image/*" onchange="handleSingleExtraDoc(this, 'NURSING_DOC_FILE', 'nursingDocStatus')">
+        <div id="nursingDocStatus" style="font-size:11px; color:#008000; margin-top:4px;"></div>
+      </div>
+    </div>
+
+    <div style="border-top:1px dashed #94a3b8; padding-top:14px; margin-top:10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <strong style="color:#073e91; font-size:13px;">ADDITIONAL DOCUMENTS (→ "Other Documents" Folder)</strong>
+        <button type="button" onclick="addAdditionalDocRow()" style="background:#008000; color:#fff; border:none; border-radius:5px; padding:6px 12px; cursor:pointer; font-weight:bold; font-size:12px;">
+          + ADD MORE DOCUMENT
+        </button>
+      </div>
+      <div id="additionalDocsContainer"></div>
+    </div>
+
+    <div style="text-align:right; margin-top:18px; border-top:1px solid #e2e8f0; padding-top:12px;">
+      <button type="button" onclick="closeOtherDocsModal()" style="padding:9px 18px; background:#073e91; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
+        DONE & BACK TO FORM
+      </button>
+    </div>
+  </div>
+</div>
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFsohknGSDLEMcoO-Ne_n_YTJRPHXW0nWhsqZFgOeqqlfoPSH9QvqSdcmhMW5mkB1sWw/exec';
 
