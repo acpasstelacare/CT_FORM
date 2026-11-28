@@ -713,14 +713,19 @@ function closeOtherDocsModal() {
   updateOtherDocsBadge();
 }
 
+window.loadedDriveDocs = [];
+window.loadedDriveFolderUrl = "";
+
 function updateOtherDocsBadge() {
-  var mainCount = Object.values(window.extraDocsState).filter(Boolean).length;
-  var addCount = window.additionalDocsList.filter(function(item) {
+  var mainCount = Object.values(window.extraDocsState || {}).filter(Boolean).length;
+  var addCount = (window.additionalDocsList || []).filter(function(item) {
     return item && item.fileBase64;
   }).length;
+  var savedCount = Array.isArray(window.loadedDriveDocs) ? window.loadedDriveDocs.length : 0;
+
   var badge = document.getElementById("otherDocsCountBadge");
   if (badge) {
-    badge.textContent = "(" + (mainCount + addCount) + ")";
+    badge.textContent = "(" + (savedCount + mainCount + addCount) + ")";
   }
 }
 
@@ -1440,6 +1445,9 @@ payload.ADDITIONAL_DOCS = window.additionalDocsList.filter(function(item) {
 
       if (res.status === "FOUND" && res.record) {
         const rec = res.record;
+        window.loadedDriveDocs = Array.isArray(rec.driveDocsList) ? rec.driveDocsList : [];
+        window.loadedDriveFolderUrl = rec.FOLDER_URL || "";
+        updateOtherDocsBadge();
         if (docBtn) docBtn.disabled = false;
         
         // ૧. તમામ ટેક્સ્ટ, ડ્રોપડાઉન અને રિલેટિવ્સના ફિલ્ડ્સ ઓટો-ફિલ કરો
@@ -1594,6 +1602,9 @@ payload.ADDITIONAL_DOCS = window.additionalDocsList.filter(function(item) {
         if (uidEl && res.nextUniqueId) {
           uidEl.value = res.nextUniqueId;
         }
+        window.loadedDriveDocs = [];
+        window.loadedDriveFolderUrl = "";
+        updateOtherDocsBadge();
       }
     } catch (err) {
       if (docBtn) docBtn.disabled = true;
